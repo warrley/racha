@@ -1,0 +1,161 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ──────────────────────────────────────────────
+// ENUMS
+// ──────────────────────────────────────────────
+
+enum Position {
+  ZAGUEIRO
+  MEIO
+  ATACANTE
+}
+
+enum SessionStatus {
+  OPEN
+  IN_PROGRESS
+  FINISHED
+}
+
+enum BadgeType {
+  ARTILHEIRO
+  MVP
+  ON_FIRE
+  VETERANO
+  AZARADO
+  GOLEADOR
+}
+
+// ──────────────────────────────────────────────
+// ENTIDADES
+// ──────────────────────────────────────────────
+
+model User {
+  id          String   @id @default(uuid())
+  email       String   @unique
+  password    String
+  name        String
+  nickname    String?
+  position    Position @default(MEIO)
+  rating      Int      @default(1000)
+  avatarIndex Int      @default(0)
+  isAdmin     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  // Relações
+  teamPlayers       TeamPlayer[]
+  goals             Goal[]
+  badges            Badge[]
+  createdSessions   Session[]    @relation("SessionCreator")
+  mvpSessions       Session[]    @relation("SessionMvp")
+  topScorerSessions Session[]    @relation("SessionTopScorer")
+
+  @@map("users")
+}
+
+model Session {
+  id                String        @id @default(uuid())
+  title             String?
+  date              DateTime
+  status            SessionStatus @default(OPEN)
+  createdById       String
+  mvpPlayerId       String?
+  topScorerPlayerId String?
+  createdAt         DateTime      @default(now())
+
+  // Relações
+  createdBy       User    @relation("SessionCreator", fields: [createdById], references: [id])
+  mvpPlayer       User?   @relation("SessionMvp", fields: [mvpPlayerId], references: [id])
+  topScorerPlayer User?   @relation("SessionTopScorer", fields: [topScorerPlayerId], references: [id])
+  teams           Team[]
+  rounds          Round[]
+  badges          Badge[]
+
+  @@map("sessions")
+}
+
+model Team {
+  id          String @id @default(uuid())
+  sessionId   String
+  name        String
+  color       String
+  totalRating Int    @default(0)
+
+  // Relações
+  session    Session      @relation(fields: [sessionId], references: [id])
+  players    TeamPlayer[]
+  homeRounds Round[]      @relation("HomeTeam")
+  awayRounds Round[]      @relation("AwayTeam")
+  wonRounds  Round[]      @relation("WinnerTeam")
+
+  @@map("teams")
+}
+
+model TeamPlayer {
+  id       Int    @id @default(autoincrement())
+  teamId   String
+  playerId String
+
+  // Relações
+  team   Team @relation(fields: [teamId], references: [id])
+  player User @relation(fields: [playerId], references: [id])
+
+  @@unique([teamId, playerId])
+  @@map("team_players")
+}
+
+model Round {
+  id           String   @id @default(uuid())
+  sessionId    String
+  roundNumber  Int
+  homeTeamId   String
+  awayTeamId   String
+  homeScore    Int      @default(0)
+  awayScore    Int      @default(0)
+  winnerTeamId String?
+  isDraw       Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  // Relações
+  session    Session @relation(fields: [sessionId], references: [id])
+  homeTeam   Team    @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeam   Team    @relation("AwayTeam", fields: [awayTeamId], references: [id])
+  winnerTeam Team?   @relation("WinnerTeam", fields: [winnerTeamId], references: [id])
+  goals      Goal[]
+
+  @@map("rounds")
+}
+
+model Goal {
+  id       Int    @id @default(autoincrement())
+  roundId  String
+  playerId String
+  minute   Int?
+
+  // Relações
+  round  Round @relation(fields: [roundId], references: [id])
+  player User  @relation(fields: [playerId], references: [id])
+
+  @@map("goals")
+}
+
+model Badge {
+  id        Int       @id @default(autoincrement())
+  playerId  String
+  type      BadgeType
+  sessionId String?
+  earnedAt  DateTime  @default(now())
+
+  // Relações
+  player  User     @relation(fields: [playerId], references: [id])
+  session Session? @relation(fields: [sessionId], references: [id])
+
+  @@map("badges")
+}
