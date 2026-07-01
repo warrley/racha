@@ -65,8 +65,9 @@ export default function SessionDetailsScreen() {
     };
 
     const handleDrawTeams = async () => {
-        if (selectedPlayerIds.length !== 15) {
-            alert("Selecione exatamente 15 jogadores para o sorteio!");
+        const count = selectedPlayerIds.length;
+        if (count !== 15 && count !== 20) {
+            alert("Selecione exatamente 15 (3 times) ou 20 (4 times) jogadores para o sorteio!");
             return;
         }
         try {
@@ -175,9 +176,11 @@ export default function SessionDetailsScreen() {
                 {isOpen ? (
                     <section className="space-y-4">
                         <div className="flex justify-between items-center">
-                            <h3 className="font-black text-slate-800">Selecione 15 Jogadores</h3>
-                            <span className={`text-sm font-bold ${selectedPlayerIds.length === 15 ? 'text-green-600' : 'text-slate-500'}`}>
-                                {selectedPlayerIds.length} / 15
+                            <h3 className="font-black text-slate-800">Selecione 15 ou 20 Jogadores</h3>
+                            <span className={`text-sm font-bold ${
+                                selectedPlayerIds.length === 15 || selectedPlayerIds.length === 20 ? 'text-green-600' : 'text-slate-500'
+                            }`}>
+                                {selectedPlayerIds.length} / {selectedPlayerIds.length >= 16 ? 20 : 15}
                             </span>
                         </div>
 
@@ -351,7 +354,7 @@ export default function SessionDetailsScreen() {
                     {isOpen && isAdmin && (
                         <Button
                             onClick={handleDrawTeams}
-                            disabled={selectedPlayerIds.length !== 15 || isDrawing}
+                            disabled={(selectedPlayerIds.length !== 15 && selectedPlayerIds.length !== 20) || isDrawing}
                             isLoading={isDrawing}
                             fullWidth
                             size="lg"
