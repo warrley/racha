@@ -38,7 +38,7 @@ export function Header({ title, subtitle, showBack = false, onBack, rightElement
                         ) : title
                     ) : (
                         <h1 className="text-xl font-black italic tracking-tighter text-primary leading-none mt-0.5">
-                            Super<span className="text-slate-800">Campeões</span>
+                            Metanol<span className="text-slate-800"> FC</span>
                         </h1>
                     )}
                     {subtitle && (
