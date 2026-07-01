@@ -73,7 +73,7 @@ export const executeDraw = async (sessionId: string, playerIds: string[]) => {
         select: { id: true, rating: true }
     });
 
-    if(players.length !== 15) throw new Error("Alguns jogadores não foram encontrados");
+    if(players.length !== playerIds.length) throw new Error("Alguns jogadores não foram encontrados");
 
     const drawnTeams = drawTeams(players);
 

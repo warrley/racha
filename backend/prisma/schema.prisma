@@ -4,8 +4,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // ──────────────────────────────────────────────
@@ -44,7 +45,7 @@ model User {
   name        String
   nickname    String?
   position    Position @default(MEIO)
-  rating      Int      @default(1000)
+  rating      Int      @default(0)
   avatarIndex Int      @default(0)
   isAdmin     Boolean  @default(false)
   createdAt   DateTime @default(now())

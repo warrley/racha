@@ -39,7 +39,7 @@ const swaggerSchemas = {
 const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
-    info: { title: "SuperCampeões API", version: "1.0.0", description: "API para gerenciamento dos racha do metanol fc" },
+    info: { title: "Metanol FC API", version: "1.0.0", description: "API para gerenciamento dos rachas do Metanol FC" },
     components: {
       securitySchemes: {
         bearerAuth: {

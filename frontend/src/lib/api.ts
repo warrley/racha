@@ -6,7 +6,7 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-    const { "supercampeoes.token": token } = parseCookies();
+    const { "metanol.token": token } = parseCookies();
 
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -20,7 +20,7 @@ api.interceptors.response.use(
     (error) => {
         if (error.response && error.response.status === 401) {
             import("nookies").then(({ destroyCookie }) => {
-                destroyCookie(undefined, "supercampeoes.token", { path: '/' });
+                destroyCookie(undefined, "metanol.token", { path: '/' });
             });
             if (typeof window !== "undefined" && window.location.pathname !== "/") {
                 window.location.href = "/";

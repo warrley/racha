@@ -36,7 +36,7 @@ const LoginScreen = () => {
                     toast.error(res.data.error);
                 } else {
                     toast.success('Login realizado com sucesso!');
-                    setCookie(undefined, 'supercampeoes.token', res.data.token, { maxAge: 24 * 7, path: '/' });
+                    setCookie(undefined, 'metanol.token', res.data.token, { maxAge: 60 * 60 * 24 * 7, path: '/' });
                     await refreshUser();
                     router.push('/home');
                 }
@@ -54,7 +54,7 @@ const LoginScreen = () => {
                     }
                 } else {
                     toast.success('Conta criada com sucesso!');
-                    setCookie(undefined, 'supercampeoes.token', res.data.token, { maxAge: 60 * 60 * 24 * 7, path: '/' });
+                    setCookie(undefined, 'metanol.token', res.data.token, { maxAge: 60 * 60 * 24 * 7, path: '/' });
                     await refreshUser();
                     router.push('/home');
                 }
@@ -74,9 +74,9 @@ const LoginScreen = () => {
                     <Star className="w-8 h-8 text-white fill-white" />
                 </div>
                 <h1 className="text-4xl font-bold tracking-tight mb-2">
-                    Super<span className="text-gold">Campeões</span>
+                    Metanol<span className="text-gold"> FC</span>
                 </h1>
-                <p className="text-white/80 text-sm font-medium">Gestão profissional para o futebol amador.</p>
+                <p className="text-white/80 text-sm font-medium">Gestão profissional dos rachas do Metanol FC.</p>
             </div>
 
             <div className="w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl overflow-hidden text-slate-900">
