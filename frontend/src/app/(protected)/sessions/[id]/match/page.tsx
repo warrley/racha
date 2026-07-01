@@ -23,27 +23,99 @@ export default function MatchScreen() {
     const [homeGoals, setHomeGoals] = useState<string[]>([]);
     const [awayGoals, setAwayGoals] = useState<string[]>([]);
 
-    const [seconds, setSeconds] = useState(7 * 60);
+    const [timeLeft, setTimeLeft] = useState(7 * 60 * 1000);
     const [timerActive, setTimerActive] = useState(false);
+    const [endTime, setEndTime] = useState<number | null>(null);
 
+    // Carregar do localStorage ao iniciar
+    useEffect(() => {
+        if (!sessionId) return;
+        const saved = localStorage.getItem(`timer_${sessionId}`);
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                if (parsed.timerActive && parsed.endTime) {
+                    const now = Date.now();
+                    if (now >= parsed.endTime) {
+                        setTimeLeft(0);
+                        setTimerActive(false);
+                        setEndTime(null);
+                    } else {
+                        setTimeLeft(parsed.endTime - now);
+                        setEndTime(parsed.endTime);
+                        setTimerActive(true);
+                    }
+                } else {
+                    setTimeLeft(parsed.timeLeft);
+                    setTimerActive(false);
+                    setEndTime(null);
+                }
+            } catch (e) {
+                console.error("Erro ao ler timer do localStorage", e);
+            }
+        }
+    }, [sessionId]);
+
+    // Salvar no localStorage sempre que mudar
+    useEffect(() => {
+        if (!sessionId) return;
+        if (timeLeft !== 7 * 60 * 1000 || timerActive) {
+            localStorage.setItem(`timer_${sessionId}`, JSON.stringify({
+                timeLeft,
+                endTime,
+                timerActive
+            }));
+        }
+    }, [timeLeft, endTime, timerActive, sessionId]);
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
-        if (timerActive) {
+        if (timerActive && endTime) {
             interval = setInterval(() => {
-                setSeconds(s => {
-                    if (s <= 1) {
-                        setTimerActive(false);
-                        return 0;
+                const now = Date.now();
+                const remaining = endTime - now;
+                
+                if (remaining <= 0) {
+                    setTimeLeft(0);
+                    setTimerActive(false);
+                    setEndTime(null);
+                    clearInterval(interval);
+                    
+                    // Vibra o celular (se suportado pelo navegador/OS)
+                    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+                        navigator.vibrate([500, 200, 500, 200, 1000]);
                     }
-                    return s - 1;
-                });
-            }, 1000);
+                } else {
+                    setTimeLeft(remaining);
+                }
+            }, 100); // 100ms para atualizar rápido quando voltar pro app
         }
         return () => clearInterval(interval);
-    }, [timerActive]);
+    }, [timerActive, endTime]);
 
-    const formatTime = (totalSeconds: number) => {
+    const toggleTimer = () => {
+        if (timerActive) {
+            // Pausar
+            setTimerActive(false);
+            setEndTime(null);
+        } else {
+            // Iniciar/Retomar
+            setTimerActive(true);
+            setEndTime(Date.now() + timeLeft);
+        }
+    };
+
+    const resetTimer = () => {
+        setTimerActive(false);
+        setEndTime(null);
+        setTimeLeft(7 * 60 * 1000);
+        if (sessionId) {
+            localStorage.removeItem(`timer_${sessionId}`);
+        }
+    };
+
+    const formatTime = (ms: number) => {
+        const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
         const m = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
         const s = (totalSeconds % 60).toString().padStart(2, '0');
         return `${m}:${s}`;
@@ -153,17 +225,17 @@ export default function MatchScreen() {
 
                     <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Tempo de Partida</span>
                     <div className="text-7xl font-black tracking-tighter tabular-nums drop-shadow-md">
-                        {formatTime(seconds)}
+                        {formatTime(timeLeft)}
                     </div>
                     <div className="flex items-center gap-4 mt-2 relative z-10">
                         <button
-                            onClick={() => setTimerActive(!timerActive)}
+                            onClick={toggleTimer}
                             className={`w-16 h-16 flex items-center justify-center rounded-full shadow-lg transition-all active:scale-95 ${timerActive ? 'bg-amber-500 text-white hover:bg-amber-600 shadow-amber-500/20' : 'bg-primary text-white hover:bg-primary-hover shadow-primary/20'}`}
                         >
                             {timerActive ? <Pause className="w-8 h-8 fill-current" /> : <Play className="w-8 h-8 fill-current ml-1" />}
                         </button>
                         <button
-                            onClick={() => { setTimerActive(false); setSeconds(7 * 60); }}
+                            onClick={resetTimer}
                             className="w-12 h-12 flex items-center justify-center rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all active:scale-95"
                         >
                             <RotateCcw className="w-5 h-5" />
