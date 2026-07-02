@@ -109,7 +109,7 @@ export const executeDraw = async (sessionId: string, playerIds: string[]) => {
         });
 
         return teams;
-    });
+    }, { timeout: 60000, maxWait: 10000 });
 
     return result;
 };
@@ -263,7 +263,7 @@ export const closeSession = async (sessionId: string) => {
                 topScorerPlayerId: topScorerId
             }
         });
-    });
+    }, { timeout: 60000, maxWait: 10000 });
 
     return await findSessionById(sessionId);
 };
