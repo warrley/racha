@@ -74,13 +74,13 @@ export default function MatchScreen() {
             interval = setInterval(() => {
                 const now = Date.now();
                 const remaining = endTime - now;
-                
+
                 if (remaining <= 0) {
                     setTimeLeft(0);
                     setTimerActive(false);
                     setEndTime(null);
                     clearInterval(interval);
-                    
+
                     // Vibra o celular (se suportado pelo navegador/OS)
                     if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
                         navigator.vibrate([500, 200, 500, 200, 1000]);
@@ -251,7 +251,7 @@ export default function MatchScreen() {
                                 value={homeTeamId}
                                 onChange={(e) => {
                                     setHomeTeamId(e.target.value);
-                                    setHomeGoals([]); 
+                                    setHomeGoals([]);
                                 }}
                                 className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold text-slate-800 outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                             >
@@ -272,7 +272,7 @@ export default function MatchScreen() {
                                 value={awayTeamId}
                                 onChange={(e) => {
                                     setAwayTeamId(e.target.value);
-                                    setAwayGoals([]); 
+                                    setAwayGoals([]);
                                 }}
                                 className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold text-slate-800 outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                             >
