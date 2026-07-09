@@ -12,16 +12,18 @@ import { useAuth } from '@/contexts/AuthContext';
 
 import { Player, Session } from '@/types';
 
+import { globalCache } from '@/lib/cache';
+
 export default function HomeScreen() {
     const router = useRouter();
     const { user, loading: authLoading } = useAuth();
     
-    const [loading, setLoading] = useState(true);
-    const [stats, setStats] = useState<Player | null>(null);
-    const [rank, setRank] = useState<number | null>(null);
-    const [targetPlayer, setTargetPlayer] = useState<Player | null>(null);
-    const [nextSession, setNextSession] = useState<Session | null>(null);
-    const [lastSession, setLastSession] = useState<Session | null>(null);
+    const [stats, setStats] = useState<Player | null>(globalCache.homeData?.stats || null);
+    const [rank, setRank] = useState<number | null>(globalCache.homeData?.rank || null);
+    const [targetPlayer, setTargetPlayer] = useState<Player | null>(globalCache.homeData?.targetPlayer || null);
+    const [nextSession, setNextSession] = useState<Session | null>(globalCache.homeData?.nextSession || null);
+    const [lastSession, setLastSession] = useState<Session | null>(globalCache.homeData?.lastSession || null);
+    const [loading, setLoading] = useState(!globalCache.homeData);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -29,30 +31,52 @@ export default function HomeScreen() {
                 if (!user) return;
                 const userId = user.id;
 
+                if (!globalCache.homeData) {
+                    setLoading(true);
+                }
+
                 const playerRes = await api.get(`/players/${userId}`);
-                setStats(playerRes.data.player);
+                const statsData = playerRes.data.player;
 
                 const rankingRes = await api.get(`/ranking?limit=100`);
                 const rankingList = rankingRes.data.ranking;
                 const positionIndex = rankingList.findIndex((p: Player) => p.id === userId);
-                setRank(positionIndex >= 0 ? positionIndex + 1 : null);
+                const rankData = positionIndex >= 0 ? positionIndex + 1 : null;
 
+                let targetPlayerData = null;
                 if (positionIndex > 0) {
-                    setTargetPlayer(rankingList[positionIndex - 1]);
+                    targetPlayerData = rankingList[positionIndex - 1];
                 }
 
                 const sessionRes = await api.get(`/sessions`);
                 const allSessions = sessionRes.data.sessions;
 
+                let nextSessionData = null;
                 const activeSessions = allSessions.filter((s: Session) => s.status !== 'FINISHED');
                 if (activeSessions.length > 0) {
-                    setNextSession(activeSessions[0]);
+                    nextSessionData = activeSessions[0];
                 }
 
+                let lastSessionData = null;
                 const finishedSessions = allSessions.filter((s: Session) => s.status === 'FINISHED');
                 if (finishedSessions.length > 0) {
-                    setLastSession(finishedSessions[0]);
+                    lastSessionData = finishedSessions[0];
                 }
+
+                const homeData = {
+                    stats: statsData,
+                    rank: rankData,
+                    targetPlayer: targetPlayerData,
+                    nextSession: nextSessionData,
+                    lastSession: lastSessionData
+                };
+
+                setStats(homeData.stats);
+                setRank(homeData.rank);
+                setTargetPlayer(homeData.targetPlayer);
+                setNextSession(homeData.nextSession);
+                setLastSession(homeData.lastSession);
+                globalCache.homeData = homeData;
 
             } catch (e) {
                 console.error(e);

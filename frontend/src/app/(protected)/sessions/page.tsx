@@ -14,12 +14,14 @@ import { Button } from '@/components/Button';
 import { Session } from '@/types';
 import { useAuth } from '@/contexts/AuthContext';
 
+import { globalCache } from '@/lib/cache';
+
 export default function SessionsListScreen() {
     const router = useRouter();
     const { isAdmin, loading: authLoading } = useAuth();
     const [activeTab, setActiveTab] = useState('active');
-    const [sessions, setSessions] = useState<Session[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [sessions, setSessions] = useState<Session[]>(globalCache.sessions || []);
+    const [loading, setLoading] = useState(!globalCache.sessions);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newSessionTitle, setNewSessionTitle] = useState('');
@@ -29,9 +31,13 @@ export default function SessionsListScreen() {
     useEffect(() => {
         const fetchSessions = async () => {
             try {
-                setLoading(true);
+                if (!globalCache.sessions) {
+                    setLoading(true);
+                }
                 const res = await api.get('/sessions?limit=50');
-                setSessions(res.data.sessions || []);
+                const fetched = res.data.sessions || [];
+                setSessions(fetched);
+                globalCache.sessions = fetched;
             } catch (err) {
                 console.error(err);
             } finally {

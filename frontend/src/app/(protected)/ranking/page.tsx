@@ -10,18 +10,26 @@ import { EmptyState } from '@/components/EmptyState';
 
 import { Player } from '@/types';
 
+import { globalCache } from '@/lib/cache';
+
 export default function RankingScreen() {
     const [activeTab, setActiveTab] = useState('rating');
-    const [players, setPlayers] = useState<Player[]>([]);
-    const [loading, setLoading] = useState(true);
+    const cachedData = activeTab === 'rating' ? globalCache.ranking : globalCache.topScorers;
+    const [players, setPlayers] = useState<Player[]>(cachedData || []);
+    const [loading, setLoading] = useState(!cachedData);
 
     useEffect(() => {
         const fetchRanking = async () => {
             try {
-                setLoading(true);
+                const currentCache = activeTab === 'rating' ? globalCache.ranking : globalCache.topScorers;
+                if (!currentCache) {
+                    setLoading(true);
+                }
                 if (activeTab === 'rating') {
                     const res = await api.get('/ranking');
-                    setPlayers(res.data.ranking || []);
+                    const data = res.data.ranking || [];
+                    setPlayers(data);
+                    globalCache.ranking = data;
                 } else {
                     const res = await api.get('/stats/top-scorers');
                     const scorers = res.data.topScorers || [];
@@ -35,6 +43,7 @@ export default function RankingScreen() {
                         isOnFire: false
                     }));
                     setPlayers(normalized);
+                    globalCache.topScorers = normalized;
                 }
             } catch (err) {
                 console.error(err);
