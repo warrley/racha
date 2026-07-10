@@ -194,67 +194,99 @@ export const closeSession = async (sessionId: string) => {
 
     // Transaction: atualizar ratings, badges e fechar sessão
     await prisma.$transaction(async (tx) => {
-        // Atualizar rating de cada jogador
-        for(const [playerId, stats] of Object.entries(playerStats)) {
-            const player = await tx.user.findUnique({ where: { id: playerId } });
-            if(!player) continue;
+        const playerIds = Object.keys(playerStats);
+
+        // 1. Atualizar ratings em paralelo (1 busca em lote + updates paralelos)
+        const players = await tx.user.findMany({
+            where: { id: { in: playerIds } }
+        });
+
+        await Promise.all(players.map(async (player) => {
+            const stats = playerStats[player.id];
+            if (!stats) return;
 
             const newRating = calculateNewRating({
                 currentRating: player.rating,
                 roundResults: stats.roundResults,
                 goalsScored: stats.goals,
-                isMvp: playerId === mvpId
+                isMvp: player.id === mvpId
             });
 
             await tx.user.update({
-                where: { id: playerId },
+                where: { id: player.id },
                 data: { rating: newRating }
             });
-        };
+        }));
 
-        // Criar badges de sessão
+        // 2. Criar badges da sessão
+        const sessionBadges = [];
         if(mvpId) {
-            await tx.badge.create({
+            sessionBadges.push(tx.badge.create({
                 data: { playerId: mvpId, type: "MVP", sessionId }
-            });
-        };
+            }));
+        }
         if(topScorerId && topScorerGoals > 0) {
-            await tx.badge.create({
+            sessionBadges.push(tx.badge.create({
                 data: { playerId: topScorerId, type: "ARTILHEIRO", sessionId }
-            });
-        };
+            }));
+        }
+        await Promise.all(sessionBadges);
 
-        // Badges de carreira: VETERANO (20+ sessões)
-        for(const p of allPlayers) {
-            const sessionCount = await tx.teamPlayer.count({
-                where: { playerId: p.playerId }
-            });
-            if(sessionCount >= 20) {
-                const alreadyHas = await tx.badge.findFirst({
-                    where: { playerId: p.playerId, type: "VETERANO" }
-                });
-                if(!alreadyHas) {
-                    await tx.badge.create({
-                        data: { playerId: p.playerId, type: "VETERANO" }
-                    });
-                };
-            };
+        // 3. Badges de carreira (VETERANO/GOLEADOR) usando consultas otimizadas
+        const [existingBadges, sessionCounts, totalGoalsCounts] = await Promise.all([
+            tx.badge.findMany({
+                where: {
+                    playerId: { in: playerIds },
+                    type: { in: ["VETERANO", "GOLEADOR"] }
+                }
+            }),
+            tx.teamPlayer.groupBy({
+                by: ['playerId'],
+                where: { playerId: { in: playerIds } },
+                _count: { playerId: true }
+            }),
+            tx.goal.groupBy({
+                by: ['playerId'],
+                where: { playerId: { in: playerIds } },
+                _count: { playerId: true }
+            })
+        ]);
 
-            // GOLEADOR (50+ gols total)
-            const totalGoals = await tx.goal.count({ where: { playerId: p.playerId } });
-            if(totalGoals >= 50) {
-                const alreadyHas = await tx.badge.findFirst({
-                    where: { playerId: p.playerId, type: "GOLEADOR" }
-                });
-                if(!alreadyHas) {
-                    await tx.badge.create({
-                        data: { playerId: p.playerId, type: "GOLEADOR" }
-                    });
-                };
-            };
-        };
+        const sessionCountMap: Record<string, number> = {};
+        for (const item of sessionCounts) {
+            sessionCountMap[item.playerId] = item._count.playerId;
+        }
 
-        // Fechar sessão
+        const totalGoalsMap: Record<string, number> = {};
+        for (const item of totalGoalsCounts) {
+            totalGoalsMap[item.playerId] = item._count.playerId;
+        }
+
+        const careerBadgesToCreate = [];
+
+        for (const p of allPlayers) {
+            const sCount = sessionCountMap[p.playerId] || 0;
+            const hasVeterano = existingBadges.some(b => b.playerId === p.playerId && b.type === "VETERANO");
+            if (sCount >= 20 && !hasVeterano) {
+                careerBadgesToCreate.push(tx.badge.create({
+                    data: { playerId: p.playerId, type: "VETERANO" }
+                }));
+            }
+
+            const tGoals = totalGoalsMap[p.playerId] || 0;
+            const hasGoleador = existingBadges.some(b => b.playerId === p.playerId && b.type === "GOLEADOR");
+            if (tGoals >= 50 && !hasGoleador) {
+                careerBadgesToCreate.push(tx.badge.create({
+                    data: { playerId: p.playerId, type: "GOLEADOR" }
+                }));
+            }
+        }
+
+        if (careerBadgesToCreate.length > 0) {
+            await Promise.all(careerBadgesToCreate);
+        }
+
+        // 4. Fechar sessão
         await tx.session.update({
             where: { id: sessionId },
             data: {
