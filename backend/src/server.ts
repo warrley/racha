@@ -19,10 +19,10 @@ const swaggerSchemas = {
     type: "object",
     required: ["name", "email", "password"],
     properties: {
-      name: { type: "string", example: "João" },
-      email: { type: "string", example: "joao@email.com" },
+      name: { type: "string", example: "Guilherme" },
+      email: { type: "string", example: "guilherme@email.com" },
       password: { type: "string", example: "123456" },
-      nickname: { type: "string", example: "Neymar do Bairro" },
+      nickname: { type: "string", example: "Gui" },
       position: { type: "string", enum: ["ZAGUEIRO", "MEIO", "ATACANTE"], example: "ATACANTE" },
     },
   },
@@ -30,7 +30,7 @@ const swaggerSchemas = {
     type: "object",
     required: ["email", "password"],
     properties: {
-      email: { type: "string", example: "joao@email.com" },
+      email: { type: "string", example: "guilherme@email.com" },
       password: { type: "string", example: "123456" },
     },
   },
@@ -56,7 +56,7 @@ const swaggerOptions = {
 };
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions as any);
-server.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+server.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 server.use("/", mainRouter);
 
