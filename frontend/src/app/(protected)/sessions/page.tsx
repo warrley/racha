@@ -169,8 +169,6 @@ export default function SessionsListScreen() {
                         >
                             <option value={15}>15 Jogadores (3 times)</option>
                             <option value={20}>20 Jogadores (4 times)</option>
-                            <option value={25}>25 Jogadores (5 times)</option>
-                            <option value={10}>10 Jogadores (2 times)</option>
                         </select>
                     </div>
 

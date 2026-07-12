@@ -8,6 +8,7 @@ import { Modal } from '@/components/Modal';
 import { Button } from '@/components/Button';
 import { Session, Team, Round, TeamPlayer } from '@/types';
 import { Header } from '@/components/Header';
+import { getHexColor } from '@/lib/colors';
 
 export default function MatchScreen() {
     const router = useRouter();
@@ -148,16 +149,6 @@ export default function MatchScreen() {
 
     const homeTeam = teams.find((t: Team) => t.id === homeTeamId);
     const awayTeam = teams.find((t: Team) => t.id === awayTeamId);
-
-    const getHexColor = (colorStr: string) => {
-        if (!colorStr) return '#1E293B';
-        if (colorStr.startsWith('#')) return colorStr;
-        if (colorStr.includes('red')) return '#DC2626';
-        if (colorStr.includes('amber') || colorStr.includes('yellow')) return '#EAB308';
-        if (colorStr.includes('blue')) return '#2563EB';
-        if (colorStr.includes('green')) return '#16A34A';
-        return '#1E293B';
-    };
 
     const addHomeGoal = (playerId: string) => setHomeGoals([...homeGoals, playerId]);
     const removeHomeGoal = (playerId: string) => {

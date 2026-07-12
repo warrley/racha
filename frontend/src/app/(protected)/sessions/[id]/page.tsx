@@ -7,6 +7,7 @@ import { ChevronDown, CheckCircle2, Circle, Trophy, Goal, Play, Shuffle, Calenda
 import { Button } from '@/components/Button';
 import { UserAvatar } from '@/components/UserAvatar';
 import { Header } from '@/components/Header';
+import { getHexColor } from '@/lib/colors';
 
 import { Session, Team, Round, TeamPlayer, Player, Goal as GoalType } from '@/types';
 import { useAuth } from '@/contexts/AuthContext';
@@ -408,15 +409,6 @@ export default function SessionDetailsScreen() {
                 ) : (
                     <section className="space-y-4">
                         {session.teams?.map((team: Team) => {
-                            const getHexColor = (colorStr: string) => {
-                                if (!colorStr) return '#1E293B';
-                                if (colorStr.startsWith('#')) return colorStr;
-                                if (colorStr.includes('red')) return '#DC2626';
-                                if (colorStr.includes('amber') || colorStr.includes('yellow')) return '#EAB308';
-                                if (colorStr.includes('blue')) return '#2563EB';
-                                if (colorStr.includes('green')) return '#16A34A';
-                                return '#1E293B';
-                            };
                             return (
                                 <div key={team.id} className="bg-white rounded-3xl shadow-sm border-l-8 overflow-hidden transition-all duration-300" style={{ borderLeftColor: getHexColor(team.color) }}>
                                     <button
