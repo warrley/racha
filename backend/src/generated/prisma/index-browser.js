@@ -138,6 +138,7 @@ exports.Prisma.SessionScalarFieldEnum = {
   createdById: 'createdById',
   mvpPlayerId: 'mvpPlayerId',
   topScorerPlayerId: 'topScorerPlayerId',
+  maxPlayers: 'maxPlayers',
   createdAt: 'createdAt'
 };
 
@@ -183,6 +184,14 @@ exports.Prisma.BadgeScalarFieldEnum = {
   earnedAt: 'earnedAt'
 };
 
+exports.Prisma.SessionParticipantScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  userId: 'userId',
+  status: 'status',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -218,6 +227,11 @@ exports.BadgeType = exports.$Enums.BadgeType = {
   GOLEADOR: 'GOLEADOR'
 };
 
+exports.ParticipantStatus = exports.$Enums.ParticipantStatus = {
+  CONFIRMED: 'CONFIRMED',
+  WAITING_LIST: 'WAITING_LIST'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
@@ -225,7 +239,8 @@ exports.Prisma.ModelName = {
   TeamPlayer: 'TeamPlayer',
   Round: 'Round',
   Goal: 'Goal',
-  Badge: 'Badge'
+  Badge: 'Badge',
+  SessionParticipant: 'SessionParticipant'
 };
 
 /**

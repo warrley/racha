@@ -232,6 +232,101 @@ mainRouter.post("/sessions/:id/start", privateRoute, sessionController.start);
  */
 mainRouter.post("/sessions/:id/close", privateRoute, sessionController.close);
 
+/**
+ * @openapi
+ * /sessions/{id}/join:
+ *   post:
+ *     summary: Confirmar presença do próprio jogador (auto-inscrição)
+ *     tags: [Sessions]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Presença confirmada
+ */
+mainRouter.post("/sessions/:id/join", privateRoute, sessionController.join);
+
+/**
+ * @openapi
+ * /sessions/{id}/leave:
+ *   post:
+ *     summary: Cancelar presença do próprio jogador (auto-cancelamento)
+ *     tags: [Sessions]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Presença cancelada
+ */
+mainRouter.post("/sessions/:id/leave", privateRoute, sessionController.leave);
+
+/**
+ * @openapi
+ * /sessions/{id}/participants/manual:
+ *   post:
+ *     summary: Adicionar qualquer jogador manualmente (admin)
+ *     tags: [Sessions]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [userId]
+ *             properties:
+ *               userId:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Jogador adicionado
+ */
+mainRouter.post("/sessions/:id/participants/manual", privateRoute, sessionController.addManual);
+
+/**
+ * @openapi
+ * /sessions/{id}/participants/manual/{userId}:
+ *   delete:
+ *     summary: Remover qualquer participante manualmente (admin)
+ *     tags: [Sessions]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Participante removido
+ */
+mainRouter.delete("/sessions/:id/participants/manual/:userId", privateRoute, sessionController.removeManual);
+
 // ──────────────────────────────────────────────
 // Rounds (qualquer jogador logado pode registrar)
 // ──────────────────────────────────────────────

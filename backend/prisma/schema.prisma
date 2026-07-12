@@ -57,6 +57,7 @@ model User {
   createdSessions  Session[]    @relation("SessionCreator")
   mvpSessions      Session[]    @relation("SessionMvp")
   topScorerSessions Session[]   @relation("SessionTopScorer")
+  sessionParticipants SessionParticipant[]
 
   @@map("users")
 }
@@ -69,6 +70,7 @@ model Session {
   createdById        String
   mvpPlayerId        String?
   topScorerPlayerId  String?
+  maxPlayers         Int           @default(15)
   createdAt          DateTime      @default(now())
 
   // Relações
@@ -78,6 +80,7 @@ model Session {
   teams          Team[]
   rounds         Round[]
   badges         Badge[]
+  participants   SessionParticipant[]
 
   @@map("sessions")
 }
@@ -159,4 +162,28 @@ model Badge {
   session Session? @relation(fields: [sessionId], references: [id])
 
   @@map("badges")
+}
+
+// ──────────────────────────────────────────────
+// PARTICIPAÇÃO E FILA DE ESPERA (REQ 2.2)
+// ──────────────────────────────────────────────
+
+enum ParticipantStatus {
+  CONFIRMED
+  WAITING_LIST
+}
+
+model SessionParticipant {
+  id        String            @id @default(uuid())
+  sessionId String
+  userId    String
+  status    ParticipantStatus @default(CONFIRMED)
+  createdAt DateTime          @default(now())
+
+  // Relações
+  session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, userId])
+  @@map("session_participants")
 }

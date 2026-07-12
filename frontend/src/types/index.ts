@@ -64,20 +64,31 @@ export interface Round {
     goals?: Goal[];
 }
 
+export interface SessionParticipant {
+    id: string;
+    sessionId: string;
+    userId: string;
+    status: 'CONFIRMED' | 'WAITING_LIST';
+    createdAt: string;
+    user?: Player;
+}
+
 export interface Session {
     id: string;
     title: string | null;
     date: string;
     status: 'OPEN' | 'IN_PROGRESS' | 'FINISHED';
+    maxPlayers: number;
     createdById: string;
     mvpPlayerId: string | null;
     topScorerPlayerId: string | null;
-    
+
     createdBy?: Player;
     mvpPlayer?: Player;
     topScorerPlayer?: Player;
     teams?: Team[];
     rounds?: Round[];
+    participants?: SessionParticipant[];
     _count?: {
         rounds?: number;
     };

@@ -2,12 +2,13 @@ import { prisma } from "../utils/prisma";
 import { drawTeams } from "../utils/draw";
 import { calculateNewRating } from "../utils/elo";
 
-export const createSession = async (createdById: string, title: string | undefined, date: string) => {
+export const createSession = async (createdById: string, title: string | undefined, date: string, maxPlayers?: number) => {
     return await prisma.session.create({
         data: {
             title,
             date: new Date(date),
-            createdById
+            createdById,
+            maxPlayers
         }
     });
 };
@@ -19,6 +20,12 @@ export const findSessionById = async (id: string) => {
             createdBy: { select: { id: true, name: true, nickname: true } },
             mvpPlayer: { select: { id: true, name: true, nickname: true } },
             topScorerPlayer: { select: { id: true, name: true, nickname: true } },
+            participants: {
+                include: {
+                    user: { select: { id: true, name: true, nickname: true, position: true, rating: true, avatarIndex: true } }
+                },
+                orderBy: { createdAt: "asc" }
+            },
             teams: {
                 include: {
                     players: {
@@ -63,17 +70,33 @@ export const findAllSessions = async (page: number, limit: number) => {
     });
 };
 
-export const executeDraw = async (sessionId: string, playerIds: string[]) => {
+export const executeDraw = async (sessionId: string, playerIds?: string[]) => {
     const session = await prisma.session.findUnique({ where: { id: sessionId } });
     if(!session) throw new Error("Sessão não encontrada");
     if(session.status !== "OPEN") throw new Error("Sessão já foi sorteada ou finalizada");
 
+    let finalPlayerIds = playerIds;
+    if (!finalPlayerIds || finalPlayerIds.length === 0) {
+        const confirmedParticipants = await prisma.sessionParticipant.findMany({
+            where: { sessionId, status: "CONFIRMED" },
+            select: { userId: true }
+        });
+        finalPlayerIds = confirmedParticipants.map(cp => cp.userId);
+    }
+
+    // Garantir IDs únicos (prevenir tentativas de fraude/duplicações no balanceamento)
+    finalPlayerIds = Array.from(new Set(finalPlayerIds));
+
+    if (finalPlayerIds.length !== 15 && finalPlayerIds.length !== 20) {
+        throw new Error("O sorteio exige exatamente 15 (3 times) ou 20 (4 times) jogadores confirmados");
+    }
+
     const players = await prisma.user.findMany({
-        where: { id: { in: playerIds } },
+        where: { id: { in: finalPlayerIds } },
         select: { id: true, rating: true }
     });
 
-    if(players.length !== playerIds.length) throw new Error("Alguns jogadores não foram encontrados");
+    if(players.length !== finalPlayerIds.length) throw new Error("Alguns jogadores não foram encontrados");
 
     const drawnTeams = drawTeams(players);
 
@@ -298,4 +321,94 @@ export const closeSession = async (sessionId: string) => {
     }, { timeout: 60000, maxWait: 10000 });
 
     return await findSessionById(sessionId);
+};
+
+export const joinSession = async (sessionId: string, userId: string) => {
+    const session = await prisma.session.findUnique({
+        where: { id: sessionId }
+    });
+    if (!session) throw new Error("Sessão não encontrada");
+    if (session.status !== "OPEN") throw new Error("Sessão não está aberta para confirmações");
+
+    // Garantia de segurança: Verificar se o jogador realmente existe
+    const userExists = await prisma.user.findUnique({
+        where: { id: userId }
+    });
+    if (!userExists) throw new Error("Jogador não encontrado");
+
+    // Verificar se já está inscrito
+    const existing = await prisma.sessionParticipant.findUnique({
+        where: {
+            sessionId_userId: { sessionId, userId }
+        }
+    });
+    if (existing) throw new Error("Jogador já está inscrito neste racha");
+
+    return await prisma.$transaction(async (tx) => {
+        const confirmedCount = await tx.sessionParticipant.count({
+            where: {
+                sessionId,
+                status: "CONFIRMED"
+            }
+        });
+
+        const status = confirmedCount < session.maxPlayers ? "CONFIRMED" : "WAITING_LIST";
+
+        return await tx.sessionParticipant.create({
+            data: {
+                sessionId,
+                userId,
+                status
+            },
+            include: {
+                user: { select: { id: true, name: true, nickname: true, position: true, rating: true, avatarIndex: true } }
+            }
+        });
+    }, { timeout: 10000 });
+};
+
+export const leaveSession = async (sessionId: string, userId: string) => {
+    const session = await prisma.session.findUnique({
+        where: { id: sessionId }
+    });
+    if (!session) throw new Error("Sessão não encontrada");
+    if (session.status !== "OPEN") throw new Error("Sessão já foi iniciada ou finalizada");
+
+    const participant = await prisma.sessionParticipant.findUnique({
+        where: {
+            sessionId_userId: { sessionId, userId }
+        }
+    });
+    if (!participant) throw new Error("Jogador não está inscrito neste racha");
+
+    await prisma.$transaction(async (tx) => {
+        // Excluir participação
+        await tx.sessionParticipant.delete({
+            where: {
+                sessionId_userId: { sessionId, userId }
+            }
+        });
+
+        // Se o que saiu era CONFIRMED, promover o mais antigo da WAITING_LIST
+        if (participant.status === "CONFIRMED") {
+            const nextInLine = await tx.sessionParticipant.findFirst({
+                where: {
+                    sessionId,
+                    status: "WAITING_LIST"
+                },
+                orderBy: {
+                    createdAt: "asc"
+                }
+            });
+
+            if (nextInLine) {
+                await tx.sessionParticipant.update({
+                    where: { id: nextInLine.id },
+                    data: { status: "CONFIRMED" }
+                });
+            }
+        }
+    }, { timeout: 10000 });
+
+    return { success: true };
 };

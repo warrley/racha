@@ -26,6 +26,7 @@ export default function SessionsListScreen() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newSessionTitle, setNewSessionTitle] = useState('');
     const [newSessionDate, setNewSessionDate] = useState('');
+    const [newSessionMaxPlayers, setNewSessionMaxPlayers] = useState(15);
     const [isCreating, setIsCreating] = useState(false);
 
     useEffect(() => {
@@ -74,7 +75,8 @@ export default function SessionsListScreen() {
             setIsCreating(true);
             const res = await api.post('/sessions', {
                 title: newSessionTitle,
-                date: new Date(newSessionDate).toISOString()
+                date: new Date(newSessionDate).toISOString(),
+                maxPlayers: Number(newSessionMaxPlayers)
             });
             setIsModalOpen(false);
             router.push(`/sessions/${res.data.session.id}`);
@@ -158,6 +160,19 @@ export default function SessionsListScreen() {
                         onChange={e => setNewSessionDate(e.target.value)}
                         required
                     />
+                    <div className="flex flex-col gap-1.5">
+                        <label className="text-sm font-semibold text-slate-700">Limite de Jogadores</label>
+                        <select
+                            value={newSessionMaxPlayers}
+                            onChange={e => setNewSessionMaxPlayers(Number(e.target.value))}
+                            className="bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold text-slate-800 outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                        >
+                            <option value={15}>15 Jogadores (3 times)</option>
+                            <option value={20}>20 Jogadores (4 times)</option>
+                            <option value={25}>25 Jogadores (5 times)</option>
+                            <option value={10}>10 Jogadores (2 times)</option>
+                        </select>
+                    </div>
 
                     <div className="pt-2">
                         <Button

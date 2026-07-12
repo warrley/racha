@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/api';
 import { useRouter, useParams } from 'next/navigation';
-import { ChevronDown, CheckCircle2, Circle, Trophy, Goal, Play, Shuffle, CalendarDays, History, MapPin, Trash2, StopCircle } from 'lucide-react';
+import { ChevronDown, CheckCircle2, Circle, Trophy, Goal, Play, Shuffle, CalendarDays, History, MapPin, Trash2, StopCircle, UserPlus, Users, Clock, Plus, X } from 'lucide-react';
 import { Button } from '@/components/Button';
 import { UserAvatar } from '@/components/UserAvatar';
 import { Header } from '@/components/Header';
@@ -15,73 +15,123 @@ export default function SessionDetailsScreen() {
     const router = useRouter();
     const params = useParams();
     const sessionId = params.id as string;
-    const { isAdmin, loading: authLoading } = useAuth();
+    const { user, isAdmin, loading: authLoading } = useAuth();
 
     const [session, setSession] = useState<Session | null>(null);
     const [loading, setLoading] = useState(true);
+    const [actionLoading, setActionLoading] = useState(false);
     const [expandedTeams, setExpandedTeams] = useState<Record<string, boolean>>({});
 
     const [allPlayers, setAllPlayers] = useState<Player[]>([]);
-    const [selectedPlayerIds, setSelectedPlayerIds] = useState<string[]>([]);
+    const [selectedAdminAddUserId, setSelectedAdminAddUserId] = useState('');
     const [isDrawing, setIsDrawing] = useState(false);
 
+    const fetchSessionData = async () => {
+        try {
+            const res = await api.get(`/sessions/${sessionId}`);
+            const sess = res.data.session;
+            setSession(sess);
+
+            if (sess.status === 'OPEN') {
+                const pRes = await api.get('/players');
+                setAllPlayers(pRes.data.players || []);
+            } else if (sess.teams) {
+                const exp: Record<string, boolean> = {};
+                sess.teams.forEach((t: Team) => exp[t.id] = true);
+                setExpandedTeams(exp);
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
+        const initData = async () => {
+            if (sessionId && !authLoading) {
                 setLoading(true);
-                const res = await api.get(`/sessions/${sessionId}`);
-                const sess = res.data.session;
-                setSession(sess);
-
-                if (sess.status === 'OPEN') {
-                    const pRes = await api.get('/players');
-                    setAllPlayers(pRes.data.players || []);
-                } else if (sess.teams) {
-                    const exp: Record<string, boolean> = {};
-                    sess.teams.forEach((t: Team) => exp[t.id] = true);
-                    setExpandedTeams(exp);
-                }
-
-            } catch (err) {
-                console.error(err);
-            } finally {
+                await fetchSessionData();
                 setLoading(false);
             }
         };
-
-        if (sessionId && !authLoading) {
-            fetchData();
-        }
+        initData();
     }, [sessionId, authLoading]);
 
     const toggleTeam = (teamId: string) => {
         setExpandedTeams(prev => ({ ...prev, [teamId]: !prev[teamId] }));
     };
 
-    const handleTogglePlayer = (id: string) => {
-        setSelectedPlayerIds(prev =>
-            prev.includes(id) ? prev.filter(pId => pId !== id) : [...prev, id]
-        );
+    const handleJoinSession = async () => {
+        if (!user) return;
+        try {
+            setActionLoading(true);
+            await api.post(`/sessions/${sessionId}/join`);
+            await fetchSessionData();
+        } catch (e: any) {
+            console.error(e);
+            alert(e.response?.data?.error || "Erro ao confirmar presença.");
+        } finally {
+            setActionLoading(false);
+        }
+    };
+
+    const handleLeaveSession = async () => {
+        if (!user) return;
+        try {
+            setActionLoading(true);
+            await api.post(`/sessions/${sessionId}/leave`);
+            await fetchSessionData();
+        } catch (e: any) {
+            console.error(e);
+            alert(e.response?.data?.error || "Erro ao cancelar presença.");
+        } finally {
+            setActionLoading(false);
+        }
+    };
+
+    const handleAddPlayerManual = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!selectedAdminAddUserId) return;
+        try {
+            setActionLoading(true);
+            await api.post(`/sessions/${sessionId}/participants/manual`, { userId: selectedAdminAddUserId });
+            setSelectedAdminAddUserId('');
+            await fetchSessionData();
+        } catch (e: any) {
+            console.error(e);
+            alert(e.response?.data?.error || "Erro ao adicionar jogador.");
+        } finally {
+            setActionLoading(false);
+        }
+    };
+
+    const handleRemovePlayerManual = async (pUserId: string) => {
+        if (confirm("Remover este jogador do racha?")) {
+            try {
+                setActionLoading(true);
+                await api.delete(`/sessions/${sessionId}/participants/manual/${pUserId}`);
+                await fetchSessionData();
+            } catch (e: any) {
+                console.error(e);
+                alert(e.response?.data?.error || "Erro ao remover jogador.");
+            } finally {
+                setActionLoading(false);
+            }
+        }
     };
 
     const handleDrawTeams = async () => {
-        const count = selectedPlayerIds.length;
-        if (count !== 15 && count !== 20) {
-            alert("Selecione exatamente 15 (3 times) ou 20 (4 times) jogadores para o sorteio!");
+        const confirmedCount = session?.participants?.filter(p => p.status === 'CONFIRMED').length || 0;
+        if (confirmedCount !== 15 && confirmedCount !== 20) {
+            alert(`O sorteio exige exatamente 15 ou 20 confirmados. Atualmente existem ${confirmedCount} confirmados.`);
             return;
         }
         try {
             setIsDrawing(true);
-            await api.post(`/sessions/${sessionId}/draw`, { playerIds: selectedPlayerIds });
-            const res = await api.get(`/sessions/${sessionId}`);
-            const sess = res.data.session;
-            setSession(sess);
-            const exp: Record<string, boolean> = {};
-            sess.teams.forEach((t: Team) => exp[t.id] = true);
-            setExpandedTeams(exp);
-        } catch (e) {
+            await api.post(`/sessions/${sessionId}/draw`);
+            await fetchSessionData();
+        } catch (e: any) {
             console.error(e);
-            alert("Erro ao sortear times.");
+            alert(e.response?.data?.error || "Erro ao sortear times.");
         } finally {
             setIsDrawing(false);
         }
@@ -91,8 +141,7 @@ export default function SessionDetailsScreen() {
         if (confirm("Tem certeza que deseja finalizar o racha? Isso irá calcular os pontos e encerrar as partidas.")) {
             try {
                 await api.post(`/sessions/${sessionId}/close`);
-                const res = await api.get(`/sessions/${sessionId}`);
-                setSession(res.data.session);
+                await fetchSessionData();
             } catch (e) {
                 console.error(e);
                 alert("Erro ao fechar racha.");
@@ -104,8 +153,7 @@ export default function SessionDetailsScreen() {
         if (confirm("Deseja realmente excluir esta partida do histórico? (Você poderá registrar novamente os gols)")) {
             try {
                 await api.delete(`/sessions/${sessionId}/rounds/${roundId}`);
-                const res = await api.get(`/sessions/${sessionId}`);
-                setSession(res.data.session);
+                await fetchSessionData();
             } catch (e) {
                 console.error(e);
                 alert("Erro ao excluir a partida.");
@@ -124,6 +172,7 @@ export default function SessionDetailsScreen() {
     const isFinished = session.status === 'FINISHED';
     const isInProgress = session.status === 'IN_PROGRESS';
     const isOpen = session.status === 'OPEN';
+    const confirmedCount = session.participants?.filter(p => p.status === 'CONFIRMED').length || 0;
 
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900 pb-40">
@@ -174,41 +223,186 @@ export default function SessionDetailsScreen() {
                 </section>
 
                 {isOpen ? (
-                    <section className="space-y-4">
-                        <div className="flex justify-between items-center">
-                            <h3 className="font-black text-slate-800">Selecione 15 ou 20 Jogadores</h3>
-                            <span className={`text-sm font-bold ${
-                                selectedPlayerIds.length === 15 || selectedPlayerIds.length === 20 ? 'text-green-600' : 'text-slate-500'
-                            }`}>
-                                {selectedPlayerIds.length} / {selectedPlayerIds.length >= 16 ? 20 : 15}
-                            </span>
+                    <section className="space-y-6">
+                        <div className="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 flex flex-col gap-4">
+                            <div className="flex justify-between items-center">
+                                <div>
+                                    <h4 className="font-black text-slate-800 text-sm">Seu Status de Presença</h4>
+                                    <p className="text-xs text-slate-400 font-bold">Confirme presença para entrar na lista de jogadores.</p>
+                                </div>
+                                {session.participants?.find(p => p.userId === user?.id) ? (
+                                    session.participants?.find(p => p.userId === user?.id)?.status === 'CONFIRMED' ? (
+                                        <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-green-50 text-green-600 border border-green-200">Confirmado</span>
+                                    ) : (
+                                        <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-50 text-amber-600 border border-amber-200">Fila de Espera</span>
+                                    )
+                                ) : (
+                                    <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-slate-100 text-slate-400 border border-slate-200">Ausente</span>
+                                )}
+                            </div>
+
+                            {session.participants?.find(p => p.userId === user?.id) ? (
+                                <Button
+                                    onClick={handleLeaveSession}
+                                    variant="danger-outline"
+                                    isLoading={actionLoading}
+                                    fullWidth
+                                    icon={X}
+                                >
+                                    Cancelar Minha Presença
+                                </Button>
+                            ) : (
+                                <Button
+                                    onClick={handleJoinSession}
+                                    isLoading={actionLoading}
+                                    fullWidth
+                                    icon={Plus}
+                                >
+                                    Confirmar Minha Presença
+                                </Button>
+                            )}
                         </div>
 
-                        <div className="space-y-2">
-                            {allPlayers.map((player: Player) => {
-                                const isSelected = selectedPlayerIds.includes(player.id);
-                                return (
-                                    <div
-                                        key={player.id}
-                                        onClick={() => handleTogglePlayer(player.id)}
-                                        className={`flex items-center justify-between p-4 rounded-2xl border transition-all cursor-pointer ${isSelected ? 'bg-primary/5 border-primary shadow-sm' : 'bg-white border-slate-100 hover:bg-slate-50'}`}
+                        {isAdmin && (
+                            <form onSubmit={handleAddPlayerManual} className="bg-slate-900 p-5 rounded-3xl shadow-xl text-white flex flex-col gap-3">
+                                <div>
+                                    <h4 className="font-black text-sm flex items-center gap-2"><UserPlus className="w-4 h-4 text-primary" /> Adicionar Jogador (Admin)</h4>
+                                    <p className="text-[10px] text-slate-400 font-bold">Inscreva qualquer jogador cadastrado neste racha.</p>
+                                </div>
+                                <div className="flex gap-2">
+                                    <select
+                                        value={selectedAdminAddUserId}
+                                        onChange={e => setSelectedAdminAddUserId(e.target.value)}
+                                        className="flex-1 bg-slate-800 border border-slate-700 rounded-xl p-3 font-bold text-white text-sm outline-none focus:border-primary"
                                     >
-                                        <div className="flex items-center gap-3">
-                                            {isSelected ? <CheckCircle2 className="w-5 h-5 text-primary" /> : <Circle className="w-5 h-5 text-slate-300" />}
-                                            <div className="w-10 h-10 rounded-full border-2 border-slate-100 shrink-0 relative overflow-hidden bg-slate-100">
-                                                <UserAvatar nickname={player.nickname} className="w-full h-full text-base" />
-                                            </div>
-                                            <div>
-                                                <p className="font-black text-slate-800 text-sm">{player.nickname}</p>
-                                                <p className="text-[10px] font-bold text-slate-400 uppercase">{player.position}</p>
-                                            </div>
+                                        <option value="">Selecione um jogador...</option>
+                                        {allPlayers
+                                            .filter(p => !session.participants?.some(part => part.userId === p.id))
+                                            .map(p => (
+                                                <option key={p.id} value={p.id}>{p.nickname || p.name}</option>
+                                            ))
+                                        }
+                                    </select>
+                                    <button
+                                        type="submit"
+                                        disabled={!selectedAdminAddUserId || actionLoading}
+                                        className="bg-primary text-white font-black text-xs px-4 rounded-xl hover:bg-primary-hover active:scale-95 transition-all disabled:opacity-50 h-[46px]"
+                                    >
+                                        Adicionar
+                                    </button>
+                                </div>
+                            </form>
+                        )}
+
+                        <div className="space-y-6">
+                            <div className="space-y-3">
+                                <div className="flex justify-between items-center px-1">
+                                    <h3 className="font-black text-slate-800 text-sm flex items-center gap-2">
+                                        <Users className="w-4 h-4 text-slate-400" /> Jogadores Confirmados
+                                    </h3>
+                                    <span className="bg-slate-200 text-slate-600 text-[10px] font-black px-2.5 py-1 rounded-full border border-slate-300">
+                                        {confirmedCount} / {session.maxPlayers}
+                                    </span>
+                                </div>
+
+                                <div className="space-y-2">
+                                    {session.participants?.filter(p => p.status === 'CONFIRMED').length === 0 ? (
+                                        <div className="text-center py-6 text-xs text-slate-400 font-bold bg-white rounded-2xl border border-slate-100">
+                                            Nenhum jogador confirmado ainda.
                                         </div>
-                                        <div className="bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100 font-black text-slate-500 text-[10px]">
-                                            {player.rating} Pts
+                                    ) : (
+                                        session.participants?.filter(p => p.status === 'CONFIRMED').map(p => {
+                                            const player = p.user;
+                                            if (!player) return null;
+                                            return (
+                                                <div
+                                                    key={p.id}
+                                                    className="flex items-center justify-between p-4 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-all"
+                                                >
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="w-10 h-10 rounded-full border-2 border-slate-100 shrink-0 relative overflow-hidden bg-slate-100">
+                                                            <UserAvatar nickname={player.nickname || player.name} className="w-full h-full text-base" />
+                                                        </div>
+                                                        <div>
+                                                            <p className="font-black text-slate-800 text-sm">{player.nickname || player.name}</p>
+                                                            <p className="text-[10px] font-bold text-slate-400 uppercase">{player.position}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100 font-black text-slate-500 text-[10px]">
+                                                            {player.rating} Pts
+                                                        </div>
+                                                        {isAdmin && (
+                                                            <button
+                                                                onClick={() => handleRemovePlayerManual(player.id)}
+                                                                disabled={actionLoading}
+                                                                className="text-red-500 hover:bg-red-50 p-2 rounded-lg transition-all"
+                                                            >
+                                                                <Trash2 className="w-4 h-4" />
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            );
+                                        })
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="space-y-3">
+                                <div className="flex justify-between items-center px-1">
+                                    <h3 className="font-black text-slate-800 text-sm flex items-center gap-2">
+                                        <Clock className="w-4 h-4 text-slate-400" /> Fila de Espera (Suplentes)
+                                    </h3>
+                                    <span className="bg-slate-200 text-slate-600 text-[10px] font-black px-2.5 py-1 rounded-full border border-slate-300">
+                                        {session.participants?.filter(p => p.status === 'WAITING_LIST').length || 0}
+                                    </span>
+                                </div>
+
+                                <div className="space-y-2">
+                                    {session.participants?.filter(p => p.status === 'WAITING_LIST').length === 0 ? (
+                                        <div className="text-center py-6 text-xs text-slate-400 font-bold bg-white rounded-2xl border border-slate-100">
+                                            Nenhum jogador na fila de espera.
                                         </div>
-                                    </div>
-                                );
-                            })}
+                                    ) : (
+                                        session.participants?.filter(p => p.status === 'WAITING_LIST').map((p, index) => {
+                                            const player = p.user;
+                                            if (!player) return null;
+                                            return (
+                                                <div
+                                                    key={p.id}
+                                                    className="flex items-center justify-between p-4 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-all border-l-4 border-l-amber-400"
+                                                >
+                                                    <div className="flex items-center gap-3">
+                                                        <span className="text-xs font-black text-amber-500 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-100">#{index + 1}</span>
+                                                        <div className="w-10 h-10 rounded-full border-2 border-slate-100 shrink-0 relative overflow-hidden bg-slate-100">
+                                                            <UserAvatar nickname={player.nickname || player.name} className="w-full h-full text-base" />
+                                                        </div>
+                                                        <div>
+                                                            <p className="font-black text-slate-800 text-sm">{player.nickname || player.name}</p>
+                                                            <p className="text-[10px] font-bold text-slate-400 uppercase">{player.position}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100 font-black text-slate-500 text-[10px]">
+                                                            {player.rating} Pts
+                                                        </div>
+                                                        {isAdmin && (
+                                                            <button
+                                                                onClick={() => handleRemovePlayerManual(player.id)}
+                                                                disabled={actionLoading}
+                                                                className="text-red-500 hover:bg-red-50 p-2 rounded-lg transition-all"
+                                                            >
+                                                                <Trash2 className="w-4 h-4" />
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            );
+                                        })
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     </section>
                 ) : (
@@ -354,13 +548,13 @@ export default function SessionDetailsScreen() {
                     {isOpen && isAdmin && (
                         <Button
                             onClick={handleDrawTeams}
-                            disabled={(selectedPlayerIds.length !== 15 && selectedPlayerIds.length !== 20) || isDrawing}
+                            disabled={(confirmedCount !== 15 && confirmedCount !== 20) || isDrawing}
                             isLoading={isDrawing}
                             fullWidth
                             size="lg"
                             icon={Shuffle}
                         >
-                            Sortear Times
+                            Sortear Times ({confirmedCount} confirmados)
                         </Button>
                     )}
                     {isInProgress && (
