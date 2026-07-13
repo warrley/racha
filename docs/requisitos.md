@@ -19,15 +19,15 @@ Este documento descreve os requisitos funcionais e não-funcionais para o sistem
 | :--- | :--- | :--- | :--- |
 | **RF01** | O sistema deve permitir que novos usuários se cadastrem utilizando E-mail e Senha ou autenticação social com o **Google** (via Supabase Auth). | Alta | Pendente |
 | **RF02** | O sistema deve sincronizar automaticamente os dados do usuário autenticado no Supabase com a tabela interna de usuários (`users`) no banco de dados local. | Alta | Pendente |
-| **RF03** | O sistema deve diferenciar perfis de usuário comuns de perfis de Administrador (`isAdmin`). | Alta | Pendente |
+| **RF03** | O sistema deve diferenciar perfis de usuário comuns de perfis de Administrador (`isAdmin`). | Alta | Concluído |
 
 ### 2.2 Gerenciamento de Eventos e Presença
 | ID | Descrição | Prioridade | Status |
 | :--- | :--- | :--- | :--- |
-| **RF04** | O administrador deve poder criar uma nova sessão de jogo (evento) contendo título, data e limite máximo de participantes (padrão 15, configurável para 20 ou outro valor). | Alta | Pendente |
-| **RF05** | O jogador logado deve poder confirmar ou cancelar sua presença em uma sessão aberta (`status: OPEN`). | Alta | Pendente |
-| **RF06** | Se a quantidade de jogadores confirmados atingir o limite configurado do evento, novos jogadores que tentarem confirmar presença devem entrar automaticamente em uma **Fila de Espera (Suplentes)**. | Média | Pendente |
-| **RF07** | Caso um jogador confirmado cancele sua presença, o primeiro da Fila de Espera deve ser promovido a confirmado de forma automática. | Média | Pendente |
+| **RF04** | O administrador deve poder criar uma nova sessão de jogo (evento) contendo título, data e limite máximo de participantes (padrão 15, configurável para 20 ou outro valor). | Alta | Concluído |
+| **RF05** | O jogador logado deve poder confirmar ou cancelar sua presença em uma sessão aberta (`status: OPEN`). | Alta | Concluído |
+| **RF06** | Se a quantidade de jogadores confirmados atingir o limite configurado do evento, novos jogadores que tentarem confirmar presença devem entrar automaticamente em uma **Fila de Espera (Suplentes)**. | Média | Concluído |
+| **RF07** | Caso um jogador confirmado cancele sua presença, o primeiro da Fila de Espera deve ser promovido a confirmado de forma automática. | Média | Concluído |
 
 ### 2.3 Pagamento Pix Simples
 | ID | Descrição | Prioridade | Status |

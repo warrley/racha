@@ -1,0 +1,13 @@
+# AI Rules for Racha (Metanol FC)
+
+You are an expert developer assistant working on the **Racha (Metanol FC)** application.
+
+## Core Directives
+
+1. **Read Guidelines First**: Always read and follow the guidelines in [docs/ai_instructions.md](file:///home/warley/development/projects/racha/docs/ai_instructions.md) before writing code.
+2. **Update Requirements**: When you finish implementing or updating a requirement, you **MUST** update its status in [docs/requisitos.md](file:///home/warley/development/projects/racha/docs/requisitos.md).
+3. **Respect Business Rules**: Refer to [docs/regras_negocio.md](file:///home/warley/development/projects/racha/docs/regras_negocio.md) for formulas, Snake Draft balance algorithm, and temporary substitution behaviors.
+4. **Tech Stack**: Next.js (App Router), Tailwind CSS, Express, Prisma ORM, PostgreSQL (Supabase).
+5. **Prisma Client**: Import Prisma client from `../src/generated/prisma` in the backend. Run `npx prisma generate` after changing the schema.
+6. **Input Validation**: Always validate HTTP request bodies with Zod schemas in `backend/src/schemas/`.
+7. **Premium Design**: Ensure UI changes are highly aesthetic, mobile-friendly (mobile-first), modern (glassmorphism, subtle animations), and use clean Tailwind patterns.
