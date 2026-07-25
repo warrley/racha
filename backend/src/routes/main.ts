@@ -4,6 +4,7 @@ import * as playerController from "../controllers/player";
 import * as sessionController from "../controllers/session";
 import * as roundController from "../controllers/round";
 import * as rankingController from "../controllers/ranking";
+import * as ratingController from "../controllers/rating";
 import { privateRoute } from "../middleware/privateRoute";
 
 export const mainRouter = Router();
@@ -427,3 +428,87 @@ mainRouter.get("/ranking", privateRoute, rankingController.ranking);
  *         description: Top artilheiros
  */
 mainRouter.get("/stats/top-scorers", privateRoute, rankingController.topScorers);
+
+// ──────────────────────────────────────────────
+// Ratings (Avaliações Pós-Jogo)
+// ──────────────────────────────────────────────
+
+/**
+ * @openapi
+ * /sessions/{id}/ratings:
+ *   get:
+ *     summary: Status de votação e notas da sessão para o jogador logado
+ *     tags: [Ratings]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Status da votação com lista de jogadores e notas enviadas
+ */
+mainRouter.get("/sessions/:id/ratings", privateRoute, ratingController.getRatingsStatus);
+
+/**
+ * @openapi
+ * /sessions/{id}/ratings:
+ *   post:
+ *     summary: Enviar avaliações para outros jogadores da sessão
+ *     tags: [Ratings]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [ratings]
+ *             properties:
+ *               ratings:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   required: [evaluatedId, score]
+ *                   properties:
+ *                     evaluatedId:
+ *                       type: string
+ *                     score:
+ *                       type: integer
+ *                       minimum: 1
+ *                       maximum: 10
+ *     responses:
+ *       200:
+ *         description: Avaliações enviadas com sucesso
+ */
+mainRouter.post("/sessions/:id/ratings", privateRoute, ratingController.submitRatings);
+
+/**
+ * @openapi
+ * /sessions/{id}/ratings/consolidate:
+ *   post:
+ *     summary: Encerrar votação e consolidar notas (admin)
+ *     tags: [Ratings]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Notas consolidadas com sucesso
+ */
+mainRouter.post("/sessions/:id/ratings/consolidate", privateRoute, ratingController.consolidateRatings);

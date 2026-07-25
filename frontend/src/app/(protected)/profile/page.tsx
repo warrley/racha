@@ -77,7 +77,7 @@ export default function ProfileScreen() {
                     </div>
                     <div className={styles.userInfo}>
                         <h1>{profile.nickname}</h1>
-                        <p>{profile.position} • Rating {profile.rating}</p>
+                        <p>{profile.position} • Nota Média {profile.averageGrade?.toFixed(1) ?? '-'}</p>
                     </div>
                 </div>
                 <button 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { User, Flame, Goal } from 'lucide-react';
+import { User, Star, Goal, Flame } from 'lucide-react';
 import { UserAvatar } from '@/components/UserAvatar';
 import { api } from '@/lib/api';
 import { Header } from '@/components/Header';
@@ -89,9 +89,9 @@ export default function RankingScreen() {
                 <div className="text-center w-full px-1">
                     <p className="text-xs font-black text-slate-800 leading-tight truncate">{player ? player.nickname : '-'}</p>
                     <p className="text-xs font-bold text-slate-400 mt-1 flex items-center justify-center gap-1">
-                        {player && activeTab === 'rating' && <Flame className="w-3 h-3 text-orange-500 fill-orange-500 -mt-0.5" />}
+                        {player && activeTab === 'rating' && <Star className="w-3 h-3 text-violet-500 fill-violet-500 -mt-0.5" />}
                         {player && activeTab === 'goals' && <Goal className="w-3 h-3 text-slate-500 -mt-0.5" />}
-                        {player ? player.rating : '-'} <span className="text-[9px] uppercase">{activeTab === 'rating' ? 'Pts' : 'Gols'}</span>
+                        {player ? (activeTab === 'rating' ? (player.averageGrade?.toFixed(1) ?? '-') : player.rating) : '-'} <span className="text-[9px] uppercase">{activeTab === 'rating' ? 'Nota' : 'Gols'}</span>
                     </p>
                 </div>
                 <div className={`w-full ${podiumColor} ${podiumHeight} mt-3 rounded-t-3xl shadow-sm border-x border-t ${crown ? 'border-amber-400/30' : 'border-slate-100'}`} />
@@ -107,7 +107,7 @@ export default function RankingScreen() {
                 activeId={activeTab}
                 onChange={setActiveTab}
                 tabs={[
-                    { id: 'rating', label: 'Ranking Geral (Rating)' },
+                    { id: 'rating', label: 'Ranking Geral (Nota)' },
                     { id: 'goals', label: 'Artilheiros (Gols)' }
                 ]}
             />
@@ -165,7 +165,7 @@ export default function RankingScreen() {
                                 </div>
                             </div>
                             <div className="flex flex-col items-end gap-1">
-                                <span className="text-sm font-black text-slate-700">{player.rating} {activeTab === 'goals' && <span className="text-[10px] text-slate-400 ml-1">GOLS</span>}</span>
+                                <span className="text-sm font-black text-slate-700">{activeTab === 'rating' ? (player.averageGrade?.toFixed(1) ?? '-') : player.rating} {activeTab === 'goals' && <span className="text-[10px] text-slate-400 ml-1">GOLS</span>}</span>
                                 {player.isOnFire && <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />}
                             </div>
                         </div>

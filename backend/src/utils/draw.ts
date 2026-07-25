@@ -1,6 +1,7 @@
 type PlayerForDraw = {
     id: string;
     rating: number;
+    averageGrade: number | null;
 };
 
 type DrawnTeam = {
@@ -17,7 +18,13 @@ export const drawTeams = (players: PlayerForDraw[]): DrawnTeam[] => {
     };
 
     const numTeams = players.length / 5;
-    const sorted = [...players].sort((a, b) => b.rating - a.rating);
+
+    // Ordenar por averageGrade (maior primeiro); null vai para o final
+    const sorted = [...players].sort((a, b) => {
+        const gradeA = a.averageGrade ?? -1;
+        const gradeB = b.averageGrade ?? -1;
+        return gradeB - gradeA;
+    });
 
     const teamDefs = [
         { name: "Time A", color: "RED" },
@@ -40,8 +47,14 @@ export const drawTeams = (players: PlayerForDraw[]): DrawnTeam[] => {
             : numTeams - 1 - posInRound;
 
         teams[teamIndex].players.push(sorted[i]);
-        teams[teamIndex].totalRating += sorted[i].rating;
+        teams[teamIndex].totalRating += sorted[i].averageGrade ?? 0;
     };
+
+    // Arredondar totalRating para 1 casa decimal
+    for (const team of teams) {
+        team.totalRating = Math.round(team.totalRating * 10) / 10;
+    }
 
     return teams;
 };
+

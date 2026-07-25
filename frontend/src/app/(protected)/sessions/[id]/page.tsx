@@ -3,13 +3,13 @@
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/api';
 import { useRouter, useParams } from 'next/navigation';
-import { ChevronDown, CheckCircle2, Circle, Trophy, Goal, Play, Shuffle, CalendarDays, History, MapPin, Trash2, StopCircle, UserPlus, Users, Clock, Plus, X } from 'lucide-react';
+import { ChevronDown, CheckCircle2, Circle, Trophy, Goal, Play, Shuffle, CalendarDays, History, MapPin, Trash2, StopCircle, UserPlus, Users, Clock, Plus, X, Star, Send, Lock } from 'lucide-react';
 import { Button } from '@/components/Button';
 import { UserAvatar } from '@/components/UserAvatar';
 import { Header } from '@/components/Header';
 import { getHexColor } from '@/lib/colors';
 
-import { Session, Team, Round, TeamPlayer, Player, Goal as GoalType } from '@/types';
+import { Session, Team, Round, TeamPlayer, Player, Goal as GoalType, RatingPlayer, RatingsStatus } from '@/types';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function SessionDetailsScreen() {
@@ -27,6 +27,13 @@ export default function SessionDetailsScreen() {
     const [selectedAdminAddUserId, setSelectedAdminAddUserId] = useState('');
     const [isDrawing, setIsDrawing] = useState(false);
 
+    // Post-game rating state
+    const [ratingsStatus, setRatingsStatus] = useState<RatingsStatus | null>(null);
+    const [showRatingModal, setShowRatingModal] = useState(false);
+    const [ratingScores, setRatingScores] = useState<Record<string, number>>({});
+    const [submittingRatings, setSubmittingRatings] = useState(false);
+    const [ratingsSubmitted, setRatingsSubmitted] = useState(false);
+
     const fetchSessionData = async () => {
         try {
             const res = await api.get(`/sessions/${sessionId}`);
@@ -40,6 +47,25 @@ export default function SessionDetailsScreen() {
                 const exp: Record<string, boolean> = {};
                 sess.teams.forEach((t: Team) => exp[t.id] = true);
                 setExpandedTeams(exp);
+            }
+
+            // Buscar status de votação se sessão finalizada
+            if (sess.status === 'FINISHED') {
+                try {
+                    const ratingsRes = await api.get(`/sessions/${sessionId}/ratings`);
+                    setRatingsStatus(ratingsRes.data);
+                    if (ratingsRes.data.hasVoted) {
+                        setRatingsSubmitted(true);
+                    }
+                    // Preencher scores existentes
+                    if (ratingsRes.data.players) {
+                        const existing: Record<string, number> = {};
+                        ratingsRes.data.players.forEach((p: RatingPlayer) => {
+                            if (p.currentGrade !== null) existing[p.id] = p.currentGrade;
+                        });
+                        setRatingScores(existing);
+                    }
+                } catch { /* Jogador não participou */ }
             }
         } catch (err) {
             console.error(err);
@@ -162,6 +188,42 @@ export default function SessionDetailsScreen() {
         }
     };
 
+    const handleSubmitRatings = async () => {
+        if (!ratingsStatus) return;
+        const ratings = Object.entries(ratingScores)
+            .filter(([, score]) => score > 0)
+            .map(([evaluatedId, score]) => ({ evaluatedId, score }));
+
+        if (ratings.length === 0) {
+            alert("Avalie pelo menos um jogador.");
+            return;
+        }
+
+        try {
+            setSubmittingRatings(true);
+            await api.post(`/sessions/${sessionId}/ratings`, { ratings });
+            setRatingsSubmitted(true);
+            await fetchSessionData();
+        } catch (e: any) {
+            console.error(e);
+            alert(e.response?.data?.error || "Erro ao enviar avaliações.");
+        } finally {
+            setSubmittingRatings(false);
+        }
+    };
+
+    const handleConsolidateRatings = async () => {
+        if (confirm("Tem certeza que deseja encerrar a votação? As notas serão calculadas e não poderão ser alteradas.")) {
+            try {
+                await api.post(`/sessions/${sessionId}/ratings/consolidate`);
+                await fetchSessionData();
+            } catch (e: any) {
+                console.error(e);
+                alert(e.response?.data?.error || "Erro ao consolidar notas.");
+            }
+        }
+    };
+
     if (loading || authLoading || !session) {
         return (
             <div className="flex items-center justify-center min-h-screen text-primary font-bold">
@@ -222,6 +284,119 @@ export default function SessionDetailsScreen() {
                         </div>
                     )}
                 </section>
+
+                {/* Seção de Avaliação Pós-Jogo */}
+                {isFinished && ratingsStatus && (
+                    <section className="space-y-4">
+                        {ratingsStatus.isVotingOpen && !ratingsStatus.isConsolidated ? (
+                            <>
+                                {!showRatingModal ? (
+                                    <div
+                                        onClick={() => !ratingsSubmitted && setShowRatingModal(true)}
+                                        className={`bg-gradient-to-br ${ratingsSubmitted ? 'from-green-500 to-emerald-600' : 'from-violet-500 to-purple-600'} rounded-3xl p-6 text-white shadow-lg relative overflow-hidden cursor-pointer active:scale-[0.98] transition-all`}
+                                    >
+                                        <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
+                                        <div className="relative z-10">
+                                            <div className="flex items-center gap-2 mb-3 opacity-80">
+                                                {ratingsSubmitted ? <CheckCircle2 size={16} /> : <Star size={16} />}
+                                                <span className="text-xs font-black uppercase tracking-widest">
+                                                    {ratingsSubmitted ? 'Avaliação Enviada' : 'Avaliação Pós-Jogo'}
+                                                </span>
+                                            </div>
+                                            <h3 className="text-xl font-black leading-tight mb-2">
+                                                {ratingsSubmitted
+                                                    ? 'Suas notas foram registradas! ✅'
+                                                    : 'Avalie os jogadores deste racha!'
+                                                }
+                                            </h3>
+                                            <p className="text-sm font-medium opacity-80">
+                                                {ratingsSubmitted
+                                                    ? `Você avaliou ${ratingsStatus.totalVotes} de ${ratingsStatus.totalPlayers} jogadores. Toque para editar.`
+                                                    : `Dê notas de 1 a 10 para ${ratingsStatus.totalPlayers} jogadores.`
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+                                        <div className="bg-gradient-to-r from-violet-500 to-purple-600 p-5 text-white">
+                                            <div className="flex justify-between items-center">
+                                                <div>
+                                                    <h3 className="font-black text-lg">Avaliação Pós-Jogo</h3>
+                                                    <p className="text-xs opacity-80 font-bold mt-1">Notas de 1 a 10 para cada jogador</p>
+                                                </div>
+                                                <button
+                                                    onClick={() => setShowRatingModal(false)}
+                                                    className="bg-white/20 p-2 rounded-xl hover:bg-white/30 transition-colors"
+                                                >
+                                                    <X className="w-5 h-5" />
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div className="p-4 space-y-3 max-h-[50vh] overflow-y-auto">
+                                            {ratingsStatus.players.map((p) => (
+                                                <div key={p.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="w-9 h-9 rounded-full border-2 border-slate-100 overflow-hidden bg-slate-100">
+                                                            <UserAvatar nickname={p.nickname || p.name} className="w-full h-full text-xs" />
+                                                        </div>
+                                                        <div>
+                                                            <p className="font-black text-slate-800 text-sm">{p.nickname || p.name}</p>
+                                                            <p className="text-[10px] font-bold text-slate-400 uppercase">{p.position}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-center gap-1">
+                                                        {[1,2,3,4,5,6,7,8,9,10].map(score => (
+                                                            <button
+                                                                key={score}
+                                                                onClick={() => setRatingScores(prev => ({ ...prev, [p.id]: score }))}
+                                                                className={`w-7 h-7 rounded-lg text-[10px] font-black transition-all ${
+                                                                    (ratingScores[p.id] || 0) >= score
+                                                                        ? 'bg-violet-500 text-white shadow-sm scale-105'
+                                                                        : 'bg-slate-200 text-slate-400 hover:bg-slate-300'
+                                                                }`}
+                                                            >
+                                                                {score}
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        <div className="p-4 border-t border-slate-100">
+                                            <Button
+                                                onClick={handleSubmitRatings}
+                                                isLoading={submittingRatings}
+                                                fullWidth
+                                                icon={Send}
+                                            >
+                                                Enviar Avaliações ({Object.values(ratingScores).filter(s => s > 0).length}/{ratingsStatus.totalPlayers})
+                                            </Button>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {isAdmin && (
+                                    <button
+                                        onClick={handleConsolidateRatings}
+                                        className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-slate-100 text-slate-500 rounded-2xl border border-slate-200 text-xs font-black uppercase tracking-wider hover:bg-slate-200 transition-all active:scale-95"
+                                    >
+                                        <Lock className="w-4 h-4" /> Encerrar Votação e Calcular Notas
+                                    </button>
+                                )}
+                            </>
+                        ) : ratingsStatus.isConsolidated ? (
+                            <div className="bg-slate-100 p-4 rounded-2xl border border-slate-200 text-center">
+                                <div className="flex items-center justify-center gap-2 text-slate-500">
+                                    <CheckCircle2 className="w-5 h-5 text-green-500" />
+                                    <span className="font-black text-sm">Votação encerrada — notas consolidadas</span>
+                                </div>
+                            </div>
+                        ) : null}
+                    </section>
+                )}
 
                 {isOpen ? (
                     <section className="space-y-6">

@@ -1,6 +1,7 @@
 import { prisma } from "../utils/prisma";
 import { drawTeams } from "../utils/draw";
 import { calculateNewRating } from "../utils/elo";
+import { consolidateExpiredSessions } from "./rating";
 
 export const createSession = async (createdById: string, title: string | undefined, date: string, maxPlayers?: number) => {
     return await prisma.session.create({
@@ -22,7 +23,7 @@ export const findSessionById = async (id: string) => {
             topScorerPlayer: { select: { id: true, name: true, nickname: true } },
             participants: {
                 include: {
-                    user: { select: { id: true, name: true, nickname: true, position: true, rating: true, avatarIndex: true } }
+                    user: { select: { id: true, name: true, nickname: true, position: true, rating: true, averageGrade: true, avatarIndex: true } }
                 },
                 orderBy: { createdAt: "asc" }
             },
@@ -30,7 +31,7 @@ export const findSessionById = async (id: string) => {
                 include: {
                     players: {
                         include: {
-                            player: { select: { id: true, name: true, nickname: true, position: true, rating: true } }
+                            player: { select: { id: true, name: true, nickname: true, position: true, rating: true, averageGrade: true } }
                         }
                     }
                 }
@@ -47,7 +48,8 @@ export const findSessionById = async (id: string) => {
                     }
                 },
                 orderBy: { roundNumber: "asc" }
-            }
+            },
+            _count: { select: { grades: true } }
         }
     });
 };
@@ -91,9 +93,12 @@ export const executeDraw = async (sessionId: string, playerIds?: string[]) => {
         throw new Error("O sorteio exige exatamente 15 (3 times) ou 20 (4 times) jogadores confirmados");
     }
 
+    // Consolidar sessões expiradas antes de sortear (self-healing)
+    await consolidateExpiredSessions();
+
     const players = await prisma.user.findMany({
         where: { id: { in: finalPlayerIds } },
-        select: { id: true, rating: true }
+        select: { id: true, rating: true, averageGrade: true }
     });
 
     if(players.length !== finalPlayerIds.length) throw new Error("Alguns jogadores não foram encontrados");
@@ -314,6 +319,7 @@ export const closeSession = async (sessionId: string) => {
             where: { id: sessionId },
             data: {
                 status: "FINISHED",
+                finishedAt: new Date(),
                 mvpPlayerId: mvpId,
                 topScorerPlayerId: topScorerId
             }

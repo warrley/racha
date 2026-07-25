@@ -107,8 +107,8 @@ export default function HomeScreen() {
                 rightElement={
                     <div className="bg-slate-100 px-4 py-2 rounded-full flex items-center gap-2 shadow-inner">
                         <div className="flex flex-col items-end leading-none">
-                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Pontos</span>
-                            <span className="text-sm font-black text-slate-700">{user?.rating || 0}</span>
+                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider">Nota</span>
+                            <span className="text-sm font-black text-slate-700">{user?.averageGrade?.toFixed(1) ?? '-'}</span>
                         </div>
                         {isOnFire && <Flame className="w-5 h-5 text-orange-500 fill-orange-500" />}
                     </div>
@@ -130,10 +130,13 @@ export default function HomeScreen() {
                                 <span className="text-xs font-black uppercase tracking-widest">Radar do Ranking</span>
                             </div>
                             <h3 className="text-xl font-black leading-tight mb-3">
-                                Faltam {targetPlayer.rating - (user?.rating || 0)} pontos para você ultrapassar o {targetPlayer.nickname || targetPlayer.name}!
+                                {targetPlayer.averageGrade && user?.averageGrade
+                                    ? `Falta ${(targetPlayer.averageGrade - user.averageGrade).toFixed(1)} de nota para ultrapassar o ${targetPlayer.nickname || targetPlayer.name}!`
+                                    : `Supere o ${targetPlayer.nickname || targetPlayer.name} no ranking!`
+                                }
                             </h3>
                             <p className="text-sm font-medium opacity-80">
-                                Você está em {rank}º lugar. Continue vencendo para subir!
+                                Você está em {rank}º lugar. Continue jogando bem para subir!
                             </p>
                         </div>
                     </section>

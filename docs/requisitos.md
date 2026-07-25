@@ -39,15 +39,15 @@ Este documento descreve os requisitos funcionais e não-funcionais para o sistem
 ### 2.4 Avaliação Pós-Jogo e Notas
 | ID | Descrição | Prioridade | Status |
 | :--- | :--- | :--- | :--- |
-| **RF11** | Quando o status da sessão for alterado para finalizado (`FINISHED`), o sistema deve abrir uma janela de votação para avaliações. | Alta | Pendente |
-| **RF12** | Cada jogador que participou ativamente da sessão deve poder avaliar a performance de outros participantes com notas de **1 a 10**. | Alta | Pendente |
-| **RF13** | O sistema deve calcular a média aritmética das notas recebidas por cada jogador naquela sessão. | Alta | Pendente |
+| **RF11** | Quando o status da sessão for alterado para finalizado (`FINISHED`), o sistema deve abrir uma janela de votação para avaliações. | Alta | Concluído |
+| **RF12** | Cada jogador que participou ativamente da sessão deve poder avaliar a performance de outros participantes com notas de **1 a 10**. | Alta | Concluído |
+| **RF13** | O sistema deve calcular a média aritmética das notas recebidas por cada jogador naquela sessão. | Alta | Concluído |
 
 ### 2.5 Rankings e Balanceamento
 | ID | Descrição | Prioridade | Status |
 | :--- | :--- | :--- | :--- |
-| **RF14** | O sistema deve disponibilizar um **Ranking de Notas**, ordenado pela média acumulada histórica de todas as avaliações de cada jogador. | Alta | Pendente |
-| **RF15** | O algoritmo de sorteio e balanceamento de times (`executeDraw`) deve passar a usar a **Nota Média** das avaliações do jogador em vez do rating Elo clássico. | Alta | Pendente |
+| **RF14** | O sistema deve disponibilizar um **Ranking de Notas**, ordenado pela média acumulada histórica de todas as avaliações de cada jogador. | Alta | Concluído |
+| **RF15** | O algoritmo de sorteio e balanceamento de times (`executeDraw`) deve passar a usar a **Nota Média** das avaliações do jogador em vez do rating Elo clássico. | Alta | Concluído |
 
 ### 2.6 Substituições Temporárias por Rodada
 | ID | Descrição | Prioridade | Status |

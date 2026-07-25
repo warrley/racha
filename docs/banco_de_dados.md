@@ -103,7 +103,7 @@ Para suportar as novas regras de negócio do racha, o `schema.prisma` deve ser e
 
 ### 3.1 Alterações em tabelas existentes
 *   **User (`users`)**:
-    *   `averageNote` (Float): Nova coluna para armazenar a nota média histórica das avaliações (padrão 6.0).
+    *   `averageGrade` (Float): Nova coluna para armazenar a nota média histórica das avaliações (padrão null - sem avaliação).
 *   **Session (`sessions`)**:
     *   `maxPlayers` (Int): Limite máximo de jogadores confirmados para a sessão (padrão `15`).
     *   `pixKey` (String?): Chave Pix cadastrada pelo administrador para o recebimento do racha.
@@ -135,15 +135,15 @@ enum ParticipantStatus {
 }
 ```
 
-#### SessionRating (`session_ratings`)
+#### SessionGrade (`session_grades`)
 Armazena a nota que um jogador dá para o outro em uma sessão específica.
 ```prisma
-model SessionRating {
+model SessionGrade {
   id          String   @id @default(uuid())
   sessionId   String
   evaluatorId String
   evaluatedId String
-  score       Int      // Valor de 1 a 10
+  grade       Int      // Valor de 1 a 10
   createdAt   DateTime @default(now())
 
   session     Session  @relation(fields: [sessionId], references: [id])
@@ -151,7 +151,7 @@ model SessionRating {
   evaluated   User     @relation("Evaluates", fields: [evaluatedId], references: [id])
 
   @@unique([sessionId, evaluatorId, evaluatedId]) // Impede avaliações duplicadas
-  @@map("session_ratings")
+  @@map("session_grades")
 }
 ```
 

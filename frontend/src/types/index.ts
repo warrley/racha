@@ -4,6 +4,7 @@ export interface Player {
     nickname: string | null;
     position: 'ZAGUEIRO' | 'MEIO' | 'ATACANTE';
     rating: number;
+    averageGrade?: number | null;
     avatarIndex: number;
     isAdmin: boolean;
 
@@ -69,6 +70,7 @@ export interface SessionParticipant {
     sessionId: string;
     userId: string;
     status: 'CONFIRMED' | 'WAITING_LIST';
+    sessionGrade?: number | null;
     createdAt: string;
     user?: Player;
 }
@@ -82,6 +84,9 @@ export interface Session {
     createdById: string;
     mvpPlayerId: string | null;
     topScorerPlayerId: string | null;
+    finishedAt?: string | null;
+    votingTimeoutHours?: number;
+    ratingsConsolidated?: boolean;
 
     createdBy?: Player;
     mvpPlayer?: Player;
@@ -91,6 +96,7 @@ export interface Session {
     participants?: SessionParticipant[];
     _count?: {
         rounds?: number;
+        grades?: number;
     };
 }
 
@@ -100,4 +106,22 @@ export interface SessionHistoryItem {
     sessionDate: string;
     teamName: string;
     teamColor: string;
+}
+
+export interface RatingPlayer {
+    id: string;
+    name: string;
+    nickname: string | null;
+    position: string;
+    avatarIndex: number;
+    currentGrade: number | null;
+}
+
+export interface RatingsStatus {
+    isVotingOpen: boolean;
+    isConsolidated: boolean;
+    players: RatingPlayer[];
+    hasVoted: boolean;
+    totalVotes: number;
+    totalPlayers: number;
 }

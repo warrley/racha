@@ -1,6 +1,10 @@
 import { prisma } from "../utils/prisma";
+import { consolidateExpiredSessions } from "./rating";
 
 export const getRanking = async () => {
+    // Self-healing: consolidar sessões expiradas antes de exibir ranking
+    await consolidateExpiredSessions();
+
     const players = await prisma.user.findMany({
         select: {
             id: true,
@@ -8,9 +12,13 @@ export const getRanking = async () => {
             nickname: true,
             position: true,
             rating: true,
+            averageGrade: true,
             avatarIndex: true
         },
-        orderBy: { rating: "desc" }
+        orderBy: [
+            { averageGrade: { sort: "desc", nulls: "last" } },
+            { rating: "desc" }
+        ]
     });
 
     const ranking = await Promise.all(players.map(async (player, index) => {

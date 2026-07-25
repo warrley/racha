@@ -39,16 +39,17 @@ enum BadgeType {
 // ──────────────────────────────────────────────
 
 model User {
-  id          String   @id @default(uuid())
-  email       String   @unique
-  password    String
-  name        String
-  nickname    String?
-  position    Position @default(MEIO)
-  rating      Int      @default(0)
-  avatarIndex Int      @default(0)
-  isAdmin     Boolean  @default(false)
-  createdAt   DateTime @default(now())
+  id           String   @id @default(uuid())
+  email        String   @unique
+  password     String
+  name         String
+  nickname     String?
+  position     Position @default(MEIO)
+  rating       Int      @default(0)
+  averageGrade Float?
+  avatarIndex  Int      @default(0)
+  isAdmin      Boolean  @default(false)
+  createdAt    DateTime @default(now())
 
   // Relações
   teamPlayers      TeamPlayer[]
@@ -58,20 +59,25 @@ model User {
   mvpSessions      Session[]    @relation("SessionMvp")
   topScorerSessions Session[]   @relation("SessionTopScorer")
   sessionParticipants SessionParticipant[]
+  evaluatedGrades  SessionGrade[] @relation("EvaluatedBy")
+  receivedGrades   SessionGrade[] @relation("Evaluates")
 
   @@map("users")
 }
 
 model Session {
-  id                 String        @id @default(uuid())
-  title              String?
-  date               DateTime
-  status             SessionStatus @default(OPEN)
-  createdById        String
-  mvpPlayerId        String?
-  topScorerPlayerId  String?
-  maxPlayers         Int           @default(15)
-  createdAt          DateTime      @default(now())
+  id                   String        @id @default(uuid())
+  title                String?
+  date                 DateTime
+  status               SessionStatus @default(OPEN)
+  createdById          String
+  mvpPlayerId          String?
+  topScorerPlayerId    String?
+  maxPlayers           Int           @default(15)
+  finishedAt           DateTime?
+  votingTimeoutHours   Int           @default(24)
+  ratingsConsolidated  Boolean       @default(false)
+  createdAt            DateTime      @default(now())
 
   // Relações
   createdBy      User    @relation("SessionCreator", fields: [createdById], references: [id])
@@ -81,6 +87,7 @@ model Session {
   rounds         Round[]
   badges         Badge[]
   participants   SessionParticipant[]
+  grades         SessionGrade[]
 
   @@map("sessions")
 }
@@ -90,7 +97,7 @@ model Team {
   sessionId   String
   name        String
   color       String
-  totalRating Int    @default(0)
+  totalRating Float  @default(0)
 
   // Relações
   session     Session      @relation(fields: [sessionId], references: [id])
@@ -174,11 +181,12 @@ enum ParticipantStatus {
 }
 
 model SessionParticipant {
-  id        String            @id @default(uuid())
-  sessionId String
-  userId    String
-  status    ParticipantStatus @default(CONFIRMED)
-  createdAt DateTime          @default(now())
+  id           String            @id @default(uuid())
+  sessionId    String
+  userId       String
+  status       ParticipantStatus @default(CONFIRMED)
+  sessionGrade Float?
+  createdAt    DateTime          @default(now())
 
   // Relações
   session Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
@@ -186,4 +194,25 @@ model SessionParticipant {
 
   @@unique([sessionId, userId])
   @@map("session_participants")
+}
+
+// ──────────────────────────────────────────────
+// AVALIAÇÕES PÓS-JOGO (REQ 2.4)
+// ──────────────────────────────────────────────
+
+model SessionGrade {
+  id          String   @id @default(uuid())
+  sessionId   String
+  evaluatorId String
+  evaluatedId String
+  grade       Int      // Valor de 1 a 10
+  createdAt   DateTime @default(now())
+
+  // Relações
+  session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  evaluator User    @relation("EvaluatedBy", fields: [evaluatorId], references: [id], onDelete: Cascade)
+  evaluated User    @relation("Evaluates", fields: [evaluatedId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, evaluatorId, evaluatedId])
+  @@map("session_grades")
 }

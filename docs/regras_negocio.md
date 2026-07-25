@@ -17,7 +17,7 @@ O sistema adota uma nota média baseada nas avaliações pós-jogo enviadas pelo
 ### 1.2 Cálculo da Média de Nota
 *   **Nota da Sessão ($N_s$):** Média aritmética simples de todas as notas recebidas pelo jogador de outros jogadores para aquela sessão específica:
     $$N_s = \frac{\sum \text{Notas Recebidas na Sessão } s}{\text{Total de Avaliações Recebidas na Sessão } s}$$
-*   **Média Geral Histórica ($N_{geral}$):** É a média geral de todas as sessões que o jogador já participou. Ela é atualizada no perfil do usuário (`averageNote`) assim que a janela de votações de uma sessão é fechada:
+*   **Média Geral Histórica ($N_{geral}$):** É a média geral de todas as sessões que o jogador já participou. Ela é atualizada no perfil do usuário (`averageGrade`) assim que a janela de votações de uma sessão é fechada:
     $$N_{geral} = \frac{\sum N_s}{\text{Quantidade de Sessões Participadas}}$$
 
 ---
@@ -27,7 +27,7 @@ O sistema adota uma nota média baseada nas avaliações pós-jogo enviadas pelo
 O sorteio (`executeDraw`) distribui os jogadores participantes em 3 times (normalmente denominados Vermelho, Azul e Verde, ou Time A, B e C), buscando equilibrar a soma de habilidades.
 
 ### 2.1 Passos do Balanceamento por Nota Média
-1.  **Ordenação:** Coleta-se a lista de IDs de jogadores confirmados para a sessão e busca-se suas respectivas Notas Médias (`averageNote`). A lista é ordenada do maior para o menor.
+1.  **Ordenação:** Coleta-se a lista de IDs de jogadores confirmados para a sessão e busca-se suas respectivas Notas Médias (`averageGrade`). A lista é ordenada do maior para o menor.
 2.  **Distribuição em Potes (Snake Draft):**
     Para garantir times equilibrados, os jogadores são distribuídos ciclicamente (estilo serpentina):
     *   **Pote 1 (Melhores):** Jogadores de rank 1, 2, 3

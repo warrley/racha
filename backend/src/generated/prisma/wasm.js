@@ -125,6 +125,7 @@ exports.Prisma.UserScalarFieldEnum = {
   nickname: 'nickname',
   position: 'position',
   rating: 'rating',
+  averageGrade: 'averageGrade',
   avatarIndex: 'avatarIndex',
   isAdmin: 'isAdmin',
   createdAt: 'createdAt'
@@ -139,6 +140,9 @@ exports.Prisma.SessionScalarFieldEnum = {
   mvpPlayerId: 'mvpPlayerId',
   topScorerPlayerId: 'topScorerPlayerId',
   maxPlayers: 'maxPlayers',
+  finishedAt: 'finishedAt',
+  votingTimeoutHours: 'votingTimeoutHours',
+  ratingsConsolidated: 'ratingsConsolidated',
   createdAt: 'createdAt'
 };
 
@@ -189,6 +193,16 @@ exports.Prisma.SessionParticipantScalarFieldEnum = {
   sessionId: 'sessionId',
   userId: 'userId',
   status: 'status',
+  sessionGrade: 'sessionGrade',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.SessionGradeScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  evaluatorId: 'evaluatorId',
+  evaluatedId: 'evaluatedId',
+  grade: 'grade',
   createdAt: 'createdAt'
 };
 
@@ -240,7 +254,8 @@ exports.Prisma.ModelName = {
   Round: 'Round',
   Goal: 'Goal',
   Badge: 'Badge',
-  SessionParticipant: 'SessionParticipant'
+  SessionParticipant: 'SessionParticipant',
+  SessionGrade: 'SessionGrade'
 };
 
 /**

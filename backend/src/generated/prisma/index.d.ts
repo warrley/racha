@@ -53,6 +53,11 @@ export type Badge = $Result.DefaultSelection<Prisma.$BadgePayload>
  * 
  */
 export type SessionParticipant = $Result.DefaultSelection<Prisma.$SessionParticipantPayload>
+/**
+ * Model SessionGrade
+ * 
+ */
+export type SessionGrade = $Result.DefaultSelection<Prisma.$SessionGradePayload>
 
 /**
  * Enums
@@ -317,6 +322,16 @@ export class PrismaClient<
     * ```
     */
   get sessionParticipant(): Prisma.SessionParticipantDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.sessionGrade`: Exposes CRUD operations for the **SessionGrade** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SessionGrades
+    * const sessionGrades = await prisma.sessionGrade.findMany()
+    * ```
+    */
+  get sessionGrade(): Prisma.SessionGradeDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -764,7 +779,8 @@ export namespace Prisma {
     Round: 'Round',
     Goal: 'Goal',
     Badge: 'Badge',
-    SessionParticipant: 'SessionParticipant'
+    SessionParticipant: 'SessionParticipant',
+    SessionGrade: 'SessionGrade'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -783,7 +799,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "team" | "teamPlayer" | "round" | "goal" | "badge" | "sessionParticipant"
+      modelProps: "user" | "session" | "team" | "teamPlayer" | "round" | "goal" | "badge" | "sessionParticipant" | "sessionGrade"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1379,6 +1395,80 @@ export namespace Prisma {
           }
         }
       }
+      SessionGrade: {
+        payload: Prisma.$SessionGradePayload<ExtArgs>
+        fields: Prisma.SessionGradeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SessionGradeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionGradePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SessionGradeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionGradePayload>
+          }
+          findFirst: {
+            args: Prisma.SessionGradeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionGradePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SessionGradeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionGradePayload>
+          }
+          findMany: {
+            args: Prisma.SessionGradeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionGradePayload>[]
+          }
+          create: {
+            args: Prisma.SessionGradeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionGradePayload>
+          }
+          createMany: {
+            args: Prisma.SessionGradeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SessionGradeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionGradePayload>[]
+          }
+          delete: {
+            args: Prisma.SessionGradeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionGradePayload>
+          }
+          update: {
+            args: Prisma.SessionGradeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionGradePayload>
+          }
+          deleteMany: {
+            args: Prisma.SessionGradeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SessionGradeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SessionGradeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionGradePayload>[]
+          }
+          upsert: {
+            args: Prisma.SessionGradeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionGradePayload>
+          }
+          aggregate: {
+            args: Prisma.SessionGradeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSessionGrade>
+          }
+          groupBy: {
+            args: Prisma.SessionGradeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SessionGradeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SessionGradeCountArgs<ExtArgs>
+            result: $Utils.Optional<SessionGradeCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1471,6 +1561,7 @@ export namespace Prisma {
     goal?: GoalOmit
     badge?: BadgeOmit
     sessionParticipant?: SessionParticipantOmit
+    sessionGrade?: SessionGradeOmit
   }
 
   /* Types for Logging */
@@ -1572,6 +1663,8 @@ export namespace Prisma {
     mvpSessions: number
     topScorerSessions: number
     sessionParticipants: number
+    evaluatedGrades: number
+    receivedGrades: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1582,6 +1675,8 @@ export namespace Prisma {
     mvpSessions?: boolean | UserCountOutputTypeCountMvpSessionsArgs
     topScorerSessions?: boolean | UserCountOutputTypeCountTopScorerSessionsArgs
     sessionParticipants?: boolean | UserCountOutputTypeCountSessionParticipantsArgs
+    evaluatedGrades?: boolean | UserCountOutputTypeCountEvaluatedGradesArgs
+    receivedGrades?: boolean | UserCountOutputTypeCountReceivedGradesArgs
   }
 
   // Custom InputTypes
@@ -1644,6 +1739,20 @@ export namespace Prisma {
     where?: SessionParticipantWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountEvaluatedGradesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionGradeWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountReceivedGradesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionGradeWhereInput
+  }
+
 
   /**
    * Count Type SessionCountOutputType
@@ -1654,6 +1763,7 @@ export namespace Prisma {
     rounds: number
     badges: number
     participants: number
+    grades: number
   }
 
   export type SessionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1661,6 +1771,7 @@ export namespace Prisma {
     rounds?: boolean | SessionCountOutputTypeCountRoundsArgs
     badges?: boolean | SessionCountOutputTypeCountBadgesArgs
     participants?: boolean | SessionCountOutputTypeCountParticipantsArgs
+    grades?: boolean | SessionCountOutputTypeCountGradesArgs
   }
 
   // Custom InputTypes
@@ -1700,6 +1811,13 @@ export namespace Prisma {
    */
   export type SessionCountOutputTypeCountParticipantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SessionParticipantWhereInput
+  }
+
+  /**
+   * SessionCountOutputType without action
+   */
+  export type SessionCountOutputTypeCountGradesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionGradeWhereInput
   }
 
 
@@ -1810,11 +1928,13 @@ export namespace Prisma {
 
   export type UserAvgAggregateOutputType = {
     rating: number | null
+    averageGrade: number | null
     avatarIndex: number | null
   }
 
   export type UserSumAggregateOutputType = {
     rating: number | null
+    averageGrade: number | null
     avatarIndex: number | null
   }
 
@@ -1826,6 +1946,7 @@ export namespace Prisma {
     nickname: string | null
     position: $Enums.Position | null
     rating: number | null
+    averageGrade: number | null
     avatarIndex: number | null
     isAdmin: boolean | null
     createdAt: Date | null
@@ -1839,6 +1960,7 @@ export namespace Prisma {
     nickname: string | null
     position: $Enums.Position | null
     rating: number | null
+    averageGrade: number | null
     avatarIndex: number | null
     isAdmin: boolean | null
     createdAt: Date | null
@@ -1852,6 +1974,7 @@ export namespace Prisma {
     nickname: number
     position: number
     rating: number
+    averageGrade: number
     avatarIndex: number
     isAdmin: number
     createdAt: number
@@ -1861,11 +1984,13 @@ export namespace Prisma {
 
   export type UserAvgAggregateInputType = {
     rating?: true
+    averageGrade?: true
     avatarIndex?: true
   }
 
   export type UserSumAggregateInputType = {
     rating?: true
+    averageGrade?: true
     avatarIndex?: true
   }
 
@@ -1877,6 +2002,7 @@ export namespace Prisma {
     nickname?: true
     position?: true
     rating?: true
+    averageGrade?: true
     avatarIndex?: true
     isAdmin?: true
     createdAt?: true
@@ -1890,6 +2016,7 @@ export namespace Prisma {
     nickname?: true
     position?: true
     rating?: true
+    averageGrade?: true
     avatarIndex?: true
     isAdmin?: true
     createdAt?: true
@@ -1903,6 +2030,7 @@ export namespace Prisma {
     nickname?: true
     position?: true
     rating?: true
+    averageGrade?: true
     avatarIndex?: true
     isAdmin?: true
     createdAt?: true
@@ -2003,6 +2131,7 @@ export namespace Prisma {
     nickname: string | null
     position: $Enums.Position
     rating: number
+    averageGrade: number | null
     avatarIndex: number
     isAdmin: boolean
     createdAt: Date
@@ -2035,6 +2164,7 @@ export namespace Prisma {
     nickname?: boolean
     position?: boolean
     rating?: boolean
+    averageGrade?: boolean
     avatarIndex?: boolean
     isAdmin?: boolean
     createdAt?: boolean
@@ -2045,6 +2175,8 @@ export namespace Prisma {
     mvpSessions?: boolean | User$mvpSessionsArgs<ExtArgs>
     topScorerSessions?: boolean | User$topScorerSessionsArgs<ExtArgs>
     sessionParticipants?: boolean | User$sessionParticipantsArgs<ExtArgs>
+    evaluatedGrades?: boolean | User$evaluatedGradesArgs<ExtArgs>
+    receivedGrades?: boolean | User$receivedGradesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2056,6 +2188,7 @@ export namespace Prisma {
     nickname?: boolean
     position?: boolean
     rating?: boolean
+    averageGrade?: boolean
     avatarIndex?: boolean
     isAdmin?: boolean
     createdAt?: boolean
@@ -2069,6 +2202,7 @@ export namespace Prisma {
     nickname?: boolean
     position?: boolean
     rating?: boolean
+    averageGrade?: boolean
     avatarIndex?: boolean
     isAdmin?: boolean
     createdAt?: boolean
@@ -2082,12 +2216,13 @@ export namespace Prisma {
     nickname?: boolean
     position?: boolean
     rating?: boolean
+    averageGrade?: boolean
     avatarIndex?: boolean
     isAdmin?: boolean
     createdAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "nickname" | "position" | "rating" | "avatarIndex" | "isAdmin" | "createdAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "nickname" | "position" | "rating" | "averageGrade" | "avatarIndex" | "isAdmin" | "createdAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     teamPlayers?: boolean | User$teamPlayersArgs<ExtArgs>
     goals?: boolean | User$goalsArgs<ExtArgs>
@@ -2096,6 +2231,8 @@ export namespace Prisma {
     mvpSessions?: boolean | User$mvpSessionsArgs<ExtArgs>
     topScorerSessions?: boolean | User$topScorerSessionsArgs<ExtArgs>
     sessionParticipants?: boolean | User$sessionParticipantsArgs<ExtArgs>
+    evaluatedGrades?: boolean | User$evaluatedGradesArgs<ExtArgs>
+    receivedGrades?: boolean | User$receivedGradesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2111,6 +2248,8 @@ export namespace Prisma {
       mvpSessions: Prisma.$SessionPayload<ExtArgs>[]
       topScorerSessions: Prisma.$SessionPayload<ExtArgs>[]
       sessionParticipants: Prisma.$SessionParticipantPayload<ExtArgs>[]
+      evaluatedGrades: Prisma.$SessionGradePayload<ExtArgs>[]
+      receivedGrades: Prisma.$SessionGradePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2120,6 +2259,7 @@ export namespace Prisma {
       nickname: string | null
       position: $Enums.Position
       rating: number
+      averageGrade: number | null
       avatarIndex: number
       isAdmin: boolean
       createdAt: Date
@@ -2524,6 +2664,8 @@ export namespace Prisma {
     mvpSessions<T extends User$mvpSessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$mvpSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     topScorerSessions<T extends User$topScorerSessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$topScorerSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sessionParticipants<T extends User$sessionParticipantsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionParticipantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    evaluatedGrades<T extends User$evaluatedGradesArgs<ExtArgs> = {}>(args?: Subset<T, User$evaluatedGradesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionGradePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    receivedGrades<T extends User$receivedGradesArgs<ExtArgs> = {}>(args?: Subset<T, User$receivedGradesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionGradePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2560,6 +2702,7 @@ export namespace Prisma {
     readonly nickname: FieldRef<"User", 'String'>
     readonly position: FieldRef<"User", 'Position'>
     readonly rating: FieldRef<"User", 'Int'>
+    readonly averageGrade: FieldRef<"User", 'Float'>
     readonly avatarIndex: FieldRef<"User", 'Int'>
     readonly isAdmin: FieldRef<"User", 'Boolean'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
@@ -3119,6 +3262,54 @@ export namespace Prisma {
   }
 
   /**
+   * User.evaluatedGrades
+   */
+  export type User$evaluatedGradesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionGrade
+     */
+    select?: SessionGradeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionGrade
+     */
+    omit?: SessionGradeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionGradeInclude<ExtArgs> | null
+    where?: SessionGradeWhereInput
+    orderBy?: SessionGradeOrderByWithRelationInput | SessionGradeOrderByWithRelationInput[]
+    cursor?: SessionGradeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SessionGradeScalarFieldEnum | SessionGradeScalarFieldEnum[]
+  }
+
+  /**
+   * User.receivedGrades
+   */
+  export type User$receivedGradesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionGrade
+     */
+    select?: SessionGradeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionGrade
+     */
+    omit?: SessionGradeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionGradeInclude<ExtArgs> | null
+    where?: SessionGradeWhereInput
+    orderBy?: SessionGradeOrderByWithRelationInput | SessionGradeOrderByWithRelationInput[]
+    cursor?: SessionGradeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SessionGradeScalarFieldEnum | SessionGradeScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3151,10 +3342,12 @@ export namespace Prisma {
 
   export type SessionAvgAggregateOutputType = {
     maxPlayers: number | null
+    votingTimeoutHours: number | null
   }
 
   export type SessionSumAggregateOutputType = {
     maxPlayers: number | null
+    votingTimeoutHours: number | null
   }
 
   export type SessionMinAggregateOutputType = {
@@ -3166,6 +3359,9 @@ export namespace Prisma {
     mvpPlayerId: string | null
     topScorerPlayerId: string | null
     maxPlayers: number | null
+    finishedAt: Date | null
+    votingTimeoutHours: number | null
+    ratingsConsolidated: boolean | null
     createdAt: Date | null
   }
 
@@ -3178,6 +3374,9 @@ export namespace Prisma {
     mvpPlayerId: string | null
     topScorerPlayerId: string | null
     maxPlayers: number | null
+    finishedAt: Date | null
+    votingTimeoutHours: number | null
+    ratingsConsolidated: boolean | null
     createdAt: Date | null
   }
 
@@ -3190,6 +3389,9 @@ export namespace Prisma {
     mvpPlayerId: number
     topScorerPlayerId: number
     maxPlayers: number
+    finishedAt: number
+    votingTimeoutHours: number
+    ratingsConsolidated: number
     createdAt: number
     _all: number
   }
@@ -3197,10 +3399,12 @@ export namespace Prisma {
 
   export type SessionAvgAggregateInputType = {
     maxPlayers?: true
+    votingTimeoutHours?: true
   }
 
   export type SessionSumAggregateInputType = {
     maxPlayers?: true
+    votingTimeoutHours?: true
   }
 
   export type SessionMinAggregateInputType = {
@@ -3212,6 +3416,9 @@ export namespace Prisma {
     mvpPlayerId?: true
     topScorerPlayerId?: true
     maxPlayers?: true
+    finishedAt?: true
+    votingTimeoutHours?: true
+    ratingsConsolidated?: true
     createdAt?: true
   }
 
@@ -3224,6 +3431,9 @@ export namespace Prisma {
     mvpPlayerId?: true
     topScorerPlayerId?: true
     maxPlayers?: true
+    finishedAt?: true
+    votingTimeoutHours?: true
+    ratingsConsolidated?: true
     createdAt?: true
   }
 
@@ -3236,6 +3446,9 @@ export namespace Prisma {
     mvpPlayerId?: true
     topScorerPlayerId?: true
     maxPlayers?: true
+    finishedAt?: true
+    votingTimeoutHours?: true
+    ratingsConsolidated?: true
     createdAt?: true
     _all?: true
   }
@@ -3335,6 +3548,9 @@ export namespace Prisma {
     mvpPlayerId: string | null
     topScorerPlayerId: string | null
     maxPlayers: number
+    finishedAt: Date | null
+    votingTimeoutHours: number
+    ratingsConsolidated: boolean
     createdAt: Date
     _count: SessionCountAggregateOutputType | null
     _avg: SessionAvgAggregateOutputType | null
@@ -3366,6 +3582,9 @@ export namespace Prisma {
     mvpPlayerId?: boolean
     topScorerPlayerId?: boolean
     maxPlayers?: boolean
+    finishedAt?: boolean
+    votingTimeoutHours?: boolean
+    ratingsConsolidated?: boolean
     createdAt?: boolean
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     mvpPlayer?: boolean | Session$mvpPlayerArgs<ExtArgs>
@@ -3374,6 +3593,7 @@ export namespace Prisma {
     rounds?: boolean | Session$roundsArgs<ExtArgs>
     badges?: boolean | Session$badgesArgs<ExtArgs>
     participants?: boolean | Session$participantsArgs<ExtArgs>
+    grades?: boolean | Session$gradesArgs<ExtArgs>
     _count?: boolean | SessionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["session"]>
 
@@ -3386,6 +3606,9 @@ export namespace Prisma {
     mvpPlayerId?: boolean
     topScorerPlayerId?: boolean
     maxPlayers?: boolean
+    finishedAt?: boolean
+    votingTimeoutHours?: boolean
+    ratingsConsolidated?: boolean
     createdAt?: boolean
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     mvpPlayer?: boolean | Session$mvpPlayerArgs<ExtArgs>
@@ -3401,6 +3624,9 @@ export namespace Prisma {
     mvpPlayerId?: boolean
     topScorerPlayerId?: boolean
     maxPlayers?: boolean
+    finishedAt?: boolean
+    votingTimeoutHours?: boolean
+    ratingsConsolidated?: boolean
     createdAt?: boolean
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     mvpPlayer?: boolean | Session$mvpPlayerArgs<ExtArgs>
@@ -3416,10 +3642,13 @@ export namespace Prisma {
     mvpPlayerId?: boolean
     topScorerPlayerId?: boolean
     maxPlayers?: boolean
+    finishedAt?: boolean
+    votingTimeoutHours?: boolean
+    ratingsConsolidated?: boolean
     createdAt?: boolean
   }
 
-  export type SessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "date" | "status" | "createdById" | "mvpPlayerId" | "topScorerPlayerId" | "maxPlayers" | "createdAt", ExtArgs["result"]["session"]>
+  export type SessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "date" | "status" | "createdById" | "mvpPlayerId" | "topScorerPlayerId" | "maxPlayers" | "finishedAt" | "votingTimeoutHours" | "ratingsConsolidated" | "createdAt", ExtArgs["result"]["session"]>
   export type SessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     mvpPlayer?: boolean | Session$mvpPlayerArgs<ExtArgs>
@@ -3428,6 +3657,7 @@ export namespace Prisma {
     rounds?: boolean | Session$roundsArgs<ExtArgs>
     badges?: boolean | Session$badgesArgs<ExtArgs>
     participants?: boolean | Session$participantsArgs<ExtArgs>
+    grades?: boolean | Session$gradesArgs<ExtArgs>
     _count?: boolean | SessionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3451,6 +3681,7 @@ export namespace Prisma {
       rounds: Prisma.$RoundPayload<ExtArgs>[]
       badges: Prisma.$BadgePayload<ExtArgs>[]
       participants: Prisma.$SessionParticipantPayload<ExtArgs>[]
+      grades: Prisma.$SessionGradePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3461,6 +3692,9 @@ export namespace Prisma {
       mvpPlayerId: string | null
       topScorerPlayerId: string | null
       maxPlayers: number
+      finishedAt: Date | null
+      votingTimeoutHours: number
+      ratingsConsolidated: boolean
       createdAt: Date
     }, ExtArgs["result"]["session"]>
     composites: {}
@@ -3863,6 +4097,7 @@ export namespace Prisma {
     rounds<T extends Session$roundsArgs<ExtArgs> = {}>(args?: Subset<T, Session$roundsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     badges<T extends Session$badgesArgs<ExtArgs> = {}>(args?: Subset<T, Session$badgesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     participants<T extends Session$participantsArgs<ExtArgs> = {}>(args?: Subset<T, Session$participantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    grades<T extends Session$gradesArgs<ExtArgs> = {}>(args?: Subset<T, Session$gradesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionGradePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3900,6 +4135,9 @@ export namespace Prisma {
     readonly mvpPlayerId: FieldRef<"Session", 'String'>
     readonly topScorerPlayerId: FieldRef<"Session", 'String'>
     readonly maxPlayers: FieldRef<"Session", 'Int'>
+    readonly finishedAt: FieldRef<"Session", 'DateTime'>
+    readonly votingTimeoutHours: FieldRef<"Session", 'Int'>
+    readonly ratingsConsolidated: FieldRef<"Session", 'Boolean'>
     readonly createdAt: FieldRef<"Session", 'DateTime'>
   }
     
@@ -4428,6 +4666,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SessionParticipantScalarFieldEnum | SessionParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * Session.grades
+   */
+  export type Session$gradesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionGrade
+     */
+    select?: SessionGradeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionGrade
+     */
+    omit?: SessionGradeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionGradeInclude<ExtArgs> | null
+    where?: SessionGradeWhereInput
+    orderBy?: SessionGradeOrderByWithRelationInput | SessionGradeOrderByWithRelationInput[]
+    cursor?: SessionGradeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SessionGradeScalarFieldEnum | SessionGradeScalarFieldEnum[]
   }
 
   /**
@@ -5144,7 +5406,7 @@ export namespace Prisma {
     readonly sessionId: FieldRef<"Team", 'String'>
     readonly name: FieldRef<"Team", 'String'>
     readonly color: FieldRef<"Team", 'String'>
-    readonly totalRating: FieldRef<"Team", 'Int'>
+    readonly totalRating: FieldRef<"Team", 'Float'>
   }
     
 
@@ -10183,8 +10445,18 @@ export namespace Prisma {
 
   export type AggregateSessionParticipant = {
     _count: SessionParticipantCountAggregateOutputType | null
+    _avg: SessionParticipantAvgAggregateOutputType | null
+    _sum: SessionParticipantSumAggregateOutputType | null
     _min: SessionParticipantMinAggregateOutputType | null
     _max: SessionParticipantMaxAggregateOutputType | null
+  }
+
+  export type SessionParticipantAvgAggregateOutputType = {
+    sessionGrade: number | null
+  }
+
+  export type SessionParticipantSumAggregateOutputType = {
+    sessionGrade: number | null
   }
 
   export type SessionParticipantMinAggregateOutputType = {
@@ -10192,6 +10464,7 @@ export namespace Prisma {
     sessionId: string | null
     userId: string | null
     status: $Enums.ParticipantStatus | null
+    sessionGrade: number | null
     createdAt: Date | null
   }
 
@@ -10200,6 +10473,7 @@ export namespace Prisma {
     sessionId: string | null
     userId: string | null
     status: $Enums.ParticipantStatus | null
+    sessionGrade: number | null
     createdAt: Date | null
   }
 
@@ -10208,16 +10482,26 @@ export namespace Prisma {
     sessionId: number
     userId: number
     status: number
+    sessionGrade: number
     createdAt: number
     _all: number
   }
 
+
+  export type SessionParticipantAvgAggregateInputType = {
+    sessionGrade?: true
+  }
+
+  export type SessionParticipantSumAggregateInputType = {
+    sessionGrade?: true
+  }
 
   export type SessionParticipantMinAggregateInputType = {
     id?: true
     sessionId?: true
     userId?: true
     status?: true
+    sessionGrade?: true
     createdAt?: true
   }
 
@@ -10226,6 +10510,7 @@ export namespace Prisma {
     sessionId?: true
     userId?: true
     status?: true
+    sessionGrade?: true
     createdAt?: true
   }
 
@@ -10234,6 +10519,7 @@ export namespace Prisma {
     sessionId?: true
     userId?: true
     status?: true
+    sessionGrade?: true
     createdAt?: true
     _all?: true
   }
@@ -10276,6 +10562,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: SessionParticipantAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SessionParticipantSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: SessionParticipantMinAggregateInputType
@@ -10306,6 +10604,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: SessionParticipantCountAggregateInputType | true
+    _avg?: SessionParticipantAvgAggregateInputType
+    _sum?: SessionParticipantSumAggregateInputType
     _min?: SessionParticipantMinAggregateInputType
     _max?: SessionParticipantMaxAggregateInputType
   }
@@ -10315,8 +10615,11 @@ export namespace Prisma {
     sessionId: string
     userId: string
     status: $Enums.ParticipantStatus
+    sessionGrade: number | null
     createdAt: Date
     _count: SessionParticipantCountAggregateOutputType | null
+    _avg: SessionParticipantAvgAggregateOutputType | null
+    _sum: SessionParticipantSumAggregateOutputType | null
     _min: SessionParticipantMinAggregateOutputType | null
     _max: SessionParticipantMaxAggregateOutputType | null
   }
@@ -10340,6 +10643,7 @@ export namespace Prisma {
     sessionId?: boolean
     userId?: boolean
     status?: boolean
+    sessionGrade?: boolean
     createdAt?: boolean
     session?: boolean | SessionDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -10350,6 +10654,7 @@ export namespace Prisma {
     sessionId?: boolean
     userId?: boolean
     status?: boolean
+    sessionGrade?: boolean
     createdAt?: boolean
     session?: boolean | SessionDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -10360,6 +10665,7 @@ export namespace Prisma {
     sessionId?: boolean
     userId?: boolean
     status?: boolean
+    sessionGrade?: boolean
     createdAt?: boolean
     session?: boolean | SessionDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -10370,10 +10676,11 @@ export namespace Prisma {
     sessionId?: boolean
     userId?: boolean
     status?: boolean
+    sessionGrade?: boolean
     createdAt?: boolean
   }
 
-  export type SessionParticipantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionId" | "userId" | "status" | "createdAt", ExtArgs["result"]["sessionParticipant"]>
+  export type SessionParticipantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionId" | "userId" | "status" | "sessionGrade" | "createdAt", ExtArgs["result"]["sessionParticipant"]>
   export type SessionParticipantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     session?: boolean | SessionDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -10398,6 +10705,7 @@ export namespace Prisma {
       sessionId: string
       userId: string
       status: $Enums.ParticipantStatus
+      sessionGrade: number | null
       createdAt: Date
     }, ExtArgs["result"]["sessionParticipant"]>
     composites: {}
@@ -10828,6 +11136,7 @@ export namespace Prisma {
     readonly sessionId: FieldRef<"SessionParticipant", 'String'>
     readonly userId: FieldRef<"SessionParticipant", 'String'>
     readonly status: FieldRef<"SessionParticipant", 'ParticipantStatus'>
+    readonly sessionGrade: FieldRef<"SessionParticipant", 'Float'>
     readonly createdAt: FieldRef<"SessionParticipant", 'DateTime'>
   }
     
@@ -11244,6 +11553,1127 @@ export namespace Prisma {
 
 
   /**
+   * Model SessionGrade
+   */
+
+  export type AggregateSessionGrade = {
+    _count: SessionGradeCountAggregateOutputType | null
+    _avg: SessionGradeAvgAggregateOutputType | null
+    _sum: SessionGradeSumAggregateOutputType | null
+    _min: SessionGradeMinAggregateOutputType | null
+    _max: SessionGradeMaxAggregateOutputType | null
+  }
+
+  export type SessionGradeAvgAggregateOutputType = {
+    grade: number | null
+  }
+
+  export type SessionGradeSumAggregateOutputType = {
+    grade: number | null
+  }
+
+  export type SessionGradeMinAggregateOutputType = {
+    id: string | null
+    sessionId: string | null
+    evaluatorId: string | null
+    evaluatedId: string | null
+    grade: number | null
+    createdAt: Date | null
+  }
+
+  export type SessionGradeMaxAggregateOutputType = {
+    id: string | null
+    sessionId: string | null
+    evaluatorId: string | null
+    evaluatedId: string | null
+    grade: number | null
+    createdAt: Date | null
+  }
+
+  export type SessionGradeCountAggregateOutputType = {
+    id: number
+    sessionId: number
+    evaluatorId: number
+    evaluatedId: number
+    grade: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type SessionGradeAvgAggregateInputType = {
+    grade?: true
+  }
+
+  export type SessionGradeSumAggregateInputType = {
+    grade?: true
+  }
+
+  export type SessionGradeMinAggregateInputType = {
+    id?: true
+    sessionId?: true
+    evaluatorId?: true
+    evaluatedId?: true
+    grade?: true
+    createdAt?: true
+  }
+
+  export type SessionGradeMaxAggregateInputType = {
+    id?: true
+    sessionId?: true
+    evaluatorId?: true
+    evaluatedId?: true
+    grade?: true
+    createdAt?: true
+  }
+
+  export type SessionGradeCountAggregateInputType = {
+    id?: true
+    sessionId?: true
+    evaluatorId?: true
+    evaluatedId?: true
+    grade?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type SessionGradeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SessionGrade to aggregate.
+     */
+    where?: SessionGradeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SessionGrades to fetch.
+     */
+    orderBy?: SessionGradeOrderByWithRelationInput | SessionGradeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SessionGradeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SessionGrades from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SessionGrades.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SessionGrades
+    **/
+    _count?: true | SessionGradeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SessionGradeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SessionGradeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SessionGradeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SessionGradeMaxAggregateInputType
+  }
+
+  export type GetSessionGradeAggregateType<T extends SessionGradeAggregateArgs> = {
+        [P in keyof T & keyof AggregateSessionGrade]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSessionGrade[P]>
+      : GetScalarType<T[P], AggregateSessionGrade[P]>
+  }
+
+
+
+
+  export type SessionGradeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionGradeWhereInput
+    orderBy?: SessionGradeOrderByWithAggregationInput | SessionGradeOrderByWithAggregationInput[]
+    by: SessionGradeScalarFieldEnum[] | SessionGradeScalarFieldEnum
+    having?: SessionGradeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SessionGradeCountAggregateInputType | true
+    _avg?: SessionGradeAvgAggregateInputType
+    _sum?: SessionGradeSumAggregateInputType
+    _min?: SessionGradeMinAggregateInputType
+    _max?: SessionGradeMaxAggregateInputType
+  }
+
+  export type SessionGradeGroupByOutputType = {
+    id: string
+    sessionId: string
+    evaluatorId: string
+    evaluatedId: string
+    grade: number
+    createdAt: Date
+    _count: SessionGradeCountAggregateOutputType | null
+    _avg: SessionGradeAvgAggregateOutputType | null
+    _sum: SessionGradeSumAggregateOutputType | null
+    _min: SessionGradeMinAggregateOutputType | null
+    _max: SessionGradeMaxAggregateOutputType | null
+  }
+
+  type GetSessionGradeGroupByPayload<T extends SessionGradeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SessionGradeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SessionGradeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SessionGradeGroupByOutputType[P]>
+            : GetScalarType<T[P], SessionGradeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SessionGradeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    evaluatorId?: boolean
+    evaluatedId?: boolean
+    grade?: boolean
+    createdAt?: boolean
+    session?: boolean | SessionDefaultArgs<ExtArgs>
+    evaluator?: boolean | UserDefaultArgs<ExtArgs>
+    evaluated?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sessionGrade"]>
+
+  export type SessionGradeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    evaluatorId?: boolean
+    evaluatedId?: boolean
+    grade?: boolean
+    createdAt?: boolean
+    session?: boolean | SessionDefaultArgs<ExtArgs>
+    evaluator?: boolean | UserDefaultArgs<ExtArgs>
+    evaluated?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sessionGrade"]>
+
+  export type SessionGradeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sessionId?: boolean
+    evaluatorId?: boolean
+    evaluatedId?: boolean
+    grade?: boolean
+    createdAt?: boolean
+    session?: boolean | SessionDefaultArgs<ExtArgs>
+    evaluator?: boolean | UserDefaultArgs<ExtArgs>
+    evaluated?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sessionGrade"]>
+
+  export type SessionGradeSelectScalar = {
+    id?: boolean
+    sessionId?: boolean
+    evaluatorId?: boolean
+    evaluatedId?: boolean
+    grade?: boolean
+    createdAt?: boolean
+  }
+
+  export type SessionGradeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionId" | "evaluatorId" | "evaluatedId" | "grade" | "createdAt", ExtArgs["result"]["sessionGrade"]>
+  export type SessionGradeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | SessionDefaultArgs<ExtArgs>
+    evaluator?: boolean | UserDefaultArgs<ExtArgs>
+    evaluated?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SessionGradeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | SessionDefaultArgs<ExtArgs>
+    evaluator?: boolean | UserDefaultArgs<ExtArgs>
+    evaluated?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SessionGradeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    session?: boolean | SessionDefaultArgs<ExtArgs>
+    evaluator?: boolean | UserDefaultArgs<ExtArgs>
+    evaluated?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $SessionGradePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SessionGrade"
+    objects: {
+      session: Prisma.$SessionPayload<ExtArgs>
+      evaluator: Prisma.$UserPayload<ExtArgs>
+      evaluated: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      sessionId: string
+      evaluatorId: string
+      evaluatedId: string
+      grade: number
+      createdAt: Date
+    }, ExtArgs["result"]["sessionGrade"]>
+    composites: {}
+  }
+
+  type SessionGradeGetPayload<S extends boolean | null | undefined | SessionGradeDefaultArgs> = $Result.GetResult<Prisma.$SessionGradePayload, S>
+
+  type SessionGradeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SessionGradeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SessionGradeCountAggregateInputType | true
+    }
+
+  export interface SessionGradeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SessionGrade'], meta: { name: 'SessionGrade' } }
+    /**
+     * Find zero or one SessionGrade that matches the filter.
+     * @param {SessionGradeFindUniqueArgs} args - Arguments to find a SessionGrade
+     * @example
+     * // Get one SessionGrade
+     * const sessionGrade = await prisma.sessionGrade.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SessionGradeFindUniqueArgs>(args: SelectSubset<T, SessionGradeFindUniqueArgs<ExtArgs>>): Prisma__SessionGradeClient<$Result.GetResult<Prisma.$SessionGradePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SessionGrade that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SessionGradeFindUniqueOrThrowArgs} args - Arguments to find a SessionGrade
+     * @example
+     * // Get one SessionGrade
+     * const sessionGrade = await prisma.sessionGrade.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SessionGradeFindUniqueOrThrowArgs>(args: SelectSubset<T, SessionGradeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SessionGradeClient<$Result.GetResult<Prisma.$SessionGradePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SessionGrade that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionGradeFindFirstArgs} args - Arguments to find a SessionGrade
+     * @example
+     * // Get one SessionGrade
+     * const sessionGrade = await prisma.sessionGrade.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SessionGradeFindFirstArgs>(args?: SelectSubset<T, SessionGradeFindFirstArgs<ExtArgs>>): Prisma__SessionGradeClient<$Result.GetResult<Prisma.$SessionGradePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SessionGrade that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionGradeFindFirstOrThrowArgs} args - Arguments to find a SessionGrade
+     * @example
+     * // Get one SessionGrade
+     * const sessionGrade = await prisma.sessionGrade.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SessionGradeFindFirstOrThrowArgs>(args?: SelectSubset<T, SessionGradeFindFirstOrThrowArgs<ExtArgs>>): Prisma__SessionGradeClient<$Result.GetResult<Prisma.$SessionGradePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SessionGrades that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionGradeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SessionGrades
+     * const sessionGrades = await prisma.sessionGrade.findMany()
+     * 
+     * // Get first 10 SessionGrades
+     * const sessionGrades = await prisma.sessionGrade.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const sessionGradeWithIdOnly = await prisma.sessionGrade.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SessionGradeFindManyArgs>(args?: SelectSubset<T, SessionGradeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionGradePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SessionGrade.
+     * @param {SessionGradeCreateArgs} args - Arguments to create a SessionGrade.
+     * @example
+     * // Create one SessionGrade
+     * const SessionGrade = await prisma.sessionGrade.create({
+     *   data: {
+     *     // ... data to create a SessionGrade
+     *   }
+     * })
+     * 
+     */
+    create<T extends SessionGradeCreateArgs>(args: SelectSubset<T, SessionGradeCreateArgs<ExtArgs>>): Prisma__SessionGradeClient<$Result.GetResult<Prisma.$SessionGradePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SessionGrades.
+     * @param {SessionGradeCreateManyArgs} args - Arguments to create many SessionGrades.
+     * @example
+     * // Create many SessionGrades
+     * const sessionGrade = await prisma.sessionGrade.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SessionGradeCreateManyArgs>(args?: SelectSubset<T, SessionGradeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SessionGrades and returns the data saved in the database.
+     * @param {SessionGradeCreateManyAndReturnArgs} args - Arguments to create many SessionGrades.
+     * @example
+     * // Create many SessionGrades
+     * const sessionGrade = await prisma.sessionGrade.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SessionGrades and only return the `id`
+     * const sessionGradeWithIdOnly = await prisma.sessionGrade.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SessionGradeCreateManyAndReturnArgs>(args?: SelectSubset<T, SessionGradeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionGradePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SessionGrade.
+     * @param {SessionGradeDeleteArgs} args - Arguments to delete one SessionGrade.
+     * @example
+     * // Delete one SessionGrade
+     * const SessionGrade = await prisma.sessionGrade.delete({
+     *   where: {
+     *     // ... filter to delete one SessionGrade
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SessionGradeDeleteArgs>(args: SelectSubset<T, SessionGradeDeleteArgs<ExtArgs>>): Prisma__SessionGradeClient<$Result.GetResult<Prisma.$SessionGradePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SessionGrade.
+     * @param {SessionGradeUpdateArgs} args - Arguments to update one SessionGrade.
+     * @example
+     * // Update one SessionGrade
+     * const sessionGrade = await prisma.sessionGrade.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SessionGradeUpdateArgs>(args: SelectSubset<T, SessionGradeUpdateArgs<ExtArgs>>): Prisma__SessionGradeClient<$Result.GetResult<Prisma.$SessionGradePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SessionGrades.
+     * @param {SessionGradeDeleteManyArgs} args - Arguments to filter SessionGrades to delete.
+     * @example
+     * // Delete a few SessionGrades
+     * const { count } = await prisma.sessionGrade.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SessionGradeDeleteManyArgs>(args?: SelectSubset<T, SessionGradeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SessionGrades.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionGradeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SessionGrades
+     * const sessionGrade = await prisma.sessionGrade.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SessionGradeUpdateManyArgs>(args: SelectSubset<T, SessionGradeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SessionGrades and returns the data updated in the database.
+     * @param {SessionGradeUpdateManyAndReturnArgs} args - Arguments to update many SessionGrades.
+     * @example
+     * // Update many SessionGrades
+     * const sessionGrade = await prisma.sessionGrade.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SessionGrades and only return the `id`
+     * const sessionGradeWithIdOnly = await prisma.sessionGrade.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SessionGradeUpdateManyAndReturnArgs>(args: SelectSubset<T, SessionGradeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionGradePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SessionGrade.
+     * @param {SessionGradeUpsertArgs} args - Arguments to update or create a SessionGrade.
+     * @example
+     * // Update or create a SessionGrade
+     * const sessionGrade = await prisma.sessionGrade.upsert({
+     *   create: {
+     *     // ... data to create a SessionGrade
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SessionGrade we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SessionGradeUpsertArgs>(args: SelectSubset<T, SessionGradeUpsertArgs<ExtArgs>>): Prisma__SessionGradeClient<$Result.GetResult<Prisma.$SessionGradePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SessionGrades.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionGradeCountArgs} args - Arguments to filter SessionGrades to count.
+     * @example
+     * // Count the number of SessionGrades
+     * const count = await prisma.sessionGrade.count({
+     *   where: {
+     *     // ... the filter for the SessionGrades we want to count
+     *   }
+     * })
+    **/
+    count<T extends SessionGradeCountArgs>(
+      args?: Subset<T, SessionGradeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SessionGradeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SessionGrade.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionGradeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SessionGradeAggregateArgs>(args: Subset<T, SessionGradeAggregateArgs>): Prisma.PrismaPromise<GetSessionGradeAggregateType<T>>
+
+    /**
+     * Group by SessionGrade.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionGradeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SessionGradeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SessionGradeGroupByArgs['orderBy'] }
+        : { orderBy?: SessionGradeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SessionGradeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSessionGradeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SessionGrade model
+   */
+  readonly fields: SessionGradeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SessionGrade.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SessionGradeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    session<T extends SessionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SessionDefaultArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    evaluator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    evaluated<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SessionGrade model
+   */
+  interface SessionGradeFieldRefs {
+    readonly id: FieldRef<"SessionGrade", 'String'>
+    readonly sessionId: FieldRef<"SessionGrade", 'String'>
+    readonly evaluatorId: FieldRef<"SessionGrade", 'String'>
+    readonly evaluatedId: FieldRef<"SessionGrade", 'String'>
+    readonly grade: FieldRef<"SessionGrade", 'Int'>
+    readonly createdAt: FieldRef<"SessionGrade", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SessionGrade findUnique
+   */
+  export type SessionGradeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionGrade
+     */
+    select?: SessionGradeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionGrade
+     */
+    omit?: SessionGradeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionGradeInclude<ExtArgs> | null
+    /**
+     * Filter, which SessionGrade to fetch.
+     */
+    where: SessionGradeWhereUniqueInput
+  }
+
+  /**
+   * SessionGrade findUniqueOrThrow
+   */
+  export type SessionGradeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionGrade
+     */
+    select?: SessionGradeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionGrade
+     */
+    omit?: SessionGradeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionGradeInclude<ExtArgs> | null
+    /**
+     * Filter, which SessionGrade to fetch.
+     */
+    where: SessionGradeWhereUniqueInput
+  }
+
+  /**
+   * SessionGrade findFirst
+   */
+  export type SessionGradeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionGrade
+     */
+    select?: SessionGradeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionGrade
+     */
+    omit?: SessionGradeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionGradeInclude<ExtArgs> | null
+    /**
+     * Filter, which SessionGrade to fetch.
+     */
+    where?: SessionGradeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SessionGrades to fetch.
+     */
+    orderBy?: SessionGradeOrderByWithRelationInput | SessionGradeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SessionGrades.
+     */
+    cursor?: SessionGradeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SessionGrades from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SessionGrades.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SessionGrades.
+     */
+    distinct?: SessionGradeScalarFieldEnum | SessionGradeScalarFieldEnum[]
+  }
+
+  /**
+   * SessionGrade findFirstOrThrow
+   */
+  export type SessionGradeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionGrade
+     */
+    select?: SessionGradeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionGrade
+     */
+    omit?: SessionGradeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionGradeInclude<ExtArgs> | null
+    /**
+     * Filter, which SessionGrade to fetch.
+     */
+    where?: SessionGradeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SessionGrades to fetch.
+     */
+    orderBy?: SessionGradeOrderByWithRelationInput | SessionGradeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SessionGrades.
+     */
+    cursor?: SessionGradeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SessionGrades from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SessionGrades.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SessionGrades.
+     */
+    distinct?: SessionGradeScalarFieldEnum | SessionGradeScalarFieldEnum[]
+  }
+
+  /**
+   * SessionGrade findMany
+   */
+  export type SessionGradeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionGrade
+     */
+    select?: SessionGradeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionGrade
+     */
+    omit?: SessionGradeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionGradeInclude<ExtArgs> | null
+    /**
+     * Filter, which SessionGrades to fetch.
+     */
+    where?: SessionGradeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SessionGrades to fetch.
+     */
+    orderBy?: SessionGradeOrderByWithRelationInput | SessionGradeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SessionGrades.
+     */
+    cursor?: SessionGradeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SessionGrades from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SessionGrades.
+     */
+    skip?: number
+    distinct?: SessionGradeScalarFieldEnum | SessionGradeScalarFieldEnum[]
+  }
+
+  /**
+   * SessionGrade create
+   */
+  export type SessionGradeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionGrade
+     */
+    select?: SessionGradeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionGrade
+     */
+    omit?: SessionGradeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionGradeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SessionGrade.
+     */
+    data: XOR<SessionGradeCreateInput, SessionGradeUncheckedCreateInput>
+  }
+
+  /**
+   * SessionGrade createMany
+   */
+  export type SessionGradeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SessionGrades.
+     */
+    data: SessionGradeCreateManyInput | SessionGradeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SessionGrade createManyAndReturn
+   */
+  export type SessionGradeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionGrade
+     */
+    select?: SessionGradeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionGrade
+     */
+    omit?: SessionGradeOmit<ExtArgs> | null
+    /**
+     * The data used to create many SessionGrades.
+     */
+    data: SessionGradeCreateManyInput | SessionGradeCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionGradeIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SessionGrade update
+   */
+  export type SessionGradeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionGrade
+     */
+    select?: SessionGradeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionGrade
+     */
+    omit?: SessionGradeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionGradeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SessionGrade.
+     */
+    data: XOR<SessionGradeUpdateInput, SessionGradeUncheckedUpdateInput>
+    /**
+     * Choose, which SessionGrade to update.
+     */
+    where: SessionGradeWhereUniqueInput
+  }
+
+  /**
+   * SessionGrade updateMany
+   */
+  export type SessionGradeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SessionGrades.
+     */
+    data: XOR<SessionGradeUpdateManyMutationInput, SessionGradeUncheckedUpdateManyInput>
+    /**
+     * Filter which SessionGrades to update
+     */
+    where?: SessionGradeWhereInput
+    /**
+     * Limit how many SessionGrades to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SessionGrade updateManyAndReturn
+   */
+  export type SessionGradeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionGrade
+     */
+    select?: SessionGradeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionGrade
+     */
+    omit?: SessionGradeOmit<ExtArgs> | null
+    /**
+     * The data used to update SessionGrades.
+     */
+    data: XOR<SessionGradeUpdateManyMutationInput, SessionGradeUncheckedUpdateManyInput>
+    /**
+     * Filter which SessionGrades to update
+     */
+    where?: SessionGradeWhereInput
+    /**
+     * Limit how many SessionGrades to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionGradeIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SessionGrade upsert
+   */
+  export type SessionGradeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionGrade
+     */
+    select?: SessionGradeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionGrade
+     */
+    omit?: SessionGradeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionGradeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SessionGrade to update in case it exists.
+     */
+    where: SessionGradeWhereUniqueInput
+    /**
+     * In case the SessionGrade found by the `where` argument doesn't exist, create a new SessionGrade with this data.
+     */
+    create: XOR<SessionGradeCreateInput, SessionGradeUncheckedCreateInput>
+    /**
+     * In case the SessionGrade was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SessionGradeUpdateInput, SessionGradeUncheckedUpdateInput>
+  }
+
+  /**
+   * SessionGrade delete
+   */
+  export type SessionGradeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionGrade
+     */
+    select?: SessionGradeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionGrade
+     */
+    omit?: SessionGradeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionGradeInclude<ExtArgs> | null
+    /**
+     * Filter which SessionGrade to delete.
+     */
+    where: SessionGradeWhereUniqueInput
+  }
+
+  /**
+   * SessionGrade deleteMany
+   */
+  export type SessionGradeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SessionGrades to delete
+     */
+    where?: SessionGradeWhereInput
+    /**
+     * Limit how many SessionGrades to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SessionGrade without action
+   */
+  export type SessionGradeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SessionGrade
+     */
+    select?: SessionGradeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SessionGrade
+     */
+    omit?: SessionGradeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionGradeInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -11265,6 +12695,7 @@ export namespace Prisma {
     nickname: 'nickname',
     position: 'position',
     rating: 'rating',
+    averageGrade: 'averageGrade',
     avatarIndex: 'avatarIndex',
     isAdmin: 'isAdmin',
     createdAt: 'createdAt'
@@ -11282,6 +12713,9 @@ export namespace Prisma {
     mvpPlayerId: 'mvpPlayerId',
     topScorerPlayerId: 'topScorerPlayerId',
     maxPlayers: 'maxPlayers',
+    finishedAt: 'finishedAt',
+    votingTimeoutHours: 'votingTimeoutHours',
+    ratingsConsolidated: 'ratingsConsolidated',
     createdAt: 'createdAt'
   };
 
@@ -11350,10 +12784,23 @@ export namespace Prisma {
     sessionId: 'sessionId',
     userId: 'userId',
     status: 'status',
+    sessionGrade: 'sessionGrade',
     createdAt: 'createdAt'
   };
 
   export type SessionParticipantScalarFieldEnum = (typeof SessionParticipantScalarFieldEnum)[keyof typeof SessionParticipantScalarFieldEnum]
+
+
+  export const SessionGradeScalarFieldEnum: {
+    id: 'id',
+    sessionId: 'sessionId',
+    evaluatorId: 'evaluatorId',
+    evaluatedId: 'evaluatedId',
+    grade: 'grade',
+    createdAt: 'createdAt'
+  };
+
+  export type SessionGradeScalarFieldEnum = (typeof SessionGradeScalarFieldEnum)[keyof typeof SessionGradeScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -11428,6 +12875,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
@@ -11488,20 +12949,6 @@ export namespace Prisma {
    */
   export type ListEnumParticipantStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ParticipantStatus[]'>
     
-
-
-  /**
-   * Reference to a field of type 'Float'
-   */
-  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-  /**
-   * Reference to a field of type 'Float[]'
-   */
-  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
   /**
    * Deep Input Types
    */
@@ -11518,6 +12965,7 @@ export namespace Prisma {
     nickname?: StringNullableFilter<"User"> | string | null
     position?: EnumPositionFilter<"User"> | $Enums.Position
     rating?: IntFilter<"User"> | number
+    averageGrade?: FloatNullableFilter<"User"> | number | null
     avatarIndex?: IntFilter<"User"> | number
     isAdmin?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -11528,6 +12976,8 @@ export namespace Prisma {
     mvpSessions?: SessionListRelationFilter
     topScorerSessions?: SessionListRelationFilter
     sessionParticipants?: SessionParticipantListRelationFilter
+    evaluatedGrades?: SessionGradeListRelationFilter
+    receivedGrades?: SessionGradeListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -11538,6 +12988,7 @@ export namespace Prisma {
     nickname?: SortOrderInput | SortOrder
     position?: SortOrder
     rating?: SortOrder
+    averageGrade?: SortOrderInput | SortOrder
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
     createdAt?: SortOrder
@@ -11548,6 +12999,8 @@ export namespace Prisma {
     mvpSessions?: SessionOrderByRelationAggregateInput
     topScorerSessions?: SessionOrderByRelationAggregateInput
     sessionParticipants?: SessionParticipantOrderByRelationAggregateInput
+    evaluatedGrades?: SessionGradeOrderByRelationAggregateInput
+    receivedGrades?: SessionGradeOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -11561,6 +13014,7 @@ export namespace Prisma {
     nickname?: StringNullableFilter<"User"> | string | null
     position?: EnumPositionFilter<"User"> | $Enums.Position
     rating?: IntFilter<"User"> | number
+    averageGrade?: FloatNullableFilter<"User"> | number | null
     avatarIndex?: IntFilter<"User"> | number
     isAdmin?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -11571,6 +13025,8 @@ export namespace Prisma {
     mvpSessions?: SessionListRelationFilter
     topScorerSessions?: SessionListRelationFilter
     sessionParticipants?: SessionParticipantListRelationFilter
+    evaluatedGrades?: SessionGradeListRelationFilter
+    receivedGrades?: SessionGradeListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -11581,6 +13037,7 @@ export namespace Prisma {
     nickname?: SortOrderInput | SortOrder
     position?: SortOrder
     rating?: SortOrder
+    averageGrade?: SortOrderInput | SortOrder
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
     createdAt?: SortOrder
@@ -11602,6 +13059,7 @@ export namespace Prisma {
     nickname?: StringNullableWithAggregatesFilter<"User"> | string | null
     position?: EnumPositionWithAggregatesFilter<"User"> | $Enums.Position
     rating?: IntWithAggregatesFilter<"User"> | number
+    averageGrade?: FloatNullableWithAggregatesFilter<"User"> | number | null
     avatarIndex?: IntWithAggregatesFilter<"User"> | number
     isAdmin?: BoolWithAggregatesFilter<"User"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -11619,6 +13077,9 @@ export namespace Prisma {
     mvpPlayerId?: StringNullableFilter<"Session"> | string | null
     topScorerPlayerId?: StringNullableFilter<"Session"> | string | null
     maxPlayers?: IntFilter<"Session"> | number
+    finishedAt?: DateTimeNullableFilter<"Session"> | Date | string | null
+    votingTimeoutHours?: IntFilter<"Session"> | number
+    ratingsConsolidated?: BoolFilter<"Session"> | boolean
     createdAt?: DateTimeFilter<"Session"> | Date | string
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     mvpPlayer?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
@@ -11627,6 +13088,7 @@ export namespace Prisma {
     rounds?: RoundListRelationFilter
     badges?: BadgeListRelationFilter
     participants?: SessionParticipantListRelationFilter
+    grades?: SessionGradeListRelationFilter
   }
 
   export type SessionOrderByWithRelationInput = {
@@ -11638,6 +13100,9 @@ export namespace Prisma {
     mvpPlayerId?: SortOrderInput | SortOrder
     topScorerPlayerId?: SortOrderInput | SortOrder
     maxPlayers?: SortOrder
+    finishedAt?: SortOrderInput | SortOrder
+    votingTimeoutHours?: SortOrder
+    ratingsConsolidated?: SortOrder
     createdAt?: SortOrder
     createdBy?: UserOrderByWithRelationInput
     mvpPlayer?: UserOrderByWithRelationInput
@@ -11646,6 +13111,7 @@ export namespace Prisma {
     rounds?: RoundOrderByRelationAggregateInput
     badges?: BadgeOrderByRelationAggregateInput
     participants?: SessionParticipantOrderByRelationAggregateInput
+    grades?: SessionGradeOrderByRelationAggregateInput
   }
 
   export type SessionWhereUniqueInput = Prisma.AtLeast<{
@@ -11660,6 +13126,9 @@ export namespace Prisma {
     mvpPlayerId?: StringNullableFilter<"Session"> | string | null
     topScorerPlayerId?: StringNullableFilter<"Session"> | string | null
     maxPlayers?: IntFilter<"Session"> | number
+    finishedAt?: DateTimeNullableFilter<"Session"> | Date | string | null
+    votingTimeoutHours?: IntFilter<"Session"> | number
+    ratingsConsolidated?: BoolFilter<"Session"> | boolean
     createdAt?: DateTimeFilter<"Session"> | Date | string
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     mvpPlayer?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
@@ -11668,6 +13137,7 @@ export namespace Prisma {
     rounds?: RoundListRelationFilter
     badges?: BadgeListRelationFilter
     participants?: SessionParticipantListRelationFilter
+    grades?: SessionGradeListRelationFilter
   }, "id">
 
   export type SessionOrderByWithAggregationInput = {
@@ -11679,6 +13149,9 @@ export namespace Prisma {
     mvpPlayerId?: SortOrderInput | SortOrder
     topScorerPlayerId?: SortOrderInput | SortOrder
     maxPlayers?: SortOrder
+    finishedAt?: SortOrderInput | SortOrder
+    votingTimeoutHours?: SortOrder
+    ratingsConsolidated?: SortOrder
     createdAt?: SortOrder
     _count?: SessionCountOrderByAggregateInput
     _avg?: SessionAvgOrderByAggregateInput
@@ -11699,6 +13172,9 @@ export namespace Prisma {
     mvpPlayerId?: StringNullableWithAggregatesFilter<"Session"> | string | null
     topScorerPlayerId?: StringNullableWithAggregatesFilter<"Session"> | string | null
     maxPlayers?: IntWithAggregatesFilter<"Session"> | number
+    finishedAt?: DateTimeNullableWithAggregatesFilter<"Session"> | Date | string | null
+    votingTimeoutHours?: IntWithAggregatesFilter<"Session"> | number
+    ratingsConsolidated?: BoolWithAggregatesFilter<"Session"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Session"> | Date | string
   }
 
@@ -11710,7 +13186,7 @@ export namespace Prisma {
     sessionId?: StringFilter<"Team"> | string
     name?: StringFilter<"Team"> | string
     color?: StringFilter<"Team"> | string
-    totalRating?: IntFilter<"Team"> | number
+    totalRating?: FloatFilter<"Team"> | number
     session?: XOR<SessionScalarRelationFilter, SessionWhereInput>
     players?: TeamPlayerListRelationFilter
     homeRounds?: RoundListRelationFilter
@@ -11739,7 +13215,7 @@ export namespace Prisma {
     sessionId?: StringFilter<"Team"> | string
     name?: StringFilter<"Team"> | string
     color?: StringFilter<"Team"> | string
-    totalRating?: IntFilter<"Team"> | number
+    totalRating?: FloatFilter<"Team"> | number
     session?: XOR<SessionScalarRelationFilter, SessionWhereInput>
     players?: TeamPlayerListRelationFilter
     homeRounds?: RoundListRelationFilter
@@ -11768,7 +13244,7 @@ export namespace Prisma {
     sessionId?: StringWithAggregatesFilter<"Team"> | string
     name?: StringWithAggregatesFilter<"Team"> | string
     color?: StringWithAggregatesFilter<"Team"> | string
-    totalRating?: IntWithAggregatesFilter<"Team"> | number
+    totalRating?: FloatWithAggregatesFilter<"Team"> | number
   }
 
   export type TeamPlayerWhereInput = {
@@ -12039,6 +13515,7 @@ export namespace Prisma {
     sessionId?: StringFilter<"SessionParticipant"> | string
     userId?: StringFilter<"SessionParticipant"> | string
     status?: EnumParticipantStatusFilter<"SessionParticipant"> | $Enums.ParticipantStatus
+    sessionGrade?: FloatNullableFilter<"SessionParticipant"> | number | null
     createdAt?: DateTimeFilter<"SessionParticipant"> | Date | string
     session?: XOR<SessionScalarRelationFilter, SessionWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -12049,6 +13526,7 @@ export namespace Prisma {
     sessionId?: SortOrder
     userId?: SortOrder
     status?: SortOrder
+    sessionGrade?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     session?: SessionOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
@@ -12063,6 +13541,7 @@ export namespace Prisma {
     sessionId?: StringFilter<"SessionParticipant"> | string
     userId?: StringFilter<"SessionParticipant"> | string
     status?: EnumParticipantStatusFilter<"SessionParticipant"> | $Enums.ParticipantStatus
+    sessionGrade?: FloatNullableFilter<"SessionParticipant"> | number | null
     createdAt?: DateTimeFilter<"SessionParticipant"> | Date | string
     session?: XOR<SessionScalarRelationFilter, SessionWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -12073,10 +13552,13 @@ export namespace Prisma {
     sessionId?: SortOrder
     userId?: SortOrder
     status?: SortOrder
+    sessionGrade?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: SessionParticipantCountOrderByAggregateInput
+    _avg?: SessionParticipantAvgOrderByAggregateInput
     _max?: SessionParticipantMaxOrderByAggregateInput
     _min?: SessionParticipantMinOrderByAggregateInput
+    _sum?: SessionParticipantSumOrderByAggregateInput
   }
 
   export type SessionParticipantScalarWhereWithAggregatesInput = {
@@ -12087,7 +13569,77 @@ export namespace Prisma {
     sessionId?: StringWithAggregatesFilter<"SessionParticipant"> | string
     userId?: StringWithAggregatesFilter<"SessionParticipant"> | string
     status?: EnumParticipantStatusWithAggregatesFilter<"SessionParticipant"> | $Enums.ParticipantStatus
+    sessionGrade?: FloatNullableWithAggregatesFilter<"SessionParticipant"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"SessionParticipant"> | Date | string
+  }
+
+  export type SessionGradeWhereInput = {
+    AND?: SessionGradeWhereInput | SessionGradeWhereInput[]
+    OR?: SessionGradeWhereInput[]
+    NOT?: SessionGradeWhereInput | SessionGradeWhereInput[]
+    id?: StringFilter<"SessionGrade"> | string
+    sessionId?: StringFilter<"SessionGrade"> | string
+    evaluatorId?: StringFilter<"SessionGrade"> | string
+    evaluatedId?: StringFilter<"SessionGrade"> | string
+    grade?: IntFilter<"SessionGrade"> | number
+    createdAt?: DateTimeFilter<"SessionGrade"> | Date | string
+    session?: XOR<SessionScalarRelationFilter, SessionWhereInput>
+    evaluator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    evaluated?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type SessionGradeOrderByWithRelationInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    evaluatorId?: SortOrder
+    evaluatedId?: SortOrder
+    grade?: SortOrder
+    createdAt?: SortOrder
+    session?: SessionOrderByWithRelationInput
+    evaluator?: UserOrderByWithRelationInput
+    evaluated?: UserOrderByWithRelationInput
+  }
+
+  export type SessionGradeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    sessionId_evaluatorId_evaluatedId?: SessionGradeSessionIdEvaluatorIdEvaluatedIdCompoundUniqueInput
+    AND?: SessionGradeWhereInput | SessionGradeWhereInput[]
+    OR?: SessionGradeWhereInput[]
+    NOT?: SessionGradeWhereInput | SessionGradeWhereInput[]
+    sessionId?: StringFilter<"SessionGrade"> | string
+    evaluatorId?: StringFilter<"SessionGrade"> | string
+    evaluatedId?: StringFilter<"SessionGrade"> | string
+    grade?: IntFilter<"SessionGrade"> | number
+    createdAt?: DateTimeFilter<"SessionGrade"> | Date | string
+    session?: XOR<SessionScalarRelationFilter, SessionWhereInput>
+    evaluator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    evaluated?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "sessionId_evaluatorId_evaluatedId">
+
+  export type SessionGradeOrderByWithAggregationInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    evaluatorId?: SortOrder
+    evaluatedId?: SortOrder
+    grade?: SortOrder
+    createdAt?: SortOrder
+    _count?: SessionGradeCountOrderByAggregateInput
+    _avg?: SessionGradeAvgOrderByAggregateInput
+    _max?: SessionGradeMaxOrderByAggregateInput
+    _min?: SessionGradeMinOrderByAggregateInput
+    _sum?: SessionGradeSumOrderByAggregateInput
+  }
+
+  export type SessionGradeScalarWhereWithAggregatesInput = {
+    AND?: SessionGradeScalarWhereWithAggregatesInput | SessionGradeScalarWhereWithAggregatesInput[]
+    OR?: SessionGradeScalarWhereWithAggregatesInput[]
+    NOT?: SessionGradeScalarWhereWithAggregatesInput | SessionGradeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SessionGrade"> | string
+    sessionId?: StringWithAggregatesFilter<"SessionGrade"> | string
+    evaluatorId?: StringWithAggregatesFilter<"SessionGrade"> | string
+    evaluatedId?: StringWithAggregatesFilter<"SessionGrade"> | string
+    grade?: IntWithAggregatesFilter<"SessionGrade"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"SessionGrade"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -12098,6 +13650,7 @@ export namespace Prisma {
     nickname?: string | null
     position?: $Enums.Position
     rating?: number
+    averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
     createdAt?: Date | string
@@ -12108,6 +13661,8 @@ export namespace Prisma {
     mvpSessions?: SessionCreateNestedManyWithoutMvpPlayerInput
     topScorerSessions?: SessionCreateNestedManyWithoutTopScorerPlayerInput
     sessionParticipants?: SessionParticipantCreateNestedManyWithoutUserInput
+    evaluatedGrades?: SessionGradeCreateNestedManyWithoutEvaluatorInput
+    receivedGrades?: SessionGradeCreateNestedManyWithoutEvaluatedInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -12118,6 +13673,7 @@ export namespace Prisma {
     nickname?: string | null
     position?: $Enums.Position
     rating?: number
+    averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
     createdAt?: Date | string
@@ -12128,6 +13684,8 @@ export namespace Prisma {
     mvpSessions?: SessionUncheckedCreateNestedManyWithoutMvpPlayerInput
     topScorerSessions?: SessionUncheckedCreateNestedManyWithoutTopScorerPlayerInput
     sessionParticipants?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
+    evaluatedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput
+    receivedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput
   }
 
   export type UserUpdateInput = {
@@ -12138,6 +13696,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
     rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12148,6 +13707,8 @@ export namespace Prisma {
     mvpSessions?: SessionUpdateManyWithoutMvpPlayerNestedInput
     topScorerSessions?: SessionUpdateManyWithoutTopScorerPlayerNestedInput
     sessionParticipants?: SessionParticipantUpdateManyWithoutUserNestedInput
+    evaluatedGrades?: SessionGradeUpdateManyWithoutEvaluatorNestedInput
+    receivedGrades?: SessionGradeUpdateManyWithoutEvaluatedNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -12158,6 +13719,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
     rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12168,6 +13730,8 @@ export namespace Prisma {
     mvpSessions?: SessionUncheckedUpdateManyWithoutMvpPlayerNestedInput
     topScorerSessions?: SessionUncheckedUpdateManyWithoutTopScorerPlayerNestedInput
     sessionParticipants?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
+    evaluatedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput
+    receivedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -12178,6 +13742,7 @@ export namespace Prisma {
     nickname?: string | null
     position?: $Enums.Position
     rating?: number
+    averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
     createdAt?: Date | string
@@ -12191,6 +13756,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
     rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12204,6 +13770,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
     rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -12215,6 +13782,9 @@ export namespace Prisma {
     date: Date | string
     status?: $Enums.SessionStatus
     maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
     createdAt?: Date | string
     createdBy: UserCreateNestedOneWithoutCreatedSessionsInput
     mvpPlayer?: UserCreateNestedOneWithoutMvpSessionsInput
@@ -12223,6 +13793,7 @@ export namespace Prisma {
     rounds?: RoundCreateNestedManyWithoutSessionInput
     badges?: BadgeCreateNestedManyWithoutSessionInput
     participants?: SessionParticipantCreateNestedManyWithoutSessionInput
+    grades?: SessionGradeCreateNestedManyWithoutSessionInput
   }
 
   export type SessionUncheckedCreateInput = {
@@ -12234,11 +13805,15 @@ export namespace Prisma {
     mvpPlayerId?: string | null
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
     createdAt?: Date | string
     teams?: TeamUncheckedCreateNestedManyWithoutSessionInput
     rounds?: RoundUncheckedCreateNestedManyWithoutSessionInput
     badges?: BadgeUncheckedCreateNestedManyWithoutSessionInput
     participants?: SessionParticipantUncheckedCreateNestedManyWithoutSessionInput
+    grades?: SessionGradeUncheckedCreateNestedManyWithoutSessionInput
   }
 
   export type SessionUpdateInput = {
@@ -12247,6 +13822,9 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutCreatedSessionsNestedInput
     mvpPlayer?: UserUpdateOneWithoutMvpSessionsNestedInput
@@ -12255,6 +13833,7 @@ export namespace Prisma {
     rounds?: RoundUpdateManyWithoutSessionNestedInput
     badges?: BadgeUpdateManyWithoutSessionNestedInput
     participants?: SessionParticipantUpdateManyWithoutSessionNestedInput
+    grades?: SessionGradeUpdateManyWithoutSessionNestedInput
   }
 
   export type SessionUncheckedUpdateInput = {
@@ -12266,11 +13845,15 @@ export namespace Prisma {
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teams?: TeamUncheckedUpdateManyWithoutSessionNestedInput
     rounds?: RoundUncheckedUpdateManyWithoutSessionNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutSessionNestedInput
     participants?: SessionParticipantUncheckedUpdateManyWithoutSessionNestedInput
+    grades?: SessionGradeUncheckedUpdateManyWithoutSessionNestedInput
   }
 
   export type SessionCreateManyInput = {
@@ -12282,6 +13865,9 @@ export namespace Prisma {
     mvpPlayerId?: string | null
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
     createdAt?: Date | string
   }
 
@@ -12291,6 +13877,9 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -12303,6 +13892,9 @@ export namespace Prisma {
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -12334,7 +13926,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
-    totalRating?: IntFieldUpdateOperationsInput | number
+    totalRating?: FloatFieldUpdateOperationsInput | number
     session?: SessionUpdateOneRequiredWithoutTeamsNestedInput
     players?: TeamPlayerUpdateManyWithoutTeamNestedInput
     homeRounds?: RoundUpdateManyWithoutHomeTeamNestedInput
@@ -12347,7 +13939,7 @@ export namespace Prisma {
     sessionId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
-    totalRating?: IntFieldUpdateOperationsInput | number
+    totalRating?: FloatFieldUpdateOperationsInput | number
     players?: TeamPlayerUncheckedUpdateManyWithoutTeamNestedInput
     homeRounds?: RoundUncheckedUpdateManyWithoutHomeTeamNestedInput
     awayRounds?: RoundUncheckedUpdateManyWithoutAwayTeamNestedInput
@@ -12366,7 +13958,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
-    totalRating?: IntFieldUpdateOperationsInput | number
+    totalRating?: FloatFieldUpdateOperationsInput | number
   }
 
   export type TeamUncheckedUpdateManyInput = {
@@ -12374,7 +13966,7 @@ export namespace Prisma {
     sessionId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
-    totalRating?: IntFieldUpdateOperationsInput | number
+    totalRating?: FloatFieldUpdateOperationsInput | number
   }
 
   export type TeamPlayerCreateInput = {
@@ -12604,6 +14196,7 @@ export namespace Prisma {
   export type SessionParticipantCreateInput = {
     id?: string
     status?: $Enums.ParticipantStatus
+    sessionGrade?: number | null
     createdAt?: Date | string
     session: SessionCreateNestedOneWithoutParticipantsInput
     user: UserCreateNestedOneWithoutSessionParticipantsInput
@@ -12614,12 +14207,14 @@ export namespace Prisma {
     sessionId: string
     userId: string
     status?: $Enums.ParticipantStatus
+    sessionGrade?: number | null
     createdAt?: Date | string
   }
 
   export type SessionParticipantUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumParticipantStatusFieldUpdateOperationsInput | $Enums.ParticipantStatus
+    sessionGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     session?: SessionUpdateOneRequiredWithoutParticipantsNestedInput
     user?: UserUpdateOneRequiredWithoutSessionParticipantsNestedInput
@@ -12630,6 +14225,7 @@ export namespace Prisma {
     sessionId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     status?: EnumParticipantStatusFieldUpdateOperationsInput | $Enums.ParticipantStatus
+    sessionGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -12638,12 +14234,14 @@ export namespace Prisma {
     sessionId: string
     userId: string
     status?: $Enums.ParticipantStatus
+    sessionGrade?: number | null
     createdAt?: Date | string
   }
 
   export type SessionParticipantUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumParticipantStatusFieldUpdateOperationsInput | $Enums.ParticipantStatus
+    sessionGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -12652,6 +14250,67 @@ export namespace Prisma {
     sessionId?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     status?: EnumParticipantStatusFieldUpdateOperationsInput | $Enums.ParticipantStatus
+    sessionGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionGradeCreateInput = {
+    id?: string
+    grade: number
+    createdAt?: Date | string
+    session: SessionCreateNestedOneWithoutGradesInput
+    evaluator: UserCreateNestedOneWithoutEvaluatedGradesInput
+    evaluated: UserCreateNestedOneWithoutReceivedGradesInput
+  }
+
+  export type SessionGradeUncheckedCreateInput = {
+    id?: string
+    sessionId: string
+    evaluatorId: string
+    evaluatedId: string
+    grade: number
+    createdAt?: Date | string
+  }
+
+  export type SessionGradeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: SessionUpdateOneRequiredWithoutGradesNestedInput
+    evaluator?: UserUpdateOneRequiredWithoutEvaluatedGradesNestedInput
+    evaluated?: UserUpdateOneRequiredWithoutReceivedGradesNestedInput
+  }
+
+  export type SessionGradeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    evaluatorId?: StringFieldUpdateOperationsInput | string
+    evaluatedId?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionGradeCreateManyInput = {
+    id?: string
+    sessionId: string
+    evaluatorId: string
+    evaluatedId: string
+    grade: number
+    createdAt?: Date | string
+  }
+
+  export type SessionGradeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionGradeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    evaluatorId?: StringFieldUpdateOperationsInput | string
+    evaluatedId?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -12703,6 +14362,17 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type BoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
@@ -12749,6 +14419,12 @@ export namespace Prisma {
     none?: SessionParticipantWhereInput
   }
 
+  export type SessionGradeListRelationFilter = {
+    every?: SessionGradeWhereInput
+    some?: SessionGradeWhereInput
+    none?: SessionGradeWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -12774,6 +14450,10 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type SessionGradeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
@@ -12782,6 +14462,7 @@ export namespace Prisma {
     nickname?: SortOrder
     position?: SortOrder
     rating?: SortOrder
+    averageGrade?: SortOrder
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
     createdAt?: SortOrder
@@ -12789,6 +14470,7 @@ export namespace Prisma {
 
   export type UserAvgOrderByAggregateInput = {
     rating?: SortOrder
+    averageGrade?: SortOrder
     avatarIndex?: SortOrder
   }
 
@@ -12800,6 +14482,7 @@ export namespace Prisma {
     nickname?: SortOrder
     position?: SortOrder
     rating?: SortOrder
+    averageGrade?: SortOrder
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
     createdAt?: SortOrder
@@ -12813,6 +14496,7 @@ export namespace Prisma {
     nickname?: SortOrder
     position?: SortOrder
     rating?: SortOrder
+    averageGrade?: SortOrder
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
     createdAt?: SortOrder
@@ -12820,6 +14504,7 @@ export namespace Prisma {
 
   export type UserSumOrderByAggregateInput = {
     rating?: SortOrder
+    averageGrade?: SortOrder
     avatarIndex?: SortOrder
   }
 
@@ -12885,6 +14570,22 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -12912,6 +14613,17 @@ export namespace Prisma {
     in?: $Enums.SessionStatus[] | ListEnumSessionStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.SessionStatus[] | ListEnumSessionStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumSessionStatusFilter<$PrismaModel> | $Enums.SessionStatus
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type UserScalarRelationFilter = {
@@ -12953,11 +14665,15 @@ export namespace Prisma {
     mvpPlayerId?: SortOrder
     topScorerPlayerId?: SortOrder
     maxPlayers?: SortOrder
+    finishedAt?: SortOrder
+    votingTimeoutHours?: SortOrder
+    ratingsConsolidated?: SortOrder
     createdAt?: SortOrder
   }
 
   export type SessionAvgOrderByAggregateInput = {
     maxPlayers?: SortOrder
+    votingTimeoutHours?: SortOrder
   }
 
   export type SessionMaxOrderByAggregateInput = {
@@ -12969,6 +14685,9 @@ export namespace Prisma {
     mvpPlayerId?: SortOrder
     topScorerPlayerId?: SortOrder
     maxPlayers?: SortOrder
+    finishedAt?: SortOrder
+    votingTimeoutHours?: SortOrder
+    ratingsConsolidated?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -12981,11 +14700,15 @@ export namespace Prisma {
     mvpPlayerId?: SortOrder
     topScorerPlayerId?: SortOrder
     maxPlayers?: SortOrder
+    finishedAt?: SortOrder
+    votingTimeoutHours?: SortOrder
+    ratingsConsolidated?: SortOrder
     createdAt?: SortOrder
   }
 
   export type SessionSumOrderByAggregateInput = {
     maxPlayers?: SortOrder
+    votingTimeoutHours?: SortOrder
   }
 
   export type EnumSessionStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -12996,6 +14719,31 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumSessionStatusFilter<$PrismaModel>
     _max?: NestedEnumSessionStatusFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type SessionScalarRelationFilter = {
@@ -13033,6 +14781,22 @@ export namespace Prisma {
 
   export type TeamSumOrderByAggregateInput = {
     totalRating?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type TeamScalarRelationFilter = {
@@ -13261,7 +15025,12 @@ export namespace Prisma {
     sessionId?: SortOrder
     userId?: SortOrder
     status?: SortOrder
+    sessionGrade?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type SessionParticipantAvgOrderByAggregateInput = {
+    sessionGrade?: SortOrder
   }
 
   export type SessionParticipantMaxOrderByAggregateInput = {
@@ -13269,6 +15038,7 @@ export namespace Prisma {
     sessionId?: SortOrder
     userId?: SortOrder
     status?: SortOrder
+    sessionGrade?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -13277,7 +15047,12 @@ export namespace Prisma {
     sessionId?: SortOrder
     userId?: SortOrder
     status?: SortOrder
+    sessionGrade?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type SessionParticipantSumOrderByAggregateInput = {
+    sessionGrade?: SortOrder
   }
 
   export type EnumParticipantStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -13288,6 +15063,47 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumParticipantStatusFilter<$PrismaModel>
     _max?: NestedEnumParticipantStatusFilter<$PrismaModel>
+  }
+
+  export type SessionGradeSessionIdEvaluatorIdEvaluatedIdCompoundUniqueInput = {
+    sessionId: string
+    evaluatorId: string
+    evaluatedId: string
+  }
+
+  export type SessionGradeCountOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    evaluatorId?: SortOrder
+    evaluatedId?: SortOrder
+    grade?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SessionGradeAvgOrderByAggregateInput = {
+    grade?: SortOrder
+  }
+
+  export type SessionGradeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    evaluatorId?: SortOrder
+    evaluatedId?: SortOrder
+    grade?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SessionGradeMinOrderByAggregateInput = {
+    id?: SortOrder
+    sessionId?: SortOrder
+    evaluatorId?: SortOrder
+    evaluatedId?: SortOrder
+    grade?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SessionGradeSumOrderByAggregateInput = {
+    grade?: SortOrder
   }
 
   export type TeamPlayerCreateNestedManyWithoutPlayerInput = {
@@ -13339,6 +15155,20 @@ export namespace Prisma {
     connect?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
   }
 
+  export type SessionGradeCreateNestedManyWithoutEvaluatorInput = {
+    create?: XOR<SessionGradeCreateWithoutEvaluatorInput, SessionGradeUncheckedCreateWithoutEvaluatorInput> | SessionGradeCreateWithoutEvaluatorInput[] | SessionGradeUncheckedCreateWithoutEvaluatorInput[]
+    connectOrCreate?: SessionGradeCreateOrConnectWithoutEvaluatorInput | SessionGradeCreateOrConnectWithoutEvaluatorInput[]
+    createMany?: SessionGradeCreateManyEvaluatorInputEnvelope
+    connect?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+  }
+
+  export type SessionGradeCreateNestedManyWithoutEvaluatedInput = {
+    create?: XOR<SessionGradeCreateWithoutEvaluatedInput, SessionGradeUncheckedCreateWithoutEvaluatedInput> | SessionGradeCreateWithoutEvaluatedInput[] | SessionGradeUncheckedCreateWithoutEvaluatedInput[]
+    connectOrCreate?: SessionGradeCreateOrConnectWithoutEvaluatedInput | SessionGradeCreateOrConnectWithoutEvaluatedInput[]
+    createMany?: SessionGradeCreateManyEvaluatedInputEnvelope
+    connect?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+  }
+
   export type TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput = {
     create?: XOR<TeamPlayerCreateWithoutPlayerInput, TeamPlayerUncheckedCreateWithoutPlayerInput> | TeamPlayerCreateWithoutPlayerInput[] | TeamPlayerUncheckedCreateWithoutPlayerInput[]
     connectOrCreate?: TeamPlayerCreateOrConnectWithoutPlayerInput | TeamPlayerCreateOrConnectWithoutPlayerInput[]
@@ -13388,6 +15218,20 @@ export namespace Prisma {
     connect?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
   }
 
+  export type SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput = {
+    create?: XOR<SessionGradeCreateWithoutEvaluatorInput, SessionGradeUncheckedCreateWithoutEvaluatorInput> | SessionGradeCreateWithoutEvaluatorInput[] | SessionGradeUncheckedCreateWithoutEvaluatorInput[]
+    connectOrCreate?: SessionGradeCreateOrConnectWithoutEvaluatorInput | SessionGradeCreateOrConnectWithoutEvaluatorInput[]
+    createMany?: SessionGradeCreateManyEvaluatorInputEnvelope
+    connect?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+  }
+
+  export type SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput = {
+    create?: XOR<SessionGradeCreateWithoutEvaluatedInput, SessionGradeUncheckedCreateWithoutEvaluatedInput> | SessionGradeCreateWithoutEvaluatedInput[] | SessionGradeUncheckedCreateWithoutEvaluatedInput[]
+    connectOrCreate?: SessionGradeCreateOrConnectWithoutEvaluatedInput | SessionGradeCreateOrConnectWithoutEvaluatedInput[]
+    createMany?: SessionGradeCreateManyEvaluatedInputEnvelope
+    connect?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -13402,6 +15246,14 @@ export namespace Prisma {
 
   export type IntFieldUpdateOperationsInput = {
     set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
     increment?: number
     decrement?: number
     multiply?: number
@@ -13514,6 +15366,34 @@ export namespace Prisma {
     deleteMany?: SessionParticipantScalarWhereInput | SessionParticipantScalarWhereInput[]
   }
 
+  export type SessionGradeUpdateManyWithoutEvaluatorNestedInput = {
+    create?: XOR<SessionGradeCreateWithoutEvaluatorInput, SessionGradeUncheckedCreateWithoutEvaluatorInput> | SessionGradeCreateWithoutEvaluatorInput[] | SessionGradeUncheckedCreateWithoutEvaluatorInput[]
+    connectOrCreate?: SessionGradeCreateOrConnectWithoutEvaluatorInput | SessionGradeCreateOrConnectWithoutEvaluatorInput[]
+    upsert?: SessionGradeUpsertWithWhereUniqueWithoutEvaluatorInput | SessionGradeUpsertWithWhereUniqueWithoutEvaluatorInput[]
+    createMany?: SessionGradeCreateManyEvaluatorInputEnvelope
+    set?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    disconnect?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    delete?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    connect?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    update?: SessionGradeUpdateWithWhereUniqueWithoutEvaluatorInput | SessionGradeUpdateWithWhereUniqueWithoutEvaluatorInput[]
+    updateMany?: SessionGradeUpdateManyWithWhereWithoutEvaluatorInput | SessionGradeUpdateManyWithWhereWithoutEvaluatorInput[]
+    deleteMany?: SessionGradeScalarWhereInput | SessionGradeScalarWhereInput[]
+  }
+
+  export type SessionGradeUpdateManyWithoutEvaluatedNestedInput = {
+    create?: XOR<SessionGradeCreateWithoutEvaluatedInput, SessionGradeUncheckedCreateWithoutEvaluatedInput> | SessionGradeCreateWithoutEvaluatedInput[] | SessionGradeUncheckedCreateWithoutEvaluatedInput[]
+    connectOrCreate?: SessionGradeCreateOrConnectWithoutEvaluatedInput | SessionGradeCreateOrConnectWithoutEvaluatedInput[]
+    upsert?: SessionGradeUpsertWithWhereUniqueWithoutEvaluatedInput | SessionGradeUpsertWithWhereUniqueWithoutEvaluatedInput[]
+    createMany?: SessionGradeCreateManyEvaluatedInputEnvelope
+    set?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    disconnect?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    delete?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    connect?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    update?: SessionGradeUpdateWithWhereUniqueWithoutEvaluatedInput | SessionGradeUpdateWithWhereUniqueWithoutEvaluatedInput[]
+    updateMany?: SessionGradeUpdateManyWithWhereWithoutEvaluatedInput | SessionGradeUpdateManyWithWhereWithoutEvaluatedInput[]
+    deleteMany?: SessionGradeScalarWhereInput | SessionGradeScalarWhereInput[]
+  }
+
   export type TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput = {
     create?: XOR<TeamPlayerCreateWithoutPlayerInput, TeamPlayerUncheckedCreateWithoutPlayerInput> | TeamPlayerCreateWithoutPlayerInput[] | TeamPlayerUncheckedCreateWithoutPlayerInput[]
     connectOrCreate?: TeamPlayerCreateOrConnectWithoutPlayerInput | TeamPlayerCreateOrConnectWithoutPlayerInput[]
@@ -13612,6 +15492,34 @@ export namespace Prisma {
     deleteMany?: SessionParticipantScalarWhereInput | SessionParticipantScalarWhereInput[]
   }
 
+  export type SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput = {
+    create?: XOR<SessionGradeCreateWithoutEvaluatorInput, SessionGradeUncheckedCreateWithoutEvaluatorInput> | SessionGradeCreateWithoutEvaluatorInput[] | SessionGradeUncheckedCreateWithoutEvaluatorInput[]
+    connectOrCreate?: SessionGradeCreateOrConnectWithoutEvaluatorInput | SessionGradeCreateOrConnectWithoutEvaluatorInput[]
+    upsert?: SessionGradeUpsertWithWhereUniqueWithoutEvaluatorInput | SessionGradeUpsertWithWhereUniqueWithoutEvaluatorInput[]
+    createMany?: SessionGradeCreateManyEvaluatorInputEnvelope
+    set?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    disconnect?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    delete?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    connect?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    update?: SessionGradeUpdateWithWhereUniqueWithoutEvaluatorInput | SessionGradeUpdateWithWhereUniqueWithoutEvaluatorInput[]
+    updateMany?: SessionGradeUpdateManyWithWhereWithoutEvaluatorInput | SessionGradeUpdateManyWithWhereWithoutEvaluatorInput[]
+    deleteMany?: SessionGradeScalarWhereInput | SessionGradeScalarWhereInput[]
+  }
+
+  export type SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput = {
+    create?: XOR<SessionGradeCreateWithoutEvaluatedInput, SessionGradeUncheckedCreateWithoutEvaluatedInput> | SessionGradeCreateWithoutEvaluatedInput[] | SessionGradeUncheckedCreateWithoutEvaluatedInput[]
+    connectOrCreate?: SessionGradeCreateOrConnectWithoutEvaluatedInput | SessionGradeCreateOrConnectWithoutEvaluatedInput[]
+    upsert?: SessionGradeUpsertWithWhereUniqueWithoutEvaluatedInput | SessionGradeUpsertWithWhereUniqueWithoutEvaluatedInput[]
+    createMany?: SessionGradeCreateManyEvaluatedInputEnvelope
+    set?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    disconnect?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    delete?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    connect?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    update?: SessionGradeUpdateWithWhereUniqueWithoutEvaluatedInput | SessionGradeUpdateWithWhereUniqueWithoutEvaluatedInput[]
+    updateMany?: SessionGradeUpdateManyWithWhereWithoutEvaluatedInput | SessionGradeUpdateManyWithWhereWithoutEvaluatedInput[]
+    deleteMany?: SessionGradeScalarWhereInput | SessionGradeScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutCreatedSessionsInput = {
     create?: XOR<UserCreateWithoutCreatedSessionsInput, UserUncheckedCreateWithoutCreatedSessionsInput>
     connectOrCreate?: UserCreateOrConnectWithoutCreatedSessionsInput
@@ -13658,6 +15566,13 @@ export namespace Prisma {
     connect?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
   }
 
+  export type SessionGradeCreateNestedManyWithoutSessionInput = {
+    create?: XOR<SessionGradeCreateWithoutSessionInput, SessionGradeUncheckedCreateWithoutSessionInput> | SessionGradeCreateWithoutSessionInput[] | SessionGradeUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: SessionGradeCreateOrConnectWithoutSessionInput | SessionGradeCreateOrConnectWithoutSessionInput[]
+    createMany?: SessionGradeCreateManySessionInputEnvelope
+    connect?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+  }
+
   export type TeamUncheckedCreateNestedManyWithoutSessionInput = {
     create?: XOR<TeamCreateWithoutSessionInput, TeamUncheckedCreateWithoutSessionInput> | TeamCreateWithoutSessionInput[] | TeamUncheckedCreateWithoutSessionInput[]
     connectOrCreate?: TeamCreateOrConnectWithoutSessionInput | TeamCreateOrConnectWithoutSessionInput[]
@@ -13686,8 +15601,19 @@ export namespace Prisma {
     connect?: SessionParticipantWhereUniqueInput | SessionParticipantWhereUniqueInput[]
   }
 
+  export type SessionGradeUncheckedCreateNestedManyWithoutSessionInput = {
+    create?: XOR<SessionGradeCreateWithoutSessionInput, SessionGradeUncheckedCreateWithoutSessionInput> | SessionGradeCreateWithoutSessionInput[] | SessionGradeUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: SessionGradeCreateOrConnectWithoutSessionInput | SessionGradeCreateOrConnectWithoutSessionInput[]
+    createMany?: SessionGradeCreateManySessionInputEnvelope
+    connect?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+  }
+
   export type EnumSessionStatusFieldUpdateOperationsInput = {
     set?: $Enums.SessionStatus
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type UserUpdateOneRequiredWithoutCreatedSessionsNestedInput = {
@@ -13774,6 +15700,20 @@ export namespace Prisma {
     deleteMany?: SessionParticipantScalarWhereInput | SessionParticipantScalarWhereInput[]
   }
 
+  export type SessionGradeUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<SessionGradeCreateWithoutSessionInput, SessionGradeUncheckedCreateWithoutSessionInput> | SessionGradeCreateWithoutSessionInput[] | SessionGradeUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: SessionGradeCreateOrConnectWithoutSessionInput | SessionGradeCreateOrConnectWithoutSessionInput[]
+    upsert?: SessionGradeUpsertWithWhereUniqueWithoutSessionInput | SessionGradeUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: SessionGradeCreateManySessionInputEnvelope
+    set?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    disconnect?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    delete?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    connect?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    update?: SessionGradeUpdateWithWhereUniqueWithoutSessionInput | SessionGradeUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: SessionGradeUpdateManyWithWhereWithoutSessionInput | SessionGradeUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: SessionGradeScalarWhereInput | SessionGradeScalarWhereInput[]
+  }
+
   export type TeamUncheckedUpdateManyWithoutSessionNestedInput = {
     create?: XOR<TeamCreateWithoutSessionInput, TeamUncheckedCreateWithoutSessionInput> | TeamCreateWithoutSessionInput[] | TeamUncheckedCreateWithoutSessionInput[]
     connectOrCreate?: TeamCreateOrConnectWithoutSessionInput | TeamCreateOrConnectWithoutSessionInput[]
@@ -13828,6 +15768,20 @@ export namespace Prisma {
     update?: SessionParticipantUpdateWithWhereUniqueWithoutSessionInput | SessionParticipantUpdateWithWhereUniqueWithoutSessionInput[]
     updateMany?: SessionParticipantUpdateManyWithWhereWithoutSessionInput | SessionParticipantUpdateManyWithWhereWithoutSessionInput[]
     deleteMany?: SessionParticipantScalarWhereInput | SessionParticipantScalarWhereInput[]
+  }
+
+  export type SessionGradeUncheckedUpdateManyWithoutSessionNestedInput = {
+    create?: XOR<SessionGradeCreateWithoutSessionInput, SessionGradeUncheckedCreateWithoutSessionInput> | SessionGradeCreateWithoutSessionInput[] | SessionGradeUncheckedCreateWithoutSessionInput[]
+    connectOrCreate?: SessionGradeCreateOrConnectWithoutSessionInput | SessionGradeCreateOrConnectWithoutSessionInput[]
+    upsert?: SessionGradeUpsertWithWhereUniqueWithoutSessionInput | SessionGradeUpsertWithWhereUniqueWithoutSessionInput[]
+    createMany?: SessionGradeCreateManySessionInputEnvelope
+    set?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    disconnect?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    delete?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    connect?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+    update?: SessionGradeUpdateWithWhereUniqueWithoutSessionInput | SessionGradeUpdateWithWhereUniqueWithoutSessionInput[]
+    updateMany?: SessionGradeUpdateManyWithWhereWithoutSessionInput | SessionGradeUpdateManyWithWhereWithoutSessionInput[]
+    deleteMany?: SessionGradeScalarWhereInput | SessionGradeScalarWhereInput[]
   }
 
   export type SessionCreateNestedOneWithoutTeamsInput = {
@@ -13890,6 +15844,14 @@ export namespace Prisma {
     connectOrCreate?: RoundCreateOrConnectWithoutWinnerTeamInput | RoundCreateOrConnectWithoutWinnerTeamInput[]
     createMany?: RoundCreateManyWinnerTeamInputEnvelope
     connect?: RoundWhereUniqueInput | RoundWhereUniqueInput[]
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type SessionUpdateOneRequiredWithoutTeamsNestedInput = {
@@ -14242,6 +16204,48 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSessionParticipantsInput, UserUpdateWithoutSessionParticipantsInput>, UserUncheckedUpdateWithoutSessionParticipantsInput>
   }
 
+  export type SessionCreateNestedOneWithoutGradesInput = {
+    create?: XOR<SessionCreateWithoutGradesInput, SessionUncheckedCreateWithoutGradesInput>
+    connectOrCreate?: SessionCreateOrConnectWithoutGradesInput
+    connect?: SessionWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutEvaluatedGradesInput = {
+    create?: XOR<UserCreateWithoutEvaluatedGradesInput, UserUncheckedCreateWithoutEvaluatedGradesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutEvaluatedGradesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutReceivedGradesInput = {
+    create?: XOR<UserCreateWithoutReceivedGradesInput, UserUncheckedCreateWithoutReceivedGradesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReceivedGradesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type SessionUpdateOneRequiredWithoutGradesNestedInput = {
+    create?: XOR<SessionCreateWithoutGradesInput, SessionUncheckedCreateWithoutGradesInput>
+    connectOrCreate?: SessionCreateOrConnectWithoutGradesInput
+    upsert?: SessionUpsertWithoutGradesInput
+    connect?: SessionWhereUniqueInput
+    update?: XOR<XOR<SessionUpdateToOneWithWhereWithoutGradesInput, SessionUpdateWithoutGradesInput>, SessionUncheckedUpdateWithoutGradesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutEvaluatedGradesNestedInput = {
+    create?: XOR<UserCreateWithoutEvaluatedGradesInput, UserUncheckedCreateWithoutEvaluatedGradesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutEvaluatedGradesInput
+    upsert?: UserUpsertWithoutEvaluatedGradesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutEvaluatedGradesInput, UserUpdateWithoutEvaluatedGradesInput>, UserUncheckedUpdateWithoutEvaluatedGradesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutReceivedGradesNestedInput = {
+    create?: XOR<UserCreateWithoutReceivedGradesInput, UserUncheckedCreateWithoutReceivedGradesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutReceivedGradesInput
+    upsert?: UserUpsertWithoutReceivedGradesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutReceivedGradesInput, UserUpdateWithoutReceivedGradesInput>, UserUncheckedUpdateWithoutReceivedGradesInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -14286,6 +16290,17 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedBoolFilter<$PrismaModel = never> = {
@@ -14386,6 +16401,22 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -14415,6 +16446,17 @@ export namespace Prisma {
     not?: NestedEnumSessionStatusFilter<$PrismaModel> | $Enums.SessionStatus
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedEnumSessionStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.SessionStatus | EnumSessionStatusFieldRefInput<$PrismaModel>
     in?: $Enums.SessionStatus[] | ListEnumSessionStatusFieldRefInput<$PrismaModel>
@@ -14423,6 +16465,36 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumSessionStatusFilter<$PrismaModel>
     _max?: NestedEnumSessionStatusFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -14439,17 +16511,6 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedEnumBadgeTypeFilter<$PrismaModel = never> = {
@@ -14555,6 +16616,9 @@ export namespace Prisma {
     date: Date | string
     status?: $Enums.SessionStatus
     maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
     createdAt?: Date | string
     mvpPlayer?: UserCreateNestedOneWithoutMvpSessionsInput
     topScorerPlayer?: UserCreateNestedOneWithoutTopScorerSessionsInput
@@ -14562,6 +16626,7 @@ export namespace Prisma {
     rounds?: RoundCreateNestedManyWithoutSessionInput
     badges?: BadgeCreateNestedManyWithoutSessionInput
     participants?: SessionParticipantCreateNestedManyWithoutSessionInput
+    grades?: SessionGradeCreateNestedManyWithoutSessionInput
   }
 
   export type SessionUncheckedCreateWithoutCreatedByInput = {
@@ -14572,11 +16637,15 @@ export namespace Prisma {
     mvpPlayerId?: string | null
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
     createdAt?: Date | string
     teams?: TeamUncheckedCreateNestedManyWithoutSessionInput
     rounds?: RoundUncheckedCreateNestedManyWithoutSessionInput
     badges?: BadgeUncheckedCreateNestedManyWithoutSessionInput
     participants?: SessionParticipantUncheckedCreateNestedManyWithoutSessionInput
+    grades?: SessionGradeUncheckedCreateNestedManyWithoutSessionInput
   }
 
   export type SessionCreateOrConnectWithoutCreatedByInput = {
@@ -14595,6 +16664,9 @@ export namespace Prisma {
     date: Date | string
     status?: $Enums.SessionStatus
     maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
     createdAt?: Date | string
     createdBy: UserCreateNestedOneWithoutCreatedSessionsInput
     topScorerPlayer?: UserCreateNestedOneWithoutTopScorerSessionsInput
@@ -14602,6 +16674,7 @@ export namespace Prisma {
     rounds?: RoundCreateNestedManyWithoutSessionInput
     badges?: BadgeCreateNestedManyWithoutSessionInput
     participants?: SessionParticipantCreateNestedManyWithoutSessionInput
+    grades?: SessionGradeCreateNestedManyWithoutSessionInput
   }
 
   export type SessionUncheckedCreateWithoutMvpPlayerInput = {
@@ -14612,11 +16685,15 @@ export namespace Prisma {
     createdById: string
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
     createdAt?: Date | string
     teams?: TeamUncheckedCreateNestedManyWithoutSessionInput
     rounds?: RoundUncheckedCreateNestedManyWithoutSessionInput
     badges?: BadgeUncheckedCreateNestedManyWithoutSessionInput
     participants?: SessionParticipantUncheckedCreateNestedManyWithoutSessionInput
+    grades?: SessionGradeUncheckedCreateNestedManyWithoutSessionInput
   }
 
   export type SessionCreateOrConnectWithoutMvpPlayerInput = {
@@ -14635,6 +16712,9 @@ export namespace Prisma {
     date: Date | string
     status?: $Enums.SessionStatus
     maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
     createdAt?: Date | string
     createdBy: UserCreateNestedOneWithoutCreatedSessionsInput
     mvpPlayer?: UserCreateNestedOneWithoutMvpSessionsInput
@@ -14642,6 +16722,7 @@ export namespace Prisma {
     rounds?: RoundCreateNestedManyWithoutSessionInput
     badges?: BadgeCreateNestedManyWithoutSessionInput
     participants?: SessionParticipantCreateNestedManyWithoutSessionInput
+    grades?: SessionGradeCreateNestedManyWithoutSessionInput
   }
 
   export type SessionUncheckedCreateWithoutTopScorerPlayerInput = {
@@ -14652,11 +16733,15 @@ export namespace Prisma {
     createdById: string
     mvpPlayerId?: string | null
     maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
     createdAt?: Date | string
     teams?: TeamUncheckedCreateNestedManyWithoutSessionInput
     rounds?: RoundUncheckedCreateNestedManyWithoutSessionInput
     badges?: BadgeUncheckedCreateNestedManyWithoutSessionInput
     participants?: SessionParticipantUncheckedCreateNestedManyWithoutSessionInput
+    grades?: SessionGradeUncheckedCreateNestedManyWithoutSessionInput
   }
 
   export type SessionCreateOrConnectWithoutTopScorerPlayerInput = {
@@ -14672,6 +16757,7 @@ export namespace Prisma {
   export type SessionParticipantCreateWithoutUserInput = {
     id?: string
     status?: $Enums.ParticipantStatus
+    sessionGrade?: number | null
     createdAt?: Date | string
     session: SessionCreateNestedOneWithoutParticipantsInput
   }
@@ -14680,6 +16766,7 @@ export namespace Prisma {
     id?: string
     sessionId: string
     status?: $Enums.ParticipantStatus
+    sessionGrade?: number | null
     createdAt?: Date | string
   }
 
@@ -14690,6 +16777,58 @@ export namespace Prisma {
 
   export type SessionParticipantCreateManyUserInputEnvelope = {
     data: SessionParticipantCreateManyUserInput | SessionParticipantCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SessionGradeCreateWithoutEvaluatorInput = {
+    id?: string
+    grade: number
+    createdAt?: Date | string
+    session: SessionCreateNestedOneWithoutGradesInput
+    evaluated: UserCreateNestedOneWithoutReceivedGradesInput
+  }
+
+  export type SessionGradeUncheckedCreateWithoutEvaluatorInput = {
+    id?: string
+    sessionId: string
+    evaluatedId: string
+    grade: number
+    createdAt?: Date | string
+  }
+
+  export type SessionGradeCreateOrConnectWithoutEvaluatorInput = {
+    where: SessionGradeWhereUniqueInput
+    create: XOR<SessionGradeCreateWithoutEvaluatorInput, SessionGradeUncheckedCreateWithoutEvaluatorInput>
+  }
+
+  export type SessionGradeCreateManyEvaluatorInputEnvelope = {
+    data: SessionGradeCreateManyEvaluatorInput | SessionGradeCreateManyEvaluatorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SessionGradeCreateWithoutEvaluatedInput = {
+    id?: string
+    grade: number
+    createdAt?: Date | string
+    session: SessionCreateNestedOneWithoutGradesInput
+    evaluator: UserCreateNestedOneWithoutEvaluatedGradesInput
+  }
+
+  export type SessionGradeUncheckedCreateWithoutEvaluatedInput = {
+    id?: string
+    sessionId: string
+    evaluatorId: string
+    grade: number
+    createdAt?: Date | string
+  }
+
+  export type SessionGradeCreateOrConnectWithoutEvaluatedInput = {
+    where: SessionGradeWhereUniqueInput
+    create: XOR<SessionGradeCreateWithoutEvaluatedInput, SessionGradeUncheckedCreateWithoutEvaluatedInput>
+  }
+
+  export type SessionGradeCreateManyEvaluatedInputEnvelope = {
+    data: SessionGradeCreateManyEvaluatedInput | SessionGradeCreateManyEvaluatedInput[]
     skipDuplicates?: boolean
   }
 
@@ -14799,6 +16938,9 @@ export namespace Prisma {
     mvpPlayerId?: StringNullableFilter<"Session"> | string | null
     topScorerPlayerId?: StringNullableFilter<"Session"> | string | null
     maxPlayers?: IntFilter<"Session"> | number
+    finishedAt?: DateTimeNullableFilter<"Session"> | Date | string | null
+    votingTimeoutHours?: IntFilter<"Session"> | number
+    ratingsConsolidated?: BoolFilter<"Session"> | boolean
     createdAt?: DateTimeFilter<"Session"> | Date | string
   }
 
@@ -14858,7 +17000,52 @@ export namespace Prisma {
     sessionId?: StringFilter<"SessionParticipant"> | string
     userId?: StringFilter<"SessionParticipant"> | string
     status?: EnumParticipantStatusFilter<"SessionParticipant"> | $Enums.ParticipantStatus
+    sessionGrade?: FloatNullableFilter<"SessionParticipant"> | number | null
     createdAt?: DateTimeFilter<"SessionParticipant"> | Date | string
+  }
+
+  export type SessionGradeUpsertWithWhereUniqueWithoutEvaluatorInput = {
+    where: SessionGradeWhereUniqueInput
+    update: XOR<SessionGradeUpdateWithoutEvaluatorInput, SessionGradeUncheckedUpdateWithoutEvaluatorInput>
+    create: XOR<SessionGradeCreateWithoutEvaluatorInput, SessionGradeUncheckedCreateWithoutEvaluatorInput>
+  }
+
+  export type SessionGradeUpdateWithWhereUniqueWithoutEvaluatorInput = {
+    where: SessionGradeWhereUniqueInput
+    data: XOR<SessionGradeUpdateWithoutEvaluatorInput, SessionGradeUncheckedUpdateWithoutEvaluatorInput>
+  }
+
+  export type SessionGradeUpdateManyWithWhereWithoutEvaluatorInput = {
+    where: SessionGradeScalarWhereInput
+    data: XOR<SessionGradeUpdateManyMutationInput, SessionGradeUncheckedUpdateManyWithoutEvaluatorInput>
+  }
+
+  export type SessionGradeScalarWhereInput = {
+    AND?: SessionGradeScalarWhereInput | SessionGradeScalarWhereInput[]
+    OR?: SessionGradeScalarWhereInput[]
+    NOT?: SessionGradeScalarWhereInput | SessionGradeScalarWhereInput[]
+    id?: StringFilter<"SessionGrade"> | string
+    sessionId?: StringFilter<"SessionGrade"> | string
+    evaluatorId?: StringFilter<"SessionGrade"> | string
+    evaluatedId?: StringFilter<"SessionGrade"> | string
+    grade?: IntFilter<"SessionGrade"> | number
+    createdAt?: DateTimeFilter<"SessionGrade"> | Date | string
+  }
+
+  export type SessionGradeUpsertWithWhereUniqueWithoutEvaluatedInput = {
+    where: SessionGradeWhereUniqueInput
+    update: XOR<SessionGradeUpdateWithoutEvaluatedInput, SessionGradeUncheckedUpdateWithoutEvaluatedInput>
+    create: XOR<SessionGradeCreateWithoutEvaluatedInput, SessionGradeUncheckedCreateWithoutEvaluatedInput>
+  }
+
+  export type SessionGradeUpdateWithWhereUniqueWithoutEvaluatedInput = {
+    where: SessionGradeWhereUniqueInput
+    data: XOR<SessionGradeUpdateWithoutEvaluatedInput, SessionGradeUncheckedUpdateWithoutEvaluatedInput>
+  }
+
+  export type SessionGradeUpdateManyWithWhereWithoutEvaluatedInput = {
+    where: SessionGradeScalarWhereInput
+    data: XOR<SessionGradeUpdateManyMutationInput, SessionGradeUncheckedUpdateManyWithoutEvaluatedInput>
   }
 
   export type UserCreateWithoutCreatedSessionsInput = {
@@ -14869,6 +17056,7 @@ export namespace Prisma {
     nickname?: string | null
     position?: $Enums.Position
     rating?: number
+    averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
     createdAt?: Date | string
@@ -14878,6 +17066,8 @@ export namespace Prisma {
     mvpSessions?: SessionCreateNestedManyWithoutMvpPlayerInput
     topScorerSessions?: SessionCreateNestedManyWithoutTopScorerPlayerInput
     sessionParticipants?: SessionParticipantCreateNestedManyWithoutUserInput
+    evaluatedGrades?: SessionGradeCreateNestedManyWithoutEvaluatorInput
+    receivedGrades?: SessionGradeCreateNestedManyWithoutEvaluatedInput
   }
 
   export type UserUncheckedCreateWithoutCreatedSessionsInput = {
@@ -14888,6 +17078,7 @@ export namespace Prisma {
     nickname?: string | null
     position?: $Enums.Position
     rating?: number
+    averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
     createdAt?: Date | string
@@ -14897,6 +17088,8 @@ export namespace Prisma {
     mvpSessions?: SessionUncheckedCreateNestedManyWithoutMvpPlayerInput
     topScorerSessions?: SessionUncheckedCreateNestedManyWithoutTopScorerPlayerInput
     sessionParticipants?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
+    evaluatedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput
+    receivedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput
   }
 
   export type UserCreateOrConnectWithoutCreatedSessionsInput = {
@@ -14912,6 +17105,7 @@ export namespace Prisma {
     nickname?: string | null
     position?: $Enums.Position
     rating?: number
+    averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
     createdAt?: Date | string
@@ -14921,6 +17115,8 @@ export namespace Prisma {
     createdSessions?: SessionCreateNestedManyWithoutCreatedByInput
     topScorerSessions?: SessionCreateNestedManyWithoutTopScorerPlayerInput
     sessionParticipants?: SessionParticipantCreateNestedManyWithoutUserInput
+    evaluatedGrades?: SessionGradeCreateNestedManyWithoutEvaluatorInput
+    receivedGrades?: SessionGradeCreateNestedManyWithoutEvaluatedInput
   }
 
   export type UserUncheckedCreateWithoutMvpSessionsInput = {
@@ -14931,6 +17127,7 @@ export namespace Prisma {
     nickname?: string | null
     position?: $Enums.Position
     rating?: number
+    averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
     createdAt?: Date | string
@@ -14940,6 +17137,8 @@ export namespace Prisma {
     createdSessions?: SessionUncheckedCreateNestedManyWithoutCreatedByInput
     topScorerSessions?: SessionUncheckedCreateNestedManyWithoutTopScorerPlayerInput
     sessionParticipants?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
+    evaluatedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput
+    receivedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput
   }
 
   export type UserCreateOrConnectWithoutMvpSessionsInput = {
@@ -14955,6 +17154,7 @@ export namespace Prisma {
     nickname?: string | null
     position?: $Enums.Position
     rating?: number
+    averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
     createdAt?: Date | string
@@ -14964,6 +17164,8 @@ export namespace Prisma {
     createdSessions?: SessionCreateNestedManyWithoutCreatedByInput
     mvpSessions?: SessionCreateNestedManyWithoutMvpPlayerInput
     sessionParticipants?: SessionParticipantCreateNestedManyWithoutUserInput
+    evaluatedGrades?: SessionGradeCreateNestedManyWithoutEvaluatorInput
+    receivedGrades?: SessionGradeCreateNestedManyWithoutEvaluatedInput
   }
 
   export type UserUncheckedCreateWithoutTopScorerSessionsInput = {
@@ -14974,6 +17176,7 @@ export namespace Prisma {
     nickname?: string | null
     position?: $Enums.Position
     rating?: number
+    averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
     createdAt?: Date | string
@@ -14983,6 +17186,8 @@ export namespace Prisma {
     createdSessions?: SessionUncheckedCreateNestedManyWithoutCreatedByInput
     mvpSessions?: SessionUncheckedCreateNestedManyWithoutMvpPlayerInput
     sessionParticipants?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
+    evaluatedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput
+    receivedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput
   }
 
   export type UserCreateOrConnectWithoutTopScorerSessionsInput = {
@@ -15084,6 +17289,7 @@ export namespace Prisma {
   export type SessionParticipantCreateWithoutSessionInput = {
     id?: string
     status?: $Enums.ParticipantStatus
+    sessionGrade?: number | null
     createdAt?: Date | string
     user: UserCreateNestedOneWithoutSessionParticipantsInput
   }
@@ -15092,6 +17298,7 @@ export namespace Prisma {
     id?: string
     userId: string
     status?: $Enums.ParticipantStatus
+    sessionGrade?: number | null
     createdAt?: Date | string
   }
 
@@ -15102,6 +17309,32 @@ export namespace Prisma {
 
   export type SessionParticipantCreateManySessionInputEnvelope = {
     data: SessionParticipantCreateManySessionInput | SessionParticipantCreateManySessionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SessionGradeCreateWithoutSessionInput = {
+    id?: string
+    grade: number
+    createdAt?: Date | string
+    evaluator: UserCreateNestedOneWithoutEvaluatedGradesInput
+    evaluated: UserCreateNestedOneWithoutReceivedGradesInput
+  }
+
+  export type SessionGradeUncheckedCreateWithoutSessionInput = {
+    id?: string
+    evaluatorId: string
+    evaluatedId: string
+    grade: number
+    createdAt?: Date | string
+  }
+
+  export type SessionGradeCreateOrConnectWithoutSessionInput = {
+    where: SessionGradeWhereUniqueInput
+    create: XOR<SessionGradeCreateWithoutSessionInput, SessionGradeUncheckedCreateWithoutSessionInput>
+  }
+
+  export type SessionGradeCreateManySessionInputEnvelope = {
+    data: SessionGradeCreateManySessionInput | SessionGradeCreateManySessionInput[]
     skipDuplicates?: boolean
   }
 
@@ -15124,6 +17357,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
     rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15133,6 +17367,8 @@ export namespace Prisma {
     mvpSessions?: SessionUpdateManyWithoutMvpPlayerNestedInput
     topScorerSessions?: SessionUpdateManyWithoutTopScorerPlayerNestedInput
     sessionParticipants?: SessionParticipantUpdateManyWithoutUserNestedInput
+    evaluatedGrades?: SessionGradeUpdateManyWithoutEvaluatorNestedInput
+    receivedGrades?: SessionGradeUpdateManyWithoutEvaluatedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedSessionsInput = {
@@ -15143,6 +17379,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
     rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15152,6 +17389,8 @@ export namespace Prisma {
     mvpSessions?: SessionUncheckedUpdateManyWithoutMvpPlayerNestedInput
     topScorerSessions?: SessionUncheckedUpdateManyWithoutTopScorerPlayerNestedInput
     sessionParticipants?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
+    evaluatedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput
+    receivedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput
   }
 
   export type UserUpsertWithoutMvpSessionsInput = {
@@ -15173,6 +17412,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
     rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15182,6 +17422,8 @@ export namespace Prisma {
     createdSessions?: SessionUpdateManyWithoutCreatedByNestedInput
     topScorerSessions?: SessionUpdateManyWithoutTopScorerPlayerNestedInput
     sessionParticipants?: SessionParticipantUpdateManyWithoutUserNestedInput
+    evaluatedGrades?: SessionGradeUpdateManyWithoutEvaluatorNestedInput
+    receivedGrades?: SessionGradeUpdateManyWithoutEvaluatedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMvpSessionsInput = {
@@ -15192,6 +17434,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
     rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15201,6 +17444,8 @@ export namespace Prisma {
     createdSessions?: SessionUncheckedUpdateManyWithoutCreatedByNestedInput
     topScorerSessions?: SessionUncheckedUpdateManyWithoutTopScorerPlayerNestedInput
     sessionParticipants?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
+    evaluatedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput
+    receivedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput
   }
 
   export type UserUpsertWithoutTopScorerSessionsInput = {
@@ -15222,6 +17467,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
     rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15231,6 +17477,8 @@ export namespace Prisma {
     createdSessions?: SessionUpdateManyWithoutCreatedByNestedInput
     mvpSessions?: SessionUpdateManyWithoutMvpPlayerNestedInput
     sessionParticipants?: SessionParticipantUpdateManyWithoutUserNestedInput
+    evaluatedGrades?: SessionGradeUpdateManyWithoutEvaluatorNestedInput
+    receivedGrades?: SessionGradeUpdateManyWithoutEvaluatedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopScorerSessionsInput = {
@@ -15241,6 +17489,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
     rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15250,6 +17499,8 @@ export namespace Prisma {
     createdSessions?: SessionUncheckedUpdateManyWithoutCreatedByNestedInput
     mvpSessions?: SessionUncheckedUpdateManyWithoutMvpPlayerNestedInput
     sessionParticipants?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
+    evaluatedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput
+    receivedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput
   }
 
   export type TeamUpsertWithWhereUniqueWithoutSessionInput = {
@@ -15276,7 +17527,7 @@ export namespace Prisma {
     sessionId?: StringFilter<"Team"> | string
     name?: StringFilter<"Team"> | string
     color?: StringFilter<"Team"> | string
-    totalRating?: IntFilter<"Team"> | number
+    totalRating?: FloatFilter<"Team"> | number
   }
 
   export type RoundUpsertWithWhereUniqueWithoutSessionInput = {
@@ -15343,12 +17594,31 @@ export namespace Prisma {
     data: XOR<SessionParticipantUpdateManyMutationInput, SessionParticipantUncheckedUpdateManyWithoutSessionInput>
   }
 
+  export type SessionGradeUpsertWithWhereUniqueWithoutSessionInput = {
+    where: SessionGradeWhereUniqueInput
+    update: XOR<SessionGradeUpdateWithoutSessionInput, SessionGradeUncheckedUpdateWithoutSessionInput>
+    create: XOR<SessionGradeCreateWithoutSessionInput, SessionGradeUncheckedCreateWithoutSessionInput>
+  }
+
+  export type SessionGradeUpdateWithWhereUniqueWithoutSessionInput = {
+    where: SessionGradeWhereUniqueInput
+    data: XOR<SessionGradeUpdateWithoutSessionInput, SessionGradeUncheckedUpdateWithoutSessionInput>
+  }
+
+  export type SessionGradeUpdateManyWithWhereWithoutSessionInput = {
+    where: SessionGradeScalarWhereInput
+    data: XOR<SessionGradeUpdateManyMutationInput, SessionGradeUncheckedUpdateManyWithoutSessionInput>
+  }
+
   export type SessionCreateWithoutTeamsInput = {
     id?: string
     title?: string | null
     date: Date | string
     status?: $Enums.SessionStatus
     maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
     createdAt?: Date | string
     createdBy: UserCreateNestedOneWithoutCreatedSessionsInput
     mvpPlayer?: UserCreateNestedOneWithoutMvpSessionsInput
@@ -15356,6 +17626,7 @@ export namespace Prisma {
     rounds?: RoundCreateNestedManyWithoutSessionInput
     badges?: BadgeCreateNestedManyWithoutSessionInput
     participants?: SessionParticipantCreateNestedManyWithoutSessionInput
+    grades?: SessionGradeCreateNestedManyWithoutSessionInput
   }
 
   export type SessionUncheckedCreateWithoutTeamsInput = {
@@ -15367,10 +17638,14 @@ export namespace Prisma {
     mvpPlayerId?: string | null
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
     createdAt?: Date | string
     rounds?: RoundUncheckedCreateNestedManyWithoutSessionInput
     badges?: BadgeUncheckedCreateNestedManyWithoutSessionInput
     participants?: SessionParticipantUncheckedCreateNestedManyWithoutSessionInput
+    grades?: SessionGradeUncheckedCreateNestedManyWithoutSessionInput
   }
 
   export type SessionCreateOrConnectWithoutTeamsInput = {
@@ -15522,6 +17797,9 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutCreatedSessionsNestedInput
     mvpPlayer?: UserUpdateOneWithoutMvpSessionsNestedInput
@@ -15529,6 +17807,7 @@ export namespace Prisma {
     rounds?: RoundUpdateManyWithoutSessionNestedInput
     badges?: BadgeUpdateManyWithoutSessionNestedInput
     participants?: SessionParticipantUpdateManyWithoutSessionNestedInput
+    grades?: SessionGradeUpdateManyWithoutSessionNestedInput
   }
 
   export type SessionUncheckedUpdateWithoutTeamsInput = {
@@ -15540,10 +17819,14 @@ export namespace Prisma {
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rounds?: RoundUncheckedUpdateManyWithoutSessionNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutSessionNestedInput
     participants?: SessionParticipantUncheckedUpdateManyWithoutSessionNestedInput
+    grades?: SessionGradeUncheckedUpdateManyWithoutSessionNestedInput
   }
 
   export type TeamPlayerUpsertWithWhereUniqueWithoutTeamInput = {
@@ -15645,6 +17928,7 @@ export namespace Prisma {
     nickname?: string | null
     position?: $Enums.Position
     rating?: number
+    averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
     createdAt?: Date | string
@@ -15654,6 +17938,8 @@ export namespace Prisma {
     mvpSessions?: SessionCreateNestedManyWithoutMvpPlayerInput
     topScorerSessions?: SessionCreateNestedManyWithoutTopScorerPlayerInput
     sessionParticipants?: SessionParticipantCreateNestedManyWithoutUserInput
+    evaluatedGrades?: SessionGradeCreateNestedManyWithoutEvaluatorInput
+    receivedGrades?: SessionGradeCreateNestedManyWithoutEvaluatedInput
   }
 
   export type UserUncheckedCreateWithoutTeamPlayersInput = {
@@ -15664,6 +17950,7 @@ export namespace Prisma {
     nickname?: string | null
     position?: $Enums.Position
     rating?: number
+    averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
     createdAt?: Date | string
@@ -15673,6 +17960,8 @@ export namespace Prisma {
     mvpSessions?: SessionUncheckedCreateNestedManyWithoutMvpPlayerInput
     topScorerSessions?: SessionUncheckedCreateNestedManyWithoutTopScorerPlayerInput
     sessionParticipants?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
+    evaluatedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput
+    receivedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput
   }
 
   export type UserCreateOrConnectWithoutTeamPlayersInput = {
@@ -15695,7 +17984,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
-    totalRating?: IntFieldUpdateOperationsInput | number
+    totalRating?: FloatFieldUpdateOperationsInput | number
     session?: SessionUpdateOneRequiredWithoutTeamsNestedInput
     homeRounds?: RoundUpdateManyWithoutHomeTeamNestedInput
     awayRounds?: RoundUpdateManyWithoutAwayTeamNestedInput
@@ -15707,7 +17996,7 @@ export namespace Prisma {
     sessionId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
-    totalRating?: IntFieldUpdateOperationsInput | number
+    totalRating?: FloatFieldUpdateOperationsInput | number
     homeRounds?: RoundUncheckedUpdateManyWithoutHomeTeamNestedInput
     awayRounds?: RoundUncheckedUpdateManyWithoutAwayTeamNestedInput
     wonRounds?: RoundUncheckedUpdateManyWithoutWinnerTeamNestedInput
@@ -15732,6 +18021,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
     rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15741,6 +18031,8 @@ export namespace Prisma {
     mvpSessions?: SessionUpdateManyWithoutMvpPlayerNestedInput
     topScorerSessions?: SessionUpdateManyWithoutTopScorerPlayerNestedInput
     sessionParticipants?: SessionParticipantUpdateManyWithoutUserNestedInput
+    evaluatedGrades?: SessionGradeUpdateManyWithoutEvaluatorNestedInput
+    receivedGrades?: SessionGradeUpdateManyWithoutEvaluatedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTeamPlayersInput = {
@@ -15751,6 +18043,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
     rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15760,6 +18053,8 @@ export namespace Prisma {
     mvpSessions?: SessionUncheckedUpdateManyWithoutMvpPlayerNestedInput
     topScorerSessions?: SessionUncheckedUpdateManyWithoutTopScorerPlayerNestedInput
     sessionParticipants?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
+    evaluatedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput
+    receivedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput
   }
 
   export type SessionCreateWithoutRoundsInput = {
@@ -15768,6 +18063,9 @@ export namespace Prisma {
     date: Date | string
     status?: $Enums.SessionStatus
     maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
     createdAt?: Date | string
     createdBy: UserCreateNestedOneWithoutCreatedSessionsInput
     mvpPlayer?: UserCreateNestedOneWithoutMvpSessionsInput
@@ -15775,6 +18073,7 @@ export namespace Prisma {
     teams?: TeamCreateNestedManyWithoutSessionInput
     badges?: BadgeCreateNestedManyWithoutSessionInput
     participants?: SessionParticipantCreateNestedManyWithoutSessionInput
+    grades?: SessionGradeCreateNestedManyWithoutSessionInput
   }
 
   export type SessionUncheckedCreateWithoutRoundsInput = {
@@ -15786,10 +18085,14 @@ export namespace Prisma {
     mvpPlayerId?: string | null
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
     createdAt?: Date | string
     teams?: TeamUncheckedCreateNestedManyWithoutSessionInput
     badges?: BadgeUncheckedCreateNestedManyWithoutSessionInput
     participants?: SessionParticipantUncheckedCreateNestedManyWithoutSessionInput
+    grades?: SessionGradeUncheckedCreateNestedManyWithoutSessionInput
   }
 
   export type SessionCreateOrConnectWithoutRoundsInput = {
@@ -15916,6 +18219,9 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutCreatedSessionsNestedInput
     mvpPlayer?: UserUpdateOneWithoutMvpSessionsNestedInput
@@ -15923,6 +18229,7 @@ export namespace Prisma {
     teams?: TeamUpdateManyWithoutSessionNestedInput
     badges?: BadgeUpdateManyWithoutSessionNestedInput
     participants?: SessionParticipantUpdateManyWithoutSessionNestedInput
+    grades?: SessionGradeUpdateManyWithoutSessionNestedInput
   }
 
   export type SessionUncheckedUpdateWithoutRoundsInput = {
@@ -15934,10 +18241,14 @@ export namespace Prisma {
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teams?: TeamUncheckedUpdateManyWithoutSessionNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutSessionNestedInput
     participants?: SessionParticipantUncheckedUpdateManyWithoutSessionNestedInput
+    grades?: SessionGradeUncheckedUpdateManyWithoutSessionNestedInput
   }
 
   export type TeamUpsertWithoutHomeRoundsInput = {
@@ -15955,7 +18266,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
-    totalRating?: IntFieldUpdateOperationsInput | number
+    totalRating?: FloatFieldUpdateOperationsInput | number
     session?: SessionUpdateOneRequiredWithoutTeamsNestedInput
     players?: TeamPlayerUpdateManyWithoutTeamNestedInput
     awayRounds?: RoundUpdateManyWithoutAwayTeamNestedInput
@@ -15967,7 +18278,7 @@ export namespace Prisma {
     sessionId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
-    totalRating?: IntFieldUpdateOperationsInput | number
+    totalRating?: FloatFieldUpdateOperationsInput | number
     players?: TeamPlayerUncheckedUpdateManyWithoutTeamNestedInput
     awayRounds?: RoundUncheckedUpdateManyWithoutAwayTeamNestedInput
     wonRounds?: RoundUncheckedUpdateManyWithoutWinnerTeamNestedInput
@@ -15988,7 +18299,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
-    totalRating?: IntFieldUpdateOperationsInput | number
+    totalRating?: FloatFieldUpdateOperationsInput | number
     session?: SessionUpdateOneRequiredWithoutTeamsNestedInput
     players?: TeamPlayerUpdateManyWithoutTeamNestedInput
     homeRounds?: RoundUpdateManyWithoutHomeTeamNestedInput
@@ -16000,7 +18311,7 @@ export namespace Prisma {
     sessionId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
-    totalRating?: IntFieldUpdateOperationsInput | number
+    totalRating?: FloatFieldUpdateOperationsInput | number
     players?: TeamPlayerUncheckedUpdateManyWithoutTeamNestedInput
     homeRounds?: RoundUncheckedUpdateManyWithoutHomeTeamNestedInput
     wonRounds?: RoundUncheckedUpdateManyWithoutWinnerTeamNestedInput
@@ -16021,7 +18332,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
-    totalRating?: IntFieldUpdateOperationsInput | number
+    totalRating?: FloatFieldUpdateOperationsInput | number
     session?: SessionUpdateOneRequiredWithoutTeamsNestedInput
     players?: TeamPlayerUpdateManyWithoutTeamNestedInput
     homeRounds?: RoundUpdateManyWithoutHomeTeamNestedInput
@@ -16033,7 +18344,7 @@ export namespace Prisma {
     sessionId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
-    totalRating?: IntFieldUpdateOperationsInput | number
+    totalRating?: FloatFieldUpdateOperationsInput | number
     players?: TeamPlayerUncheckedUpdateManyWithoutTeamNestedInput
     homeRounds?: RoundUncheckedUpdateManyWithoutHomeTeamNestedInput
     awayRounds?: RoundUncheckedUpdateManyWithoutAwayTeamNestedInput
@@ -16094,6 +18405,7 @@ export namespace Prisma {
     nickname?: string | null
     position?: $Enums.Position
     rating?: number
+    averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
     createdAt?: Date | string
@@ -16103,6 +18415,8 @@ export namespace Prisma {
     mvpSessions?: SessionCreateNestedManyWithoutMvpPlayerInput
     topScorerSessions?: SessionCreateNestedManyWithoutTopScorerPlayerInput
     sessionParticipants?: SessionParticipantCreateNestedManyWithoutUserInput
+    evaluatedGrades?: SessionGradeCreateNestedManyWithoutEvaluatorInput
+    receivedGrades?: SessionGradeCreateNestedManyWithoutEvaluatedInput
   }
 
   export type UserUncheckedCreateWithoutGoalsInput = {
@@ -16113,6 +18427,7 @@ export namespace Prisma {
     nickname?: string | null
     position?: $Enums.Position
     rating?: number
+    averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
     createdAt?: Date | string
@@ -16122,6 +18437,8 @@ export namespace Prisma {
     mvpSessions?: SessionUncheckedCreateNestedManyWithoutMvpPlayerInput
     topScorerSessions?: SessionUncheckedCreateNestedManyWithoutTopScorerPlayerInput
     sessionParticipants?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
+    evaluatedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput
+    receivedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput
   }
 
   export type UserCreateOrConnectWithoutGoalsInput = {
@@ -16185,6 +18502,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
     rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16194,6 +18512,8 @@ export namespace Prisma {
     mvpSessions?: SessionUpdateManyWithoutMvpPlayerNestedInput
     topScorerSessions?: SessionUpdateManyWithoutTopScorerPlayerNestedInput
     sessionParticipants?: SessionParticipantUpdateManyWithoutUserNestedInput
+    evaluatedGrades?: SessionGradeUpdateManyWithoutEvaluatorNestedInput
+    receivedGrades?: SessionGradeUpdateManyWithoutEvaluatedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGoalsInput = {
@@ -16204,6 +18524,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
     rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16213,6 +18534,8 @@ export namespace Prisma {
     mvpSessions?: SessionUncheckedUpdateManyWithoutMvpPlayerNestedInput
     topScorerSessions?: SessionUncheckedUpdateManyWithoutTopScorerPlayerNestedInput
     sessionParticipants?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
+    evaluatedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput
+    receivedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput
   }
 
   export type UserCreateWithoutBadgesInput = {
@@ -16223,6 +18546,7 @@ export namespace Prisma {
     nickname?: string | null
     position?: $Enums.Position
     rating?: number
+    averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
     createdAt?: Date | string
@@ -16232,6 +18556,8 @@ export namespace Prisma {
     mvpSessions?: SessionCreateNestedManyWithoutMvpPlayerInput
     topScorerSessions?: SessionCreateNestedManyWithoutTopScorerPlayerInput
     sessionParticipants?: SessionParticipantCreateNestedManyWithoutUserInput
+    evaluatedGrades?: SessionGradeCreateNestedManyWithoutEvaluatorInput
+    receivedGrades?: SessionGradeCreateNestedManyWithoutEvaluatedInput
   }
 
   export type UserUncheckedCreateWithoutBadgesInput = {
@@ -16242,6 +18568,7 @@ export namespace Prisma {
     nickname?: string | null
     position?: $Enums.Position
     rating?: number
+    averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
     createdAt?: Date | string
@@ -16251,6 +18578,8 @@ export namespace Prisma {
     mvpSessions?: SessionUncheckedCreateNestedManyWithoutMvpPlayerInput
     topScorerSessions?: SessionUncheckedCreateNestedManyWithoutTopScorerPlayerInput
     sessionParticipants?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
+    evaluatedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput
+    receivedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput
   }
 
   export type UserCreateOrConnectWithoutBadgesInput = {
@@ -16264,6 +18593,9 @@ export namespace Prisma {
     date: Date | string
     status?: $Enums.SessionStatus
     maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
     createdAt?: Date | string
     createdBy: UserCreateNestedOneWithoutCreatedSessionsInput
     mvpPlayer?: UserCreateNestedOneWithoutMvpSessionsInput
@@ -16271,6 +18603,7 @@ export namespace Prisma {
     teams?: TeamCreateNestedManyWithoutSessionInput
     rounds?: RoundCreateNestedManyWithoutSessionInput
     participants?: SessionParticipantCreateNestedManyWithoutSessionInput
+    grades?: SessionGradeCreateNestedManyWithoutSessionInput
   }
 
   export type SessionUncheckedCreateWithoutBadgesInput = {
@@ -16282,10 +18615,14 @@ export namespace Prisma {
     mvpPlayerId?: string | null
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
     createdAt?: Date | string
     teams?: TeamUncheckedCreateNestedManyWithoutSessionInput
     rounds?: RoundUncheckedCreateNestedManyWithoutSessionInput
     participants?: SessionParticipantUncheckedCreateNestedManyWithoutSessionInput
+    grades?: SessionGradeUncheckedCreateNestedManyWithoutSessionInput
   }
 
   export type SessionCreateOrConnectWithoutBadgesInput = {
@@ -16312,6 +18649,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
     rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16321,6 +18659,8 @@ export namespace Prisma {
     mvpSessions?: SessionUpdateManyWithoutMvpPlayerNestedInput
     topScorerSessions?: SessionUpdateManyWithoutTopScorerPlayerNestedInput
     sessionParticipants?: SessionParticipantUpdateManyWithoutUserNestedInput
+    evaluatedGrades?: SessionGradeUpdateManyWithoutEvaluatorNestedInput
+    receivedGrades?: SessionGradeUpdateManyWithoutEvaluatedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBadgesInput = {
@@ -16331,6 +18671,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
     rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16340,6 +18681,8 @@ export namespace Prisma {
     mvpSessions?: SessionUncheckedUpdateManyWithoutMvpPlayerNestedInput
     topScorerSessions?: SessionUncheckedUpdateManyWithoutTopScorerPlayerNestedInput
     sessionParticipants?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
+    evaluatedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput
+    receivedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput
   }
 
   export type SessionUpsertWithoutBadgesInput = {
@@ -16359,6 +18702,9 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutCreatedSessionsNestedInput
     mvpPlayer?: UserUpdateOneWithoutMvpSessionsNestedInput
@@ -16366,6 +18712,7 @@ export namespace Prisma {
     teams?: TeamUpdateManyWithoutSessionNestedInput
     rounds?: RoundUpdateManyWithoutSessionNestedInput
     participants?: SessionParticipantUpdateManyWithoutSessionNestedInput
+    grades?: SessionGradeUpdateManyWithoutSessionNestedInput
   }
 
   export type SessionUncheckedUpdateWithoutBadgesInput = {
@@ -16377,10 +18724,14 @@ export namespace Prisma {
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teams?: TeamUncheckedUpdateManyWithoutSessionNestedInput
     rounds?: RoundUncheckedUpdateManyWithoutSessionNestedInput
     participants?: SessionParticipantUncheckedUpdateManyWithoutSessionNestedInput
+    grades?: SessionGradeUncheckedUpdateManyWithoutSessionNestedInput
   }
 
   export type SessionCreateWithoutParticipantsInput = {
@@ -16389,6 +18740,9 @@ export namespace Prisma {
     date: Date | string
     status?: $Enums.SessionStatus
     maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
     createdAt?: Date | string
     createdBy: UserCreateNestedOneWithoutCreatedSessionsInput
     mvpPlayer?: UserCreateNestedOneWithoutMvpSessionsInput
@@ -16396,6 +18750,7 @@ export namespace Prisma {
     teams?: TeamCreateNestedManyWithoutSessionInput
     rounds?: RoundCreateNestedManyWithoutSessionInput
     badges?: BadgeCreateNestedManyWithoutSessionInput
+    grades?: SessionGradeCreateNestedManyWithoutSessionInput
   }
 
   export type SessionUncheckedCreateWithoutParticipantsInput = {
@@ -16407,10 +18762,14 @@ export namespace Prisma {
     mvpPlayerId?: string | null
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
     createdAt?: Date | string
     teams?: TeamUncheckedCreateNestedManyWithoutSessionInput
     rounds?: RoundUncheckedCreateNestedManyWithoutSessionInput
     badges?: BadgeUncheckedCreateNestedManyWithoutSessionInput
+    grades?: SessionGradeUncheckedCreateNestedManyWithoutSessionInput
   }
 
   export type SessionCreateOrConnectWithoutParticipantsInput = {
@@ -16426,6 +18785,7 @@ export namespace Prisma {
     nickname?: string | null
     position?: $Enums.Position
     rating?: number
+    averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
     createdAt?: Date | string
@@ -16435,6 +18795,8 @@ export namespace Prisma {
     createdSessions?: SessionCreateNestedManyWithoutCreatedByInput
     mvpSessions?: SessionCreateNestedManyWithoutMvpPlayerInput
     topScorerSessions?: SessionCreateNestedManyWithoutTopScorerPlayerInput
+    evaluatedGrades?: SessionGradeCreateNestedManyWithoutEvaluatorInput
+    receivedGrades?: SessionGradeCreateNestedManyWithoutEvaluatedInput
   }
 
   export type UserUncheckedCreateWithoutSessionParticipantsInput = {
@@ -16445,6 +18807,7 @@ export namespace Prisma {
     nickname?: string | null
     position?: $Enums.Position
     rating?: number
+    averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
     createdAt?: Date | string
@@ -16454,6 +18817,8 @@ export namespace Prisma {
     createdSessions?: SessionUncheckedCreateNestedManyWithoutCreatedByInput
     mvpSessions?: SessionUncheckedCreateNestedManyWithoutMvpPlayerInput
     topScorerSessions?: SessionUncheckedCreateNestedManyWithoutTopScorerPlayerInput
+    evaluatedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput
+    receivedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput
   }
 
   export type UserCreateOrConnectWithoutSessionParticipantsInput = {
@@ -16478,6 +18843,9 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutCreatedSessionsNestedInput
     mvpPlayer?: UserUpdateOneWithoutMvpSessionsNestedInput
@@ -16485,6 +18853,7 @@ export namespace Prisma {
     teams?: TeamUpdateManyWithoutSessionNestedInput
     rounds?: RoundUpdateManyWithoutSessionNestedInput
     badges?: BadgeUpdateManyWithoutSessionNestedInput
+    grades?: SessionGradeUpdateManyWithoutSessionNestedInput
   }
 
   export type SessionUncheckedUpdateWithoutParticipantsInput = {
@@ -16496,10 +18865,14 @@ export namespace Prisma {
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teams?: TeamUncheckedUpdateManyWithoutSessionNestedInput
     rounds?: RoundUncheckedUpdateManyWithoutSessionNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutSessionNestedInput
+    grades?: SessionGradeUncheckedUpdateManyWithoutSessionNestedInput
   }
 
   export type UserUpsertWithoutSessionParticipantsInput = {
@@ -16521,6 +18894,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
     rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16530,6 +18904,8 @@ export namespace Prisma {
     createdSessions?: SessionUpdateManyWithoutCreatedByNestedInput
     mvpSessions?: SessionUpdateManyWithoutMvpPlayerNestedInput
     topScorerSessions?: SessionUpdateManyWithoutTopScorerPlayerNestedInput
+    evaluatedGrades?: SessionGradeUpdateManyWithoutEvaluatorNestedInput
+    receivedGrades?: SessionGradeUpdateManyWithoutEvaluatedNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionParticipantsInput = {
@@ -16540,6 +18916,7 @@ export namespace Prisma {
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
     rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16549,6 +18926,308 @@ export namespace Prisma {
     createdSessions?: SessionUncheckedUpdateManyWithoutCreatedByNestedInput
     mvpSessions?: SessionUncheckedUpdateManyWithoutMvpPlayerNestedInput
     topScorerSessions?: SessionUncheckedUpdateManyWithoutTopScorerPlayerNestedInput
+    evaluatedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput
+    receivedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput
+  }
+
+  export type SessionCreateWithoutGradesInput = {
+    id?: string
+    title?: string | null
+    date: Date | string
+    status?: $Enums.SessionStatus
+    maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
+    createdAt?: Date | string
+    createdBy: UserCreateNestedOneWithoutCreatedSessionsInput
+    mvpPlayer?: UserCreateNestedOneWithoutMvpSessionsInput
+    topScorerPlayer?: UserCreateNestedOneWithoutTopScorerSessionsInput
+    teams?: TeamCreateNestedManyWithoutSessionInput
+    rounds?: RoundCreateNestedManyWithoutSessionInput
+    badges?: BadgeCreateNestedManyWithoutSessionInput
+    participants?: SessionParticipantCreateNestedManyWithoutSessionInput
+  }
+
+  export type SessionUncheckedCreateWithoutGradesInput = {
+    id?: string
+    title?: string | null
+    date: Date | string
+    status?: $Enums.SessionStatus
+    createdById: string
+    mvpPlayerId?: string | null
+    topScorerPlayerId?: string | null
+    maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
+    createdAt?: Date | string
+    teams?: TeamUncheckedCreateNestedManyWithoutSessionInput
+    rounds?: RoundUncheckedCreateNestedManyWithoutSessionInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutSessionInput
+    participants?: SessionParticipantUncheckedCreateNestedManyWithoutSessionInput
+  }
+
+  export type SessionCreateOrConnectWithoutGradesInput = {
+    where: SessionWhereUniqueInput
+    create: XOR<SessionCreateWithoutGradesInput, SessionUncheckedCreateWithoutGradesInput>
+  }
+
+  export type UserCreateWithoutEvaluatedGradesInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    nickname?: string | null
+    position?: $Enums.Position
+    rating?: number
+    averageGrade?: number | null
+    avatarIndex?: number
+    isAdmin?: boolean
+    createdAt?: Date | string
+    teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
+    goals?: GoalCreateNestedManyWithoutPlayerInput
+    badges?: BadgeCreateNestedManyWithoutPlayerInput
+    createdSessions?: SessionCreateNestedManyWithoutCreatedByInput
+    mvpSessions?: SessionCreateNestedManyWithoutMvpPlayerInput
+    topScorerSessions?: SessionCreateNestedManyWithoutTopScorerPlayerInput
+    sessionParticipants?: SessionParticipantCreateNestedManyWithoutUserInput
+    receivedGrades?: SessionGradeCreateNestedManyWithoutEvaluatedInput
+  }
+
+  export type UserUncheckedCreateWithoutEvaluatedGradesInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    nickname?: string | null
+    position?: $Enums.Position
+    rating?: number
+    averageGrade?: number | null
+    avatarIndex?: number
+    isAdmin?: boolean
+    createdAt?: Date | string
+    teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
+    goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutPlayerInput
+    createdSessions?: SessionUncheckedCreateNestedManyWithoutCreatedByInput
+    mvpSessions?: SessionUncheckedCreateNestedManyWithoutMvpPlayerInput
+    topScorerSessions?: SessionUncheckedCreateNestedManyWithoutTopScorerPlayerInput
+    sessionParticipants?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
+    receivedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput
+  }
+
+  export type UserCreateOrConnectWithoutEvaluatedGradesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutEvaluatedGradesInput, UserUncheckedCreateWithoutEvaluatedGradesInput>
+  }
+
+  export type UserCreateWithoutReceivedGradesInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    nickname?: string | null
+    position?: $Enums.Position
+    rating?: number
+    averageGrade?: number | null
+    avatarIndex?: number
+    isAdmin?: boolean
+    createdAt?: Date | string
+    teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
+    goals?: GoalCreateNestedManyWithoutPlayerInput
+    badges?: BadgeCreateNestedManyWithoutPlayerInput
+    createdSessions?: SessionCreateNestedManyWithoutCreatedByInput
+    mvpSessions?: SessionCreateNestedManyWithoutMvpPlayerInput
+    topScorerSessions?: SessionCreateNestedManyWithoutTopScorerPlayerInput
+    sessionParticipants?: SessionParticipantCreateNestedManyWithoutUserInput
+    evaluatedGrades?: SessionGradeCreateNestedManyWithoutEvaluatorInput
+  }
+
+  export type UserUncheckedCreateWithoutReceivedGradesInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    nickname?: string | null
+    position?: $Enums.Position
+    rating?: number
+    averageGrade?: number | null
+    avatarIndex?: number
+    isAdmin?: boolean
+    createdAt?: Date | string
+    teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
+    goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutPlayerInput
+    createdSessions?: SessionUncheckedCreateNestedManyWithoutCreatedByInput
+    mvpSessions?: SessionUncheckedCreateNestedManyWithoutMvpPlayerInput
+    topScorerSessions?: SessionUncheckedCreateNestedManyWithoutTopScorerPlayerInput
+    sessionParticipants?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
+    evaluatedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput
+  }
+
+  export type UserCreateOrConnectWithoutReceivedGradesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutReceivedGradesInput, UserUncheckedCreateWithoutReceivedGradesInput>
+  }
+
+  export type SessionUpsertWithoutGradesInput = {
+    update: XOR<SessionUpdateWithoutGradesInput, SessionUncheckedUpdateWithoutGradesInput>
+    create: XOR<SessionCreateWithoutGradesInput, SessionUncheckedCreateWithoutGradesInput>
+    where?: SessionWhereInput
+  }
+
+  export type SessionUpdateToOneWithWhereWithoutGradesInput = {
+    where?: SessionWhereInput
+    data: XOR<SessionUpdateWithoutGradesInput, SessionUncheckedUpdateWithoutGradesInput>
+  }
+
+  export type SessionUpdateWithoutGradesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
+    maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneRequiredWithoutCreatedSessionsNestedInput
+    mvpPlayer?: UserUpdateOneWithoutMvpSessionsNestedInput
+    topScorerPlayer?: UserUpdateOneWithoutTopScorerSessionsNestedInput
+    teams?: TeamUpdateManyWithoutSessionNestedInput
+    rounds?: RoundUpdateManyWithoutSessionNestedInput
+    badges?: BadgeUpdateManyWithoutSessionNestedInput
+    participants?: SessionParticipantUpdateManyWithoutSessionNestedInput
+  }
+
+  export type SessionUncheckedUpdateWithoutGradesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
+    createdById?: StringFieldUpdateOperationsInput | string
+    mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
+    topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
+    maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    teams?: TeamUncheckedUpdateManyWithoutSessionNestedInput
+    rounds?: RoundUncheckedUpdateManyWithoutSessionNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutSessionNestedInput
+    participants?: SessionParticipantUncheckedUpdateManyWithoutSessionNestedInput
+  }
+
+  export type UserUpsertWithoutEvaluatedGradesInput = {
+    update: XOR<UserUpdateWithoutEvaluatedGradesInput, UserUncheckedUpdateWithoutEvaluatedGradesInput>
+    create: XOR<UserCreateWithoutEvaluatedGradesInput, UserUncheckedCreateWithoutEvaluatedGradesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutEvaluatedGradesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutEvaluatedGradesInput, UserUncheckedUpdateWithoutEvaluatedGradesInput>
+  }
+
+  export type UserUpdateWithoutEvaluatedGradesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nickname?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
+    rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    avatarIndex?: IntFieldUpdateOperationsInput | number
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
+    goals?: GoalUpdateManyWithoutPlayerNestedInput
+    badges?: BadgeUpdateManyWithoutPlayerNestedInput
+    createdSessions?: SessionUpdateManyWithoutCreatedByNestedInput
+    mvpSessions?: SessionUpdateManyWithoutMvpPlayerNestedInput
+    topScorerSessions?: SessionUpdateManyWithoutTopScorerPlayerNestedInput
+    sessionParticipants?: SessionParticipantUpdateManyWithoutUserNestedInput
+    receivedGrades?: SessionGradeUpdateManyWithoutEvaluatedNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutEvaluatedGradesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nickname?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
+    rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    avatarIndex?: IntFieldUpdateOperationsInput | number
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
+    goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutPlayerNestedInput
+    createdSessions?: SessionUncheckedUpdateManyWithoutCreatedByNestedInput
+    mvpSessions?: SessionUncheckedUpdateManyWithoutMvpPlayerNestedInput
+    topScorerSessions?: SessionUncheckedUpdateManyWithoutTopScorerPlayerNestedInput
+    sessionParticipants?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
+    receivedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput
+  }
+
+  export type UserUpsertWithoutReceivedGradesInput = {
+    update: XOR<UserUpdateWithoutReceivedGradesInput, UserUncheckedUpdateWithoutReceivedGradesInput>
+    create: XOR<UserCreateWithoutReceivedGradesInput, UserUncheckedCreateWithoutReceivedGradesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutReceivedGradesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutReceivedGradesInput, UserUncheckedUpdateWithoutReceivedGradesInput>
+  }
+
+  export type UserUpdateWithoutReceivedGradesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nickname?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
+    rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    avatarIndex?: IntFieldUpdateOperationsInput | number
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
+    goals?: GoalUpdateManyWithoutPlayerNestedInput
+    badges?: BadgeUpdateManyWithoutPlayerNestedInput
+    createdSessions?: SessionUpdateManyWithoutCreatedByNestedInput
+    mvpSessions?: SessionUpdateManyWithoutMvpPlayerNestedInput
+    topScorerSessions?: SessionUpdateManyWithoutTopScorerPlayerNestedInput
+    sessionParticipants?: SessionParticipantUpdateManyWithoutUserNestedInput
+    evaluatedGrades?: SessionGradeUpdateManyWithoutEvaluatorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutReceivedGradesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nickname?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
+    rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    avatarIndex?: IntFieldUpdateOperationsInput | number
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
+    goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutPlayerNestedInput
+    createdSessions?: SessionUncheckedUpdateManyWithoutCreatedByNestedInput
+    mvpSessions?: SessionUncheckedUpdateManyWithoutMvpPlayerNestedInput
+    topScorerSessions?: SessionUncheckedUpdateManyWithoutTopScorerPlayerNestedInput
+    sessionParticipants?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
+    evaluatedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput
   }
 
   export type TeamPlayerCreateManyPlayerInput = {
@@ -16577,6 +19256,9 @@ export namespace Prisma {
     mvpPlayerId?: string | null
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
     createdAt?: Date | string
   }
 
@@ -16588,6 +19270,9 @@ export namespace Prisma {
     createdById: string
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
     createdAt?: Date | string
   }
 
@@ -16599,6 +19284,9 @@ export namespace Prisma {
     createdById: string
     mvpPlayerId?: string | null
     maxPlayers?: number
+    finishedAt?: Date | string | null
+    votingTimeoutHours?: number
+    ratingsConsolidated?: boolean
     createdAt?: Date | string
   }
 
@@ -16606,6 +19294,23 @@ export namespace Prisma {
     id?: string
     sessionId: string
     status?: $Enums.ParticipantStatus
+    sessionGrade?: number | null
+    createdAt?: Date | string
+  }
+
+  export type SessionGradeCreateManyEvaluatorInput = {
+    id?: string
+    sessionId: string
+    evaluatedId: string
+    grade: number
+    createdAt?: Date | string
+  }
+
+  export type SessionGradeCreateManyEvaluatedInput = {
+    id?: string
+    sessionId: string
+    evaluatorId: string
+    grade: number
     createdAt?: Date | string
   }
 
@@ -16666,6 +19371,9 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     mvpPlayer?: UserUpdateOneWithoutMvpSessionsNestedInput
     topScorerPlayer?: UserUpdateOneWithoutTopScorerSessionsNestedInput
@@ -16673,6 +19381,7 @@ export namespace Prisma {
     rounds?: RoundUpdateManyWithoutSessionNestedInput
     badges?: BadgeUpdateManyWithoutSessionNestedInput
     participants?: SessionParticipantUpdateManyWithoutSessionNestedInput
+    grades?: SessionGradeUpdateManyWithoutSessionNestedInput
   }
 
   export type SessionUncheckedUpdateWithoutCreatedByInput = {
@@ -16683,11 +19392,15 @@ export namespace Prisma {
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teams?: TeamUncheckedUpdateManyWithoutSessionNestedInput
     rounds?: RoundUncheckedUpdateManyWithoutSessionNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutSessionNestedInput
     participants?: SessionParticipantUncheckedUpdateManyWithoutSessionNestedInput
+    grades?: SessionGradeUncheckedUpdateManyWithoutSessionNestedInput
   }
 
   export type SessionUncheckedUpdateManyWithoutCreatedByInput = {
@@ -16698,6 +19411,9 @@ export namespace Prisma {
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -16707,6 +19423,9 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutCreatedSessionsNestedInput
     topScorerPlayer?: UserUpdateOneWithoutTopScorerSessionsNestedInput
@@ -16714,6 +19433,7 @@ export namespace Prisma {
     rounds?: RoundUpdateManyWithoutSessionNestedInput
     badges?: BadgeUpdateManyWithoutSessionNestedInput
     participants?: SessionParticipantUpdateManyWithoutSessionNestedInput
+    grades?: SessionGradeUpdateManyWithoutSessionNestedInput
   }
 
   export type SessionUncheckedUpdateWithoutMvpPlayerInput = {
@@ -16724,11 +19444,15 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teams?: TeamUncheckedUpdateManyWithoutSessionNestedInput
     rounds?: RoundUncheckedUpdateManyWithoutSessionNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutSessionNestedInput
     participants?: SessionParticipantUncheckedUpdateManyWithoutSessionNestedInput
+    grades?: SessionGradeUncheckedUpdateManyWithoutSessionNestedInput
   }
 
   export type SessionUncheckedUpdateManyWithoutMvpPlayerInput = {
@@ -16739,6 +19463,9 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -16748,6 +19475,9 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneRequiredWithoutCreatedSessionsNestedInput
     mvpPlayer?: UserUpdateOneWithoutMvpSessionsNestedInput
@@ -16755,6 +19485,7 @@ export namespace Prisma {
     rounds?: RoundUpdateManyWithoutSessionNestedInput
     badges?: BadgeUpdateManyWithoutSessionNestedInput
     participants?: SessionParticipantUpdateManyWithoutSessionNestedInput
+    grades?: SessionGradeUpdateManyWithoutSessionNestedInput
   }
 
   export type SessionUncheckedUpdateWithoutTopScorerPlayerInput = {
@@ -16765,11 +19496,15 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teams?: TeamUncheckedUpdateManyWithoutSessionNestedInput
     rounds?: RoundUncheckedUpdateManyWithoutSessionNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutSessionNestedInput
     participants?: SessionParticipantUncheckedUpdateManyWithoutSessionNestedInput
+    grades?: SessionGradeUncheckedUpdateManyWithoutSessionNestedInput
   }
 
   export type SessionUncheckedUpdateManyWithoutTopScorerPlayerInput = {
@@ -16780,12 +19515,16 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    votingTimeoutHours?: IntFieldUpdateOperationsInput | number
+    ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SessionParticipantUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumParticipantStatusFieldUpdateOperationsInput | $Enums.ParticipantStatus
+    sessionGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     session?: SessionUpdateOneRequiredWithoutParticipantsNestedInput
   }
@@ -16794,6 +19533,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionId?: StringFieldUpdateOperationsInput | string
     status?: EnumParticipantStatusFieldUpdateOperationsInput | $Enums.ParticipantStatus
+    sessionGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -16801,6 +19541,55 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     sessionId?: StringFieldUpdateOperationsInput | string
     status?: EnumParticipantStatusFieldUpdateOperationsInput | $Enums.ParticipantStatus
+    sessionGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionGradeUpdateWithoutEvaluatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: SessionUpdateOneRequiredWithoutGradesNestedInput
+    evaluated?: UserUpdateOneRequiredWithoutReceivedGradesNestedInput
+  }
+
+  export type SessionGradeUncheckedUpdateWithoutEvaluatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    evaluatedId?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionGradeUncheckedUpdateManyWithoutEvaluatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    evaluatedId?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionGradeUpdateWithoutEvaluatedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: SessionUpdateOneRequiredWithoutGradesNestedInput
+    evaluator?: UserUpdateOneRequiredWithoutEvaluatedGradesNestedInput
+  }
+
+  export type SessionGradeUncheckedUpdateWithoutEvaluatedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    evaluatorId?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionGradeUncheckedUpdateManyWithoutEvaluatedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    evaluatorId?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -16834,6 +19623,15 @@ export namespace Prisma {
     id?: string
     userId: string
     status?: $Enums.ParticipantStatus
+    sessionGrade?: number | null
+    createdAt?: Date | string
+  }
+
+  export type SessionGradeCreateManySessionInput = {
+    id?: string
+    evaluatorId: string
+    evaluatedId: string
+    grade: number
     createdAt?: Date | string
   }
 
@@ -16841,7 +19639,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
-    totalRating?: IntFieldUpdateOperationsInput | number
+    totalRating?: FloatFieldUpdateOperationsInput | number
     players?: TeamPlayerUpdateManyWithoutTeamNestedInput
     homeRounds?: RoundUpdateManyWithoutHomeTeamNestedInput
     awayRounds?: RoundUpdateManyWithoutAwayTeamNestedInput
@@ -16852,7 +19650,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
-    totalRating?: IntFieldUpdateOperationsInput | number
+    totalRating?: FloatFieldUpdateOperationsInput | number
     players?: TeamPlayerUncheckedUpdateManyWithoutTeamNestedInput
     homeRounds?: RoundUncheckedUpdateManyWithoutHomeTeamNestedInput
     awayRounds?: RoundUncheckedUpdateManyWithoutAwayTeamNestedInput
@@ -16863,7 +19661,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     color?: StringFieldUpdateOperationsInput | string
-    totalRating?: IntFieldUpdateOperationsInput | number
+    totalRating?: FloatFieldUpdateOperationsInput | number
   }
 
   export type RoundUpdateWithoutSessionInput = {
@@ -16927,6 +19725,7 @@ export namespace Prisma {
   export type SessionParticipantUpdateWithoutSessionInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumParticipantStatusFieldUpdateOperationsInput | $Enums.ParticipantStatus
+    sessionGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutSessionParticipantsNestedInput
   }
@@ -16935,6 +19734,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     status?: EnumParticipantStatusFieldUpdateOperationsInput | $Enums.ParticipantStatus
+    sessionGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -16942,6 +19742,31 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     status?: EnumParticipantStatusFieldUpdateOperationsInput | $Enums.ParticipantStatus
+    sessionGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionGradeUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    evaluator?: UserUpdateOneRequiredWithoutEvaluatedGradesNestedInput
+    evaluated?: UserUpdateOneRequiredWithoutReceivedGradesNestedInput
+  }
+
+  export type SessionGradeUncheckedUpdateWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    evaluatorId?: StringFieldUpdateOperationsInput | string
+    evaluatedId?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionGradeUncheckedUpdateManyWithoutSessionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    evaluatorId?: StringFieldUpdateOperationsInput | string
+    evaluatedId?: StringFieldUpdateOperationsInput | string
+    grade?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

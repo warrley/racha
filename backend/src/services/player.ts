@@ -15,6 +15,7 @@ export const findById = async (id: string) => {
             email: true,
             position: true,
             rating: true,
+            averageGrade: true,
             avatarIndex: true,
             isAdmin: true,
             createdAt: true
@@ -38,6 +39,7 @@ export const findAll = async () => {
             nickname: true,
             position: true,
             rating: true,
+            averageGrade: true,
             avatarIndex: true,
             isAdmin: true
         },
