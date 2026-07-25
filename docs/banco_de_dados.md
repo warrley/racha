@@ -104,10 +104,13 @@ Para suportar as novas regras de negócio do racha, o `schema.prisma` deve ser e
 ### 3.1 Alterações em tabelas existentes
 *   **User (`users`)**:
     *   `averageGrade` (Float): Nova coluna para armazenar a nota média histórica das avaliações (padrão null - sem avaliação).
+    *   `pixKey` (String?): Chave Pix padrão do administrador, usada como fallback quando a sessão não define uma própria (req 2.3).
 *   **Session (`sessions`)**:
     *   `maxPlayers` (Int): Limite máximo de jogadores confirmados para a sessão (padrão `15`).
-    *   `pixKey` (String?): Chave Pix cadastrada pelo administrador para o recebimento do racha.
-    *   `price` (Float?): Valor individual a ser pago pelos participantes da sessão.
+    *   `pixKey` (String?): Chave Pix específica desta sessão; sobrescreve a do perfil do administrador quando definida.
+    *   `price` (Float?): Valor fixo individual a ser pago pelos participantes da sessão. O payload "Copia e Cola" (`utils/pix.ts`) só é gerado quando há chave Pix efetiva (sessão ou perfil) e `price` definidos.
+*   **SessionParticipant (`session_participants`)**:
+    *   `isPaid` (Boolean): Status de pagamento manual marcado pelo administrador (padrão `false`).
 
 ### 3.2 Novas Tabelas
 

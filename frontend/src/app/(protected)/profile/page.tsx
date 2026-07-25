@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import Link from 'next/link';
-import { Trophy, Medal, Goal, ChevronRight, LogOut, CalendarDays } from 'lucide-react';
+import { Trophy, Medal, Goal, ChevronRight, LogOut, CalendarDays, Wallet, Check } from 'lucide-react';
 import styles from './profile.module.css';
 import { getHexColor } from '@/lib/colors';
 
@@ -16,6 +16,10 @@ export default function ProfileScreen() {
     const [history, setHistory] = useState<SessionHistoryItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    const [pixKeyInput, setPixKeyInput] = useState('');
+    const [savingPixKey, setSavingPixKey] = useState(false);
+    const [pixKeySaved, setPixKeySaved] = useState(false);
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -30,6 +34,7 @@ export default function ProfileScreen() {
 
                 setProfile(profileRes.data.player);
                 setHistory(historyRes.data.history);
+                setPixKeyInput(profileRes.data.player.pixKey || '');
             } catch (err: any) {
                 setError(err.message || 'Erro ao carregar o perfil');
             } finally {
@@ -44,6 +49,20 @@ export default function ProfileScreen() {
 
     const handleLogout = () => {
         logout();
+    };
+
+    const handleSavePixKey = async () => {
+        try {
+            setSavingPixKey(true);
+            await api.put('/players', { pixKey: pixKeyInput.trim() || null });
+            setProfile(prev => prev ? { ...prev, pixKey: pixKeyInput.trim() || null } : prev);
+            setPixKeySaved(true);
+            setTimeout(() => setPixKeySaved(false), 2000);
+        } catch (e: any) {
+            alert(e.response?.data?.error || 'Erro ao salvar chave Pix.');
+        } finally {
+            setSavingPixKey(false);
+        }
     };
 
     if (error) {
@@ -103,6 +122,34 @@ export default function ProfileScreen() {
                         </div>
                     ))}
                 </div>
+
+                {profile.isAdmin && (
+                    <section className={styles.section}>
+                        <h2 className={styles.sectionTitle}>
+                            <Wallet size={16} color="#16a34a" /> Chave Pix para Recebimento
+                        </h2>
+                        <div className="flex gap-2 items-center">
+                            <input
+                                type="text"
+                                value={pixKeyInput}
+                                onChange={(e) => setPixKeyInput(e.target.value)}
+                                placeholder="E-mail, CPF, telefone ou chave aleatória"
+                                className="flex-1 bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold text-slate-800 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                            />
+                            <button
+                                onClick={handleSavePixKey}
+                                disabled={savingPixKey}
+                                className={`h-[46px] px-4 rounded-xl font-black text-xs flex items-center gap-1.5 transition-all active:scale-95 disabled:opacity-50 ${pixKeySaved ? 'bg-green-500 text-white' : 'bg-primary text-white hover:bg-primary-hover'}`}
+                            >
+                                {pixKeySaved ? <Check className="w-4 h-4" /> : null}
+                                {pixKeySaved ? 'Salvo' : 'Salvar'}
+                            </button>
+                        </div>
+                        <p className="text-[10px] text-slate-400 font-bold mt-2 px-1">
+                            Usada como padrão nos rachas que você criar. Cada racha pode sobrescrever com uma chave própria.
+                        </p>
+                    </section>
+                )}
 
                 {badgeEntries.length > 0 && (
                     <section className={styles.section}>

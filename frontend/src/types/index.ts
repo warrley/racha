@@ -7,6 +7,7 @@ export interface Player {
     averageGrade?: number | null;
     avatarIndex: number;
     isAdmin: boolean;
+    pixKey?: string | null;
 
     totalSessions?: number;
     totalGoals?: number;
@@ -82,8 +83,15 @@ export interface SessionParticipant {
     userId: string;
     status: 'CONFIRMED' | 'WAITING_LIST';
     sessionGrade?: number | null;
+    isPaid: boolean;
     createdAt: string;
     user?: Player;
+}
+
+export interface SessionPixInfo {
+    key: string;
+    price: number;
+    payload: string;
 }
 
 export interface Session {
@@ -98,6 +106,9 @@ export interface Session {
     finishedAt?: string | null;
     votingTimeoutHours?: number;
     ratingsConsolidated?: boolean;
+    pixKey?: string | null;
+    price?: number | null;
+    pix?: SessionPixInfo | null;
 
     createdBy?: Player;
     mvpPlayer?: Player;

@@ -32,9 +32,9 @@ Este documento descreve os requisitos funcionais e não-funcionais para o sistem
 ### 2.3 Pagamento Pix Simples
 | ID | Descrição | Prioridade | Status |
 | :--- | :--- | :--- | :--- |
-| **RF08** | O administrador deve poder cadastrar sua chave Pix nas configurações globais ou específicas do evento. | Alta | Pendente |
-| **RF09** | O sistema deve exibir para o jogador confirmado um código **Pix Copia e Cola** (BR Code) e um **QR Code estático** com o valor individual a ser pago (Valor Total / Número de Confirmados ou valor fixo configurado). | Alta | Pendente |
-| **RF10** | O administrador deve ter um painel para marcar manualmente o status de pagamento de cada jogador ("Pendente" ou "Pago"). | Alta | Pendente |
+| **RF08** | O administrador deve poder cadastrar sua chave Pix nas configurações globais ou específicas do evento. | Alta | Concluído |
+| **RF09** | O sistema deve exibir para o jogador confirmado um código **Pix Copia e Cola** (BR Code) e um **QR Code estático** com o valor individual a ser pago (Valor Total / Número de Confirmados ou valor fixo configurado). | Alta | Concluído |
+| **RF10** | O administrador deve ter um painel para marcar manualmente o status de pagamento de cada jogador ("Pendente" ou "Pago"). | Alta | Concluído |
 
 ### 2.4 Avaliação Pós-Jogo e Notas
 | ID | Descrição | Prioridade | Status |

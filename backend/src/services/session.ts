@@ -3,14 +3,38 @@ import { drawTeams } from "../utils/draw";
 import { calculateNewRating } from "../utils/elo";
 import { consolidateExpiredSessions } from "./rating";
 
-export const createSession = async (createdById: string, title: string | undefined, date: string, maxPlayers?: number) => {
+export const createSession = async (createdById: string, title: string | undefined, date: string, maxPlayers?: number, pixKey?: string, price?: number) => {
     return await prisma.session.create({
         data: {
             title,
             date: new Date(date),
             createdById,
-            maxPlayers
+            maxPlayers,
+            pixKey,
+            price
         }
+    });
+};
+
+export const updatePaymentInfo = async (sessionId: string, pixKey?: string | null, price?: number | null) => {
+    const session = await prisma.session.findUnique({ where: { id: sessionId } });
+    if(!session) throw new Error("Sessão não encontrada");
+
+    return await prisma.session.update({
+        where: { id: sessionId },
+        data: { pixKey, price }
+    });
+};
+
+export const setParticipantPaymentStatus = async (sessionId: string, userId: string, isPaid: boolean) => {
+    const participant = await prisma.sessionParticipant.findUnique({
+        where: { sessionId_userId: { sessionId, userId } }
+    });
+    if(!participant) throw new Error("Participante não encontrado nesta sessão");
+
+    return await prisma.sessionParticipant.update({
+        where: { id: participant.id },
+        data: { isPaid }
     });
 };
 
@@ -18,7 +42,7 @@ export const findSessionById = async (id: string) => {
     return await prisma.session.findUnique({
         where: { id },
         include: {
-            createdBy: { select: { id: true, name: true, nickname: true } },
+            createdBy: { select: { id: true, name: true, nickname: true, pixKey: true } },
             mvpPlayer: { select: { id: true, name: true, nickname: true } },
             topScorerPlayer: { select: { id: true, name: true, nickname: true } },
             participants: {

@@ -18,6 +18,7 @@ export const findById = async (id: string) => {
             averageGrade: true,
             avatarIndex: true,
             isAdmin: true,
+            pixKey: true,
             createdAt: true
         }
     });

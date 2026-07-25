@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/api';
 import { useRouter, useParams } from 'next/navigation';
-import { ChevronDown, CheckCircle2, Circle, Trophy, Goal, Play, Shuffle, CalendarDays, History, MapPin, Trash2, StopCircle, UserPlus, Users, Clock, Plus, X, Star, Send, Lock, Repeat } from 'lucide-react';
+import { ChevronDown, CheckCircle2, Circle, Trophy, Goal, Play, Shuffle, CalendarDays, History, MapPin, Trash2, StopCircle, UserPlus, Users, Clock, Plus, X, Star, Send, Lock, Repeat, Wallet, Copy, Check, Settings2 } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 import { Button } from '@/components/Button';
 import { UserAvatar } from '@/components/UserAvatar';
 import { Header } from '@/components/Header';
@@ -34,11 +35,21 @@ export default function SessionDetailsScreen() {
     const [submittingRatings, setSubmittingRatings] = useState(false);
     const [ratingsSubmitted, setRatingsSubmitted] = useState(false);
 
+    // Pagamento via Pix (req 2.3)
+    const [pixCopied, setPixCopied] = useState(false);
+    const [showPaymentSettings, setShowPaymentSettings] = useState(false);
+    const [pixKeyInput, setPixKeyInput] = useState('');
+    const [priceInput, setPriceInput] = useState('');
+    const [savingPaymentInfo, setSavingPaymentInfo] = useState(false);
+    const [payingUserId, setPayingUserId] = useState<string | null>(null);
+
     const fetchSessionData = async () => {
         try {
             const res = await api.get(`/sessions/${sessionId}`);
             const sess = res.data.session;
             setSession(sess);
+            setPixKeyInput(sess.pixKey || '');
+            setPriceInput(sess.price != null ? String(sess.price) : '');
 
             if (sess.status === 'OPEN') {
                 const pRes = await api.get('/players');
@@ -143,6 +154,44 @@ export default function SessionDetailsScreen() {
             } finally {
                 setActionLoading(false);
             }
+        }
+    };
+
+    const handleCopyPix = () => {
+        if (!session?.pix) return;
+        navigator.clipboard.writeText(session.pix.payload);
+        setPixCopied(true);
+        setTimeout(() => setPixCopied(false), 2000);
+    };
+
+    const handleSavePaymentInfo = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            setSavingPaymentInfo(true);
+            await api.patch(`/sessions/${sessionId}/payment-info`, {
+                pixKey: pixKeyInput.trim() || null,
+                price: priceInput ? Number(priceInput) : null
+            });
+            setShowPaymentSettings(false);
+            await fetchSessionData();
+        } catch (e: any) {
+            console.error(e);
+            alert(e.response?.data?.error || "Erro ao salvar configuração de pagamento.");
+        } finally {
+            setSavingPaymentInfo(false);
+        }
+    };
+
+    const handleTogglePaid = async (pUserId: string, isPaid: boolean) => {
+        try {
+            setPayingUserId(pUserId);
+            await api.patch(`/sessions/${sessionId}/participants/${pUserId}/payment`, { isPaid: !isPaid });
+            await fetchSessionData();
+        } catch (e: any) {
+            console.error(e);
+            alert(e.response?.data?.error || "Erro ao atualizar pagamento.");
+        } finally {
+            setPayingUserId(null);
         }
     };
 
@@ -284,6 +333,77 @@ export default function SessionDetailsScreen() {
                         </div>
                     )}
                 </section>
+
+                {/* Pagamento via Pix (req 2.3) */}
+                {!isFinished && (
+                    <section className="space-y-3">
+                        {session.pix ? (
+                            <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-5 space-y-4">
+                                <div className="flex items-center justify-between">
+                                    <h3 className="font-black text-slate-800 text-sm flex items-center gap-2">
+                                        <Wallet className="w-4 h-4 text-green-600" /> Pagamento da Cota
+                                    </h3>
+                                    <span className="text-lg font-black text-green-600">R$ {session.pix.price.toFixed(2)}</span>
+                                </div>
+                                <div className="flex flex-col items-center gap-3 py-2">
+                                    <div className="bg-white p-3 rounded-2xl border border-slate-100">
+                                        <QRCodeSVG value={session.pix.payload} size={160} />
+                                    </div>
+                                    <button
+                                        onClick={handleCopyPix}
+                                        className={`w-full flex items-center justify-center gap-2 py-3 px-4 rounded-2xl text-xs font-black uppercase tracking-wider transition-all active:scale-95 ${pixCopied ? 'bg-green-500 text-white' : 'bg-slate-900 text-white hover:bg-slate-800'}`}
+                                    >
+                                        {pixCopied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                                        {pixCopied ? 'Código Copiado!' : 'Copiar Código Pix (Copia e Cola)'}
+                                    </button>
+                                </div>
+                            </div>
+                        ) : isAdmin ? (
+                            <div className="bg-amber-50 border border-amber-100 rounded-2xl p-4 text-xs font-bold text-amber-700">
+                                Configure a chave Pix e o valor da cota para os jogadores poderem pagar.
+                            </div>
+                        ) : null}
+
+                        {isAdmin && (
+                            <button
+                                onClick={() => setShowPaymentSettings(v => !v)}
+                                className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-slate-100 text-slate-500 rounded-2xl border border-slate-200 text-xs font-black uppercase tracking-wider hover:bg-slate-200 transition-all active:scale-95"
+                            >
+                                <Settings2 className="w-4 h-4" /> Configurar Pagamento
+                            </button>
+                        )}
+
+                        {isAdmin && showPaymentSettings && (
+                            <form onSubmit={handleSavePaymentInfo} className="bg-slate-900 p-5 rounded-3xl shadow-xl text-white flex flex-col gap-3">
+                                <div>
+                                    <label className="text-[10px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Chave Pix (deixe em branco para usar a do seu perfil)</label>
+                                    <input
+                                        type="text"
+                                        value={pixKeyInput}
+                                        onChange={e => setPixKeyInput(e.target.value)}
+                                        placeholder="E-mail, CPF, telefone ou chave aleatória"
+                                        className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 font-bold text-white text-sm outline-none focus:border-primary"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="text-[10px] text-slate-400 font-bold uppercase tracking-widest block mb-1">Valor da Cota (R$)</label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        step="0.01"
+                                        value={priceInput}
+                                        onChange={e => setPriceInput(e.target.value)}
+                                        placeholder="Ex: 25.00"
+                                        className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 font-bold text-white text-sm outline-none focus:border-primary"
+                                    />
+                                </div>
+                                <Button type="submit" isLoading={savingPaymentInfo} fullWidth>
+                                    Salvar
+                                </Button>
+                            </form>
+                        )}
+                    </section>
+                )}
 
                 {/* Seção de Avaliação Pós-Jogo */}
                 {isFinished && ratingsStatus && (
@@ -505,9 +625,19 @@ export default function SessionDetailsScreen() {
                                                         </div>
                                                     </div>
                                                     <div className="flex items-center gap-2">
-                                                        <div className="bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100 font-black text-slate-500 text-[10px]">
-                                                            {player.rating} Pts
-                                                        </div>
+                                                        {isAdmin && session.price ? (
+                                                            <button
+                                                                onClick={() => handleTogglePaid(player.id, p.isPaid)}
+                                                                disabled={payingUserId === player.id}
+                                                                className={`px-3 py-1.5 rounded-lg border font-black text-[10px] uppercase tracking-wider transition-all active:scale-95 ${p.isPaid ? 'bg-green-50 text-green-600 border-green-200' : 'bg-amber-50 text-amber-600 border-amber-200'}`}
+                                                            >
+                                                                {p.isPaid ? 'Pago' : 'Pendente'}
+                                                            </button>
+                                                        ) : (
+                                                            <div className="bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100 font-black text-slate-500 text-[10px]">
+                                                                {player.rating} Pts
+                                                            </div>
+                                                        )}
                                                         {isAdmin && (
                                                             <button
                                                                 onClick={() => handleRemovePlayerManual(player.id)}

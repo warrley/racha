@@ -1,8 +1,9 @@
 import { Response } from "express";
 import { AuthRequest } from "../middleware/privateRoute";
-import { createSessionSchema, drawTeamsSchema } from "../schemas/session";
-import { createSession, executeDraw, findSessionById, findAllSessions, closeSession, startSession, joinSession, leaveSession } from "../services/session";
+import { createSessionSchema, drawTeamsSchema, updatePaymentInfoSchema } from "../schemas/session";
+import { createSession, executeDraw, findSessionById, findAllSessions, closeSession, startSession, joinSession, leaveSession, updatePaymentInfo, setParticipantPaymentStatus } from "../services/session";
 import { findById } from "../services/player";
+import { generatePixPayload } from "../utils/pix";
 
 export const create = async (req: AuthRequest, res: Response) => {
     const safeData = createSessionSchema.safeParse(req.body);
@@ -17,7 +18,14 @@ export const create = async (req: AuthRequest, res: Response) => {
         return;
     };
 
-    const session = await createSession(req.userId as string, safeData.data.title, safeData.data.date, safeData.data.maxPlayers);
+    const session = await createSession(
+        req.userId as string,
+        safeData.data.title,
+        safeData.data.date,
+        safeData.data.maxPlayers,
+        safeData.data.pixKey,
+        safeData.data.price
+    );
     res.status(201).json({ error: null, session });
 };
 
@@ -30,7 +38,68 @@ export const getSession = async (req: AuthRequest, res: Response) => {
         return;
     };
 
-    res.json({ error: null, session });
+    // Chave Pix e valor: prioriza a configuração da sessão, com fallback para o perfil do admin criador (req 2.3)
+    const effectivePixKey = session.pixKey || session.createdBy?.pixKey || null;
+    const pix = effectivePixKey && session.price
+        ? {
+            key: effectivePixKey,
+            price: session.price,
+            payload: generatePixPayload({
+                pixKey: effectivePixKey,
+                amount: session.price,
+                merchantName: session.createdBy?.nickname || session.createdBy?.name,
+                txid: session.id
+            })
+        }
+        : null;
+
+    res.json({ error: null, session: { ...session, pix } });
+};
+
+export const updateSessionPaymentInfo = async (req: AuthRequest, res: Response) => {
+    const { id } = req.params;
+
+    const safeData = updatePaymentInfoSchema.safeParse(req.body);
+    if(!safeData.success) {
+        res.status(400).json({ error: safeData.error.flatten().fieldErrors });
+        return;
+    };
+
+    const user = await findById(req.userId as string);
+    if(!user?.isAdmin) {
+        res.status(403).json({ error: "Apenas administradores podem configurar o pagamento" });
+        return;
+    };
+
+    try {
+        const session = await updatePaymentInfo(id as string, safeData.data.pixKey, safeData.data.price);
+        res.json({ error: null, session });
+    } catch(err: any) {
+        res.status(400).json({ error: err.message });
+    };
+};
+
+export const setPaymentStatus = async (req: AuthRequest, res: Response) => {
+    const { id, userId } = req.params;
+    const { isPaid } = req.body;
+
+    if(typeof isPaid !== "boolean") {
+        res.status(400).json({ error: "isPaid deve ser um booleano" });
+        return;
+    };
+
+    const user = await findById(req.userId as string);
+    if(!user?.isAdmin) {
+        res.status(403).json({ error: "Apenas administradores podem marcar pagamentos" });
+        return;
+    };
+
+    try {
+        const participant = await setParticipantPaymentStatus(id as string, userId as string, isPaid);
+        res.json({ error: null, participant });
+    } catch(err: any) {
+        res.status(400).json({ error: err.message });
+    };
 };
 
 export const getSessions = async (req: AuthRequest, res: Response) => {

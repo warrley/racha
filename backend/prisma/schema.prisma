@@ -49,6 +49,7 @@ model User {
   averageGrade Float?
   avatarIndex  Int      @default(0)
   isAdmin      Boolean  @default(false)
+  pixKey       String?
   createdAt    DateTime @default(now())
 
   // Relações
@@ -76,6 +77,8 @@ model Session {
   mvpPlayerId         String?
   topScorerPlayerId   String?
   maxPlayers          Int           @default(15)
+  pixKey              String?
+  price               Float?
   finishedAt          DateTime?
   votingTimeoutHours  Int           @default(24)
   ratingsConsolidated Boolean       @default(false)
@@ -211,6 +214,7 @@ model SessionParticipant {
   userId       String
   status       ParticipantStatus @default(CONFIRMED)
   sessionGrade Float?
+  isPaid       Boolean           @default(false)
   createdAt    DateTime          @default(now())
 
   // Relações

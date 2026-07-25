@@ -27,6 +27,7 @@ export default function SessionsListScreen() {
     const [newSessionTitle, setNewSessionTitle] = useState('');
     const [newSessionDate, setNewSessionDate] = useState('');
     const [newSessionMaxPlayers, setNewSessionMaxPlayers] = useState(15);
+    const [newSessionPrice, setNewSessionPrice] = useState('');
     const [isCreating, setIsCreating] = useState(false);
 
     useEffect(() => {
@@ -76,7 +77,8 @@ export default function SessionsListScreen() {
             const res = await api.post('/sessions', {
                 title: newSessionTitle,
                 date: new Date(newSessionDate).toISOString(),
-                maxPlayers: Number(newSessionMaxPlayers)
+                maxPlayers: Number(newSessionMaxPlayers),
+                price: newSessionPrice ? Number(newSessionPrice) : undefined
             });
             setIsModalOpen(false);
             router.push(`/sessions/${res.data.session.id}`);
@@ -171,6 +173,15 @@ export default function SessionsListScreen() {
                             <option value={20}>20 Jogadores (4 times)</option>
                         </select>
                     </div>
+                    <Input
+                        label="Valor da Cota (Pix, opcional)"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={newSessionPrice}
+                        onChange={e => setNewSessionPrice(e.target.value)}
+                        placeholder="Ex: 25.00"
+                    />
 
                     <div className="pt-2">
                         <Button

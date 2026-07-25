@@ -329,6 +329,76 @@ mainRouter.post("/sessions/:id/participants/manual", privateRoute, sessionContro
 mainRouter.delete("/sessions/:id/participants/manual/:userId", privateRoute, sessionController.removeManual);
 
 // ──────────────────────────────────────────────
+// Pagamentos via Pix (REQ 2.3)
+// ──────────────────────────────────────────────
+
+/**
+ * @openapi
+ * /sessions/{id}/payment-info:
+ *   patch:
+ *     summary: Configurar chave Pix e valor da cota da sessão (admin)
+ *     tags: [Payments]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               pixKey:
+ *                 type: string
+ *               price:
+ *                 type: number
+ *     responses:
+ *       200:
+ *         description: Configuração de pagamento atualizada
+ */
+mainRouter.patch("/sessions/:id/payment-info", privateRoute, sessionController.updateSessionPaymentInfo);
+
+/**
+ * @openapi
+ * /sessions/{id}/participants/{userId}/payment:
+ *   patch:
+ *     summary: Marcar pagamento de um participante como pago/pendente (admin)
+ *     tags: [Payments]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [isPaid]
+ *             properties:
+ *               isPaid:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Status de pagamento atualizado
+ */
+mainRouter.patch("/sessions/:id/participants/:userId/payment", privateRoute, sessionController.setPaymentStatus);
+
+// ──────────────────────────────────────────────
 // Rounds (qualquer jogador logado pode registrar)
 // ──────────────────────────────────────────────
 

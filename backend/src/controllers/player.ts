@@ -20,7 +20,11 @@ export const getPlayer = async (req: AuthRequest, res: Response) => {
 
         const stats = await getPlayerStats(id as string);
 
-        res.json({ error: null, player: { ...player, ...stats } });
+        // pixKey só é retornada ao próprio dono do perfil (não exposta publicamente via /players/:id)
+        const isOwnProfile = id === req.userId;
+        const { pixKey, ...publicPlayer } = player;
+
+        res.json({ error: null, player: { ...publicPlayer, ...(isOwnProfile ? { pixKey } : {}), ...stats } });
     } catch (e: any) {
         console.error("getPlayer error:", e);
         res.status(500).json({ error: e.message });

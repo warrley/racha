@@ -2076,6 +2076,7 @@ export namespace Prisma {
     averageGrade: number | null
     avatarIndex: number | null
     isAdmin: boolean | null
+    pixKey: string | null
     createdAt: Date | null
   }
 
@@ -2090,6 +2091,7 @@ export namespace Prisma {
     averageGrade: number | null
     avatarIndex: number | null
     isAdmin: boolean | null
+    pixKey: string | null
     createdAt: Date | null
   }
 
@@ -2104,6 +2106,7 @@ export namespace Prisma {
     averageGrade: number
     avatarIndex: number
     isAdmin: number
+    pixKey: number
     createdAt: number
     _all: number
   }
@@ -2132,6 +2135,7 @@ export namespace Prisma {
     averageGrade?: true
     avatarIndex?: true
     isAdmin?: true
+    pixKey?: true
     createdAt?: true
   }
 
@@ -2146,6 +2150,7 @@ export namespace Prisma {
     averageGrade?: true
     avatarIndex?: true
     isAdmin?: true
+    pixKey?: true
     createdAt?: true
   }
 
@@ -2160,6 +2165,7 @@ export namespace Prisma {
     averageGrade?: true
     avatarIndex?: true
     isAdmin?: true
+    pixKey?: true
     createdAt?: true
     _all?: true
   }
@@ -2261,6 +2267,7 @@ export namespace Prisma {
     averageGrade: number | null
     avatarIndex: number
     isAdmin: boolean
+    pixKey: string | null
     createdAt: Date
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
@@ -2294,6 +2301,7 @@ export namespace Prisma {
     averageGrade?: boolean
     avatarIndex?: boolean
     isAdmin?: boolean
+    pixKey?: boolean
     createdAt?: boolean
     teamPlayers?: boolean | User$teamPlayersArgs<ExtArgs>
     goals?: boolean | User$goalsArgs<ExtArgs>
@@ -2320,6 +2328,7 @@ export namespace Prisma {
     averageGrade?: boolean
     avatarIndex?: boolean
     isAdmin?: boolean
+    pixKey?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["user"]>
 
@@ -2334,6 +2343,7 @@ export namespace Prisma {
     averageGrade?: boolean
     avatarIndex?: boolean
     isAdmin?: boolean
+    pixKey?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["user"]>
 
@@ -2348,10 +2358,11 @@ export namespace Prisma {
     averageGrade?: boolean
     avatarIndex?: boolean
     isAdmin?: boolean
+    pixKey?: boolean
     createdAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "nickname" | "position" | "rating" | "averageGrade" | "avatarIndex" | "isAdmin" | "createdAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "nickname" | "position" | "rating" | "averageGrade" | "avatarIndex" | "isAdmin" | "pixKey" | "createdAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     teamPlayers?: boolean | User$teamPlayersArgs<ExtArgs>
     goals?: boolean | User$goalsArgs<ExtArgs>
@@ -2395,6 +2406,7 @@ export namespace Prisma {
       averageGrade: number | null
       avatarIndex: number
       isAdmin: boolean
+      pixKey: string | null
       createdAt: Date
     }, ExtArgs["result"]["user"]>
     composites: {}
@@ -2840,6 +2852,7 @@ export namespace Prisma {
     readonly averageGrade: FieldRef<"User", 'Float'>
     readonly avatarIndex: FieldRef<"User", 'Int'>
     readonly isAdmin: FieldRef<"User", 'Boolean'>
+    readonly pixKey: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
   }
     
@@ -3525,11 +3538,13 @@ export namespace Prisma {
 
   export type SessionAvgAggregateOutputType = {
     maxPlayers: number | null
+    price: number | null
     votingTimeoutHours: number | null
   }
 
   export type SessionSumAggregateOutputType = {
     maxPlayers: number | null
+    price: number | null
     votingTimeoutHours: number | null
   }
 
@@ -3542,6 +3557,8 @@ export namespace Prisma {
     mvpPlayerId: string | null
     topScorerPlayerId: string | null
     maxPlayers: number | null
+    pixKey: string | null
+    price: number | null
     finishedAt: Date | null
     votingTimeoutHours: number | null
     ratingsConsolidated: boolean | null
@@ -3557,6 +3574,8 @@ export namespace Prisma {
     mvpPlayerId: string | null
     topScorerPlayerId: string | null
     maxPlayers: number | null
+    pixKey: string | null
+    price: number | null
     finishedAt: Date | null
     votingTimeoutHours: number | null
     ratingsConsolidated: boolean | null
@@ -3572,6 +3591,8 @@ export namespace Prisma {
     mvpPlayerId: number
     topScorerPlayerId: number
     maxPlayers: number
+    pixKey: number
+    price: number
     finishedAt: number
     votingTimeoutHours: number
     ratingsConsolidated: number
@@ -3582,11 +3603,13 @@ export namespace Prisma {
 
   export type SessionAvgAggregateInputType = {
     maxPlayers?: true
+    price?: true
     votingTimeoutHours?: true
   }
 
   export type SessionSumAggregateInputType = {
     maxPlayers?: true
+    price?: true
     votingTimeoutHours?: true
   }
 
@@ -3599,6 +3622,8 @@ export namespace Prisma {
     mvpPlayerId?: true
     topScorerPlayerId?: true
     maxPlayers?: true
+    pixKey?: true
+    price?: true
     finishedAt?: true
     votingTimeoutHours?: true
     ratingsConsolidated?: true
@@ -3614,6 +3639,8 @@ export namespace Prisma {
     mvpPlayerId?: true
     topScorerPlayerId?: true
     maxPlayers?: true
+    pixKey?: true
+    price?: true
     finishedAt?: true
     votingTimeoutHours?: true
     ratingsConsolidated?: true
@@ -3629,6 +3656,8 @@ export namespace Prisma {
     mvpPlayerId?: true
     topScorerPlayerId?: true
     maxPlayers?: true
+    pixKey?: true
+    price?: true
     finishedAt?: true
     votingTimeoutHours?: true
     ratingsConsolidated?: true
@@ -3731,6 +3760,8 @@ export namespace Prisma {
     mvpPlayerId: string | null
     topScorerPlayerId: string | null
     maxPlayers: number
+    pixKey: string | null
+    price: number | null
     finishedAt: Date | null
     votingTimeoutHours: number
     ratingsConsolidated: boolean
@@ -3765,6 +3796,8 @@ export namespace Prisma {
     mvpPlayerId?: boolean
     topScorerPlayerId?: boolean
     maxPlayers?: boolean
+    pixKey?: boolean
+    price?: boolean
     finishedAt?: boolean
     votingTimeoutHours?: boolean
     ratingsConsolidated?: boolean
@@ -3789,6 +3822,8 @@ export namespace Prisma {
     mvpPlayerId?: boolean
     topScorerPlayerId?: boolean
     maxPlayers?: boolean
+    pixKey?: boolean
+    price?: boolean
     finishedAt?: boolean
     votingTimeoutHours?: boolean
     ratingsConsolidated?: boolean
@@ -3807,6 +3842,8 @@ export namespace Prisma {
     mvpPlayerId?: boolean
     topScorerPlayerId?: boolean
     maxPlayers?: boolean
+    pixKey?: boolean
+    price?: boolean
     finishedAt?: boolean
     votingTimeoutHours?: boolean
     ratingsConsolidated?: boolean
@@ -3825,13 +3862,15 @@ export namespace Prisma {
     mvpPlayerId?: boolean
     topScorerPlayerId?: boolean
     maxPlayers?: boolean
+    pixKey?: boolean
+    price?: boolean
     finishedAt?: boolean
     votingTimeoutHours?: boolean
     ratingsConsolidated?: boolean
     createdAt?: boolean
   }
 
-  export type SessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "date" | "status" | "createdById" | "mvpPlayerId" | "topScorerPlayerId" | "maxPlayers" | "finishedAt" | "votingTimeoutHours" | "ratingsConsolidated" | "createdAt", ExtArgs["result"]["session"]>
+  export type SessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "date" | "status" | "createdById" | "mvpPlayerId" | "topScorerPlayerId" | "maxPlayers" | "pixKey" | "price" | "finishedAt" | "votingTimeoutHours" | "ratingsConsolidated" | "createdAt", ExtArgs["result"]["session"]>
   export type SessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     mvpPlayer?: boolean | Session$mvpPlayerArgs<ExtArgs>
@@ -3875,6 +3914,8 @@ export namespace Prisma {
       mvpPlayerId: string | null
       topScorerPlayerId: string | null
       maxPlayers: number
+      pixKey: string | null
+      price: number | null
       finishedAt: Date | null
       votingTimeoutHours: number
       ratingsConsolidated: boolean
@@ -4318,6 +4359,8 @@ export namespace Prisma {
     readonly mvpPlayerId: FieldRef<"Session", 'String'>
     readonly topScorerPlayerId: FieldRef<"Session", 'String'>
     readonly maxPlayers: FieldRef<"Session", 'Int'>
+    readonly pixKey: FieldRef<"Session", 'String'>
+    readonly price: FieldRef<"Session", 'Float'>
     readonly finishedAt: FieldRef<"Session", 'DateTime'>
     readonly votingTimeoutHours: FieldRef<"Session", 'Int'>
     readonly ratingsConsolidated: FieldRef<"Session", 'Boolean'>
@@ -11820,6 +11863,7 @@ export namespace Prisma {
     userId: string | null
     status: $Enums.ParticipantStatus | null
     sessionGrade: number | null
+    isPaid: boolean | null
     createdAt: Date | null
   }
 
@@ -11829,6 +11873,7 @@ export namespace Prisma {
     userId: string | null
     status: $Enums.ParticipantStatus | null
     sessionGrade: number | null
+    isPaid: boolean | null
     createdAt: Date | null
   }
 
@@ -11838,6 +11883,7 @@ export namespace Prisma {
     userId: number
     status: number
     sessionGrade: number
+    isPaid: number
     createdAt: number
     _all: number
   }
@@ -11857,6 +11903,7 @@ export namespace Prisma {
     userId?: true
     status?: true
     sessionGrade?: true
+    isPaid?: true
     createdAt?: true
   }
 
@@ -11866,6 +11913,7 @@ export namespace Prisma {
     userId?: true
     status?: true
     sessionGrade?: true
+    isPaid?: true
     createdAt?: true
   }
 
@@ -11875,6 +11923,7 @@ export namespace Prisma {
     userId?: true
     status?: true
     sessionGrade?: true
+    isPaid?: true
     createdAt?: true
     _all?: true
   }
@@ -11971,6 +12020,7 @@ export namespace Prisma {
     userId: string
     status: $Enums.ParticipantStatus
     sessionGrade: number | null
+    isPaid: boolean
     createdAt: Date
     _count: SessionParticipantCountAggregateOutputType | null
     _avg: SessionParticipantAvgAggregateOutputType | null
@@ -11999,6 +12049,7 @@ export namespace Prisma {
     userId?: boolean
     status?: boolean
     sessionGrade?: boolean
+    isPaid?: boolean
     createdAt?: boolean
     session?: boolean | SessionDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -12010,6 +12061,7 @@ export namespace Prisma {
     userId?: boolean
     status?: boolean
     sessionGrade?: boolean
+    isPaid?: boolean
     createdAt?: boolean
     session?: boolean | SessionDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -12021,6 +12073,7 @@ export namespace Prisma {
     userId?: boolean
     status?: boolean
     sessionGrade?: boolean
+    isPaid?: boolean
     createdAt?: boolean
     session?: boolean | SessionDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -12032,10 +12085,11 @@ export namespace Prisma {
     userId?: boolean
     status?: boolean
     sessionGrade?: boolean
+    isPaid?: boolean
     createdAt?: boolean
   }
 
-  export type SessionParticipantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionId" | "userId" | "status" | "sessionGrade" | "createdAt", ExtArgs["result"]["sessionParticipant"]>
+  export type SessionParticipantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sessionId" | "userId" | "status" | "sessionGrade" | "isPaid" | "createdAt", ExtArgs["result"]["sessionParticipant"]>
   export type SessionParticipantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     session?: boolean | SessionDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -12061,6 +12115,7 @@ export namespace Prisma {
       userId: string
       status: $Enums.ParticipantStatus
       sessionGrade: number | null
+      isPaid: boolean
       createdAt: Date
     }, ExtArgs["result"]["sessionParticipant"]>
     composites: {}
@@ -12492,6 +12547,7 @@ export namespace Prisma {
     readonly userId: FieldRef<"SessionParticipant", 'String'>
     readonly status: FieldRef<"SessionParticipant", 'ParticipantStatus'>
     readonly sessionGrade: FieldRef<"SessionParticipant", 'Float'>
+    readonly isPaid: FieldRef<"SessionParticipant", 'Boolean'>
     readonly createdAt: FieldRef<"SessionParticipant", 'DateTime'>
   }
     
@@ -14053,6 +14109,7 @@ export namespace Prisma {
     averageGrade: 'averageGrade',
     avatarIndex: 'avatarIndex',
     isAdmin: 'isAdmin',
+    pixKey: 'pixKey',
     createdAt: 'createdAt'
   };
 
@@ -14068,6 +14125,8 @@ export namespace Prisma {
     mvpPlayerId: 'mvpPlayerId',
     topScorerPlayerId: 'topScorerPlayerId',
     maxPlayers: 'maxPlayers',
+    pixKey: 'pixKey',
+    price: 'price',
     finishedAt: 'finishedAt',
     votingTimeoutHours: 'votingTimeoutHours',
     ratingsConsolidated: 'ratingsConsolidated',
@@ -14151,6 +14210,7 @@ export namespace Prisma {
     userId: 'userId',
     status: 'status',
     sessionGrade: 'sessionGrade',
+    isPaid: 'isPaid',
     createdAt: 'createdAt'
   };
 
@@ -14334,6 +14394,7 @@ export namespace Prisma {
     averageGrade?: FloatNullableFilter<"User"> | number | null
     avatarIndex?: IntFilter<"User"> | number
     isAdmin?: BoolFilter<"User"> | boolean
+    pixKey?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     teamPlayers?: TeamPlayerListRelationFilter
     goals?: GoalListRelationFilter
@@ -14359,6 +14420,7 @@ export namespace Prisma {
     averageGrade?: SortOrderInput | SortOrder
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
+    pixKey?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     teamPlayers?: TeamPlayerOrderByRelationAggregateInput
     goals?: GoalOrderByRelationAggregateInput
@@ -14387,6 +14449,7 @@ export namespace Prisma {
     averageGrade?: FloatNullableFilter<"User"> | number | null
     avatarIndex?: IntFilter<"User"> | number
     isAdmin?: BoolFilter<"User"> | boolean
+    pixKey?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     teamPlayers?: TeamPlayerListRelationFilter
     goals?: GoalListRelationFilter
@@ -14412,6 +14475,7 @@ export namespace Prisma {
     averageGrade?: SortOrderInput | SortOrder
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
+    pixKey?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
@@ -14434,6 +14498,7 @@ export namespace Prisma {
     averageGrade?: FloatNullableWithAggregatesFilter<"User"> | number | null
     avatarIndex?: IntWithAggregatesFilter<"User"> | number
     isAdmin?: BoolWithAggregatesFilter<"User"> | boolean
+    pixKey?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
@@ -14449,6 +14514,8 @@ export namespace Prisma {
     mvpPlayerId?: StringNullableFilter<"Session"> | string | null
     topScorerPlayerId?: StringNullableFilter<"Session"> | string | null
     maxPlayers?: IntFilter<"Session"> | number
+    pixKey?: StringNullableFilter<"Session"> | string | null
+    price?: FloatNullableFilter<"Session"> | number | null
     finishedAt?: DateTimeNullableFilter<"Session"> | Date | string | null
     votingTimeoutHours?: IntFilter<"Session"> | number
     ratingsConsolidated?: BoolFilter<"Session"> | boolean
@@ -14472,6 +14539,8 @@ export namespace Prisma {
     mvpPlayerId?: SortOrderInput | SortOrder
     topScorerPlayerId?: SortOrderInput | SortOrder
     maxPlayers?: SortOrder
+    pixKey?: SortOrderInput | SortOrder
+    price?: SortOrderInput | SortOrder
     finishedAt?: SortOrderInput | SortOrder
     votingTimeoutHours?: SortOrder
     ratingsConsolidated?: SortOrder
@@ -14498,6 +14567,8 @@ export namespace Prisma {
     mvpPlayerId?: StringNullableFilter<"Session"> | string | null
     topScorerPlayerId?: StringNullableFilter<"Session"> | string | null
     maxPlayers?: IntFilter<"Session"> | number
+    pixKey?: StringNullableFilter<"Session"> | string | null
+    price?: FloatNullableFilter<"Session"> | number | null
     finishedAt?: DateTimeNullableFilter<"Session"> | Date | string | null
     votingTimeoutHours?: IntFilter<"Session"> | number
     ratingsConsolidated?: BoolFilter<"Session"> | boolean
@@ -14521,6 +14592,8 @@ export namespace Prisma {
     mvpPlayerId?: SortOrderInput | SortOrder
     topScorerPlayerId?: SortOrderInput | SortOrder
     maxPlayers?: SortOrder
+    pixKey?: SortOrderInput | SortOrder
+    price?: SortOrderInput | SortOrder
     finishedAt?: SortOrderInput | SortOrder
     votingTimeoutHours?: SortOrder
     ratingsConsolidated?: SortOrder
@@ -14544,6 +14617,8 @@ export namespace Prisma {
     mvpPlayerId?: StringNullableWithAggregatesFilter<"Session"> | string | null
     topScorerPlayerId?: StringNullableWithAggregatesFilter<"Session"> | string | null
     maxPlayers?: IntWithAggregatesFilter<"Session"> | number
+    pixKey?: StringNullableWithAggregatesFilter<"Session"> | string | null
+    price?: FloatNullableWithAggregatesFilter<"Session"> | number | null
     finishedAt?: DateTimeNullableWithAggregatesFilter<"Session"> | Date | string | null
     votingTimeoutHours?: IntWithAggregatesFilter<"Session"> | number
     ratingsConsolidated?: BoolWithAggregatesFilter<"Session"> | boolean
@@ -14961,6 +15036,7 @@ export namespace Prisma {
     userId?: StringFilter<"SessionParticipant"> | string
     status?: EnumParticipantStatusFilter<"SessionParticipant"> | $Enums.ParticipantStatus
     sessionGrade?: FloatNullableFilter<"SessionParticipant"> | number | null
+    isPaid?: BoolFilter<"SessionParticipant"> | boolean
     createdAt?: DateTimeFilter<"SessionParticipant"> | Date | string
     session?: XOR<SessionScalarRelationFilter, SessionWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -14972,6 +15048,7 @@ export namespace Prisma {
     userId?: SortOrder
     status?: SortOrder
     sessionGrade?: SortOrderInput | SortOrder
+    isPaid?: SortOrder
     createdAt?: SortOrder
     session?: SessionOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
@@ -14987,6 +15064,7 @@ export namespace Prisma {
     userId?: StringFilter<"SessionParticipant"> | string
     status?: EnumParticipantStatusFilter<"SessionParticipant"> | $Enums.ParticipantStatus
     sessionGrade?: FloatNullableFilter<"SessionParticipant"> | number | null
+    isPaid?: BoolFilter<"SessionParticipant"> | boolean
     createdAt?: DateTimeFilter<"SessionParticipant"> | Date | string
     session?: XOR<SessionScalarRelationFilter, SessionWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -14998,6 +15076,7 @@ export namespace Prisma {
     userId?: SortOrder
     status?: SortOrder
     sessionGrade?: SortOrderInput | SortOrder
+    isPaid?: SortOrder
     createdAt?: SortOrder
     _count?: SessionParticipantCountOrderByAggregateInput
     _avg?: SessionParticipantAvgOrderByAggregateInput
@@ -15015,6 +15094,7 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"SessionParticipant"> | string
     status?: EnumParticipantStatusWithAggregatesFilter<"SessionParticipant"> | $Enums.ParticipantStatus
     sessionGrade?: FloatNullableWithAggregatesFilter<"SessionParticipant"> | number | null
+    isPaid?: BoolWithAggregatesFilter<"SessionParticipant"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"SessionParticipant"> | Date | string
   }
 
@@ -15098,6 +15178,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     goals?: GoalCreateNestedManyWithoutPlayerInput
@@ -15123,6 +15204,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
@@ -15148,6 +15230,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     goals?: GoalUpdateManyWithoutPlayerNestedInput
@@ -15173,6 +15256,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
@@ -15198,6 +15282,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
   }
 
@@ -15212,6 +15297,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -15226,6 +15312,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -15235,6 +15322,8 @@ export namespace Prisma {
     date: Date | string
     status?: $Enums.SessionStatus
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -15258,6 +15347,8 @@ export namespace Prisma {
     mvpPlayerId?: string | null
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -15275,6 +15366,8 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -15298,6 +15391,8 @@ export namespace Prisma {
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -15318,6 +15413,8 @@ export namespace Prisma {
     mvpPlayerId?: string | null
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -15330,6 +15427,8 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -15345,6 +15444,8 @@ export namespace Prisma {
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -15708,6 +15809,7 @@ export namespace Prisma {
     id?: string
     status?: $Enums.ParticipantStatus
     sessionGrade?: number | null
+    isPaid?: boolean
     createdAt?: Date | string
     session: SessionCreateNestedOneWithoutParticipantsInput
     user: UserCreateNestedOneWithoutSessionParticipantsInput
@@ -15719,6 +15821,7 @@ export namespace Prisma {
     userId: string
     status?: $Enums.ParticipantStatus
     sessionGrade?: number | null
+    isPaid?: boolean
     createdAt?: Date | string
   }
 
@@ -15726,6 +15829,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumParticipantStatusFieldUpdateOperationsInput | $Enums.ParticipantStatus
     sessionGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     session?: SessionUpdateOneRequiredWithoutParticipantsNestedInput
     user?: UserUpdateOneRequiredWithoutSessionParticipantsNestedInput
@@ -15737,6 +15841,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     status?: EnumParticipantStatusFieldUpdateOperationsInput | $Enums.ParticipantStatus
     sessionGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -15746,6 +15851,7 @@ export namespace Prisma {
     userId: string
     status?: $Enums.ParticipantStatus
     sessionGrade?: number | null
+    isPaid?: boolean
     createdAt?: Date | string
   }
 
@@ -15753,6 +15859,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumParticipantStatusFieldUpdateOperationsInput | $Enums.ParticipantStatus
     sessionGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -15762,6 +15869,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     status?: EnumParticipantStatusFieldUpdateOperationsInput | $Enums.ParticipantStatus
     sessionGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -15986,6 +16094,7 @@ export namespace Prisma {
     averageGrade?: SortOrder
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
+    pixKey?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -16006,6 +16115,7 @@ export namespace Prisma {
     averageGrade?: SortOrder
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
+    pixKey?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -16020,6 +16130,7 @@ export namespace Prisma {
     averageGrade?: SortOrder
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
+    pixKey?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -16186,6 +16297,8 @@ export namespace Prisma {
     mvpPlayerId?: SortOrder
     topScorerPlayerId?: SortOrder
     maxPlayers?: SortOrder
+    pixKey?: SortOrder
+    price?: SortOrder
     finishedAt?: SortOrder
     votingTimeoutHours?: SortOrder
     ratingsConsolidated?: SortOrder
@@ -16194,6 +16307,7 @@ export namespace Prisma {
 
   export type SessionAvgOrderByAggregateInput = {
     maxPlayers?: SortOrder
+    price?: SortOrder
     votingTimeoutHours?: SortOrder
   }
 
@@ -16206,6 +16320,8 @@ export namespace Prisma {
     mvpPlayerId?: SortOrder
     topScorerPlayerId?: SortOrder
     maxPlayers?: SortOrder
+    pixKey?: SortOrder
+    price?: SortOrder
     finishedAt?: SortOrder
     votingTimeoutHours?: SortOrder
     ratingsConsolidated?: SortOrder
@@ -16221,6 +16337,8 @@ export namespace Prisma {
     mvpPlayerId?: SortOrder
     topScorerPlayerId?: SortOrder
     maxPlayers?: SortOrder
+    pixKey?: SortOrder
+    price?: SortOrder
     finishedAt?: SortOrder
     votingTimeoutHours?: SortOrder
     ratingsConsolidated?: SortOrder
@@ -16229,6 +16347,7 @@ export namespace Prisma {
 
   export type SessionSumOrderByAggregateInput = {
     maxPlayers?: SortOrder
+    price?: SortOrder
     votingTimeoutHours?: SortOrder
   }
 
@@ -16584,6 +16703,7 @@ export namespace Prisma {
     userId?: SortOrder
     status?: SortOrder
     sessionGrade?: SortOrder
+    isPaid?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -16597,6 +16717,7 @@ export namespace Prisma {
     userId?: SortOrder
     status?: SortOrder
     sessionGrade?: SortOrder
+    isPaid?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -16606,6 +16727,7 @@ export namespace Prisma {
     userId?: SortOrder
     status?: SortOrder
     sessionGrade?: SortOrder
+    isPaid?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -18398,6 +18520,8 @@ export namespace Prisma {
     date: Date | string
     status?: $Enums.SessionStatus
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -18419,6 +18543,8 @@ export namespace Prisma {
     mvpPlayerId?: string | null
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -18446,6 +18572,8 @@ export namespace Prisma {
     date: Date | string
     status?: $Enums.SessionStatus
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -18467,6 +18595,8 @@ export namespace Prisma {
     createdById: string
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -18494,6 +18624,8 @@ export namespace Prisma {
     date: Date | string
     status?: $Enums.SessionStatus
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -18515,6 +18647,8 @@ export namespace Prisma {
     createdById: string
     mvpPlayerId?: string | null
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -18540,6 +18674,7 @@ export namespace Prisma {
     id?: string
     status?: $Enums.ParticipantStatus
     sessionGrade?: number | null
+    isPaid?: boolean
     createdAt?: Date | string
     session: SessionCreateNestedOneWithoutParticipantsInput
   }
@@ -18549,6 +18684,7 @@ export namespace Prisma {
     sessionId: string
     status?: $Enums.ParticipantStatus
     sessionGrade?: number | null
+    isPaid?: boolean
     createdAt?: Date | string
   }
 
@@ -18766,6 +18902,8 @@ export namespace Prisma {
     mvpPlayerId?: StringNullableFilter<"Session"> | string | null
     topScorerPlayerId?: StringNullableFilter<"Session"> | string | null
     maxPlayers?: IntFilter<"Session"> | number
+    pixKey?: StringNullableFilter<"Session"> | string | null
+    price?: FloatNullableFilter<"Session"> | number | null
     finishedAt?: DateTimeNullableFilter<"Session"> | Date | string | null
     votingTimeoutHours?: IntFilter<"Session"> | number
     ratingsConsolidated?: BoolFilter<"Session"> | boolean
@@ -18829,6 +18967,7 @@ export namespace Prisma {
     userId?: StringFilter<"SessionParticipant"> | string
     status?: EnumParticipantStatusFilter<"SessionParticipant"> | $Enums.ParticipantStatus
     sessionGrade?: FloatNullableFilter<"SessionParticipant"> | number | null
+    isPaid?: BoolFilter<"SessionParticipant"> | boolean
     createdAt?: DateTimeFilter<"SessionParticipant"> | Date | string
   }
 
@@ -18930,6 +19069,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     goals?: GoalCreateNestedManyWithoutPlayerInput
@@ -18954,6 +19094,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
@@ -18983,6 +19124,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     goals?: GoalCreateNestedManyWithoutPlayerInput
@@ -19007,6 +19149,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
@@ -19036,6 +19179,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     goals?: GoalCreateNestedManyWithoutPlayerInput
@@ -19060,6 +19204,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
@@ -19177,6 +19322,7 @@ export namespace Prisma {
     id?: string
     status?: $Enums.ParticipantStatus
     sessionGrade?: number | null
+    isPaid?: boolean
     createdAt?: Date | string
     user: UserCreateNestedOneWithoutSessionParticipantsInput
   }
@@ -19186,6 +19332,7 @@ export namespace Prisma {
     userId: string
     status?: $Enums.ParticipantStatus
     sessionGrade?: number | null
+    isPaid?: boolean
     createdAt?: Date | string
   }
 
@@ -19247,6 +19394,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     goals?: GoalUpdateManyWithoutPlayerNestedInput
@@ -19271,6 +19419,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
@@ -19306,6 +19455,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     goals?: GoalUpdateManyWithoutPlayerNestedInput
@@ -19330,6 +19480,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
@@ -19365,6 +19516,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     goals?: GoalUpdateManyWithoutPlayerNestedInput
@@ -19389,6 +19541,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
@@ -19515,6 +19668,8 @@ export namespace Prisma {
     date: Date | string
     status?: $Enums.SessionStatus
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -19537,6 +19692,8 @@ export namespace Prisma {
     mvpPlayerId?: string | null
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -19725,6 +19882,8 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -19747,6 +19906,8 @@ export namespace Prisma {
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -19877,6 +20038,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     goals?: GoalCreateNestedManyWithoutPlayerInput
     badges?: BadgeCreateNestedManyWithoutPlayerInput
@@ -19901,6 +20063,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
     badges?: BadgeUncheckedCreateNestedManyWithoutPlayerInput
@@ -19976,6 +20139,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     goals?: GoalUpdateManyWithoutPlayerNestedInput
     badges?: BadgeUpdateManyWithoutPlayerNestedInput
@@ -20000,6 +20164,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutPlayerNestedInput
@@ -20019,6 +20184,8 @@ export namespace Prisma {
     date: Date | string
     status?: $Enums.SessionStatus
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -20041,6 +20208,8 @@ export namespace Prisma {
     mvpPlayerId?: string | null
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -20204,6 +20373,8 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -20226,6 +20397,8 @@ export namespace Prisma {
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -20446,6 +20619,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     goals?: GoalCreateNestedManyWithoutPlayerInput
@@ -20470,6 +20644,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
@@ -20499,6 +20674,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     goals?: GoalCreateNestedManyWithoutPlayerInput
@@ -20523,6 +20699,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
@@ -20637,6 +20814,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     goals?: GoalUpdateManyWithoutPlayerNestedInput
@@ -20661,6 +20839,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
@@ -20696,6 +20875,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     goals?: GoalUpdateManyWithoutPlayerNestedInput
@@ -20720,6 +20900,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
@@ -20777,6 +20958,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     badges?: BadgeCreateNestedManyWithoutPlayerInput
@@ -20801,6 +20983,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     badges?: BadgeUncheckedCreateNestedManyWithoutPlayerInput
@@ -20880,6 +21063,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     badges?: BadgeUpdateManyWithoutPlayerNestedInput
@@ -20904,6 +21088,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutPlayerNestedInput
@@ -20928,6 +21113,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     goals?: GoalCreateNestedManyWithoutPlayerInput
@@ -20952,6 +21138,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
@@ -20976,6 +21163,8 @@ export namespace Prisma {
     date: Date | string
     status?: $Enums.SessionStatus
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -20998,6 +21187,8 @@ export namespace Prisma {
     mvpPlayerId?: string | null
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -21035,6 +21226,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     goals?: GoalUpdateManyWithoutPlayerNestedInput
@@ -21059,6 +21251,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
@@ -21089,6 +21282,8 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -21111,6 +21306,8 @@ export namespace Prisma {
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -21127,6 +21324,8 @@ export namespace Prisma {
     date: Date | string
     status?: $Enums.SessionStatus
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -21149,6 +21348,8 @@ export namespace Prisma {
     mvpPlayerId?: string | null
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -21175,6 +21376,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     goals?: GoalCreateNestedManyWithoutPlayerInput
@@ -21199,6 +21401,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
@@ -21234,6 +21437,8 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -21256,6 +21461,8 @@ export namespace Prisma {
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -21288,6 +21495,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     goals?: GoalUpdateManyWithoutPlayerNestedInput
@@ -21312,6 +21520,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
@@ -21331,6 +21540,8 @@ export namespace Prisma {
     date: Date | string
     status?: $Enums.SessionStatus
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -21353,6 +21564,8 @@ export namespace Prisma {
     mvpPlayerId?: string | null
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -21379,6 +21592,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     goals?: GoalCreateNestedManyWithoutPlayerInput
@@ -21403,6 +21617,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
@@ -21432,6 +21647,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     goals?: GoalCreateNestedManyWithoutPlayerInput
@@ -21456,6 +21672,7 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
+    pixKey?: string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
@@ -21491,6 +21708,8 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -21513,6 +21732,8 @@ export namespace Prisma {
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -21545,6 +21766,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     goals?: GoalUpdateManyWithoutPlayerNestedInput
@@ -21569,6 +21791,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
@@ -21604,6 +21827,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     goals?: GoalUpdateManyWithoutPlayerNestedInput
@@ -21628,6 +21852,7 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
@@ -21667,6 +21892,8 @@ export namespace Prisma {
     mvpPlayerId?: string | null
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -21681,6 +21908,8 @@ export namespace Prisma {
     createdById: string
     topScorerPlayerId?: string | null
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -21695,6 +21924,8 @@ export namespace Prisma {
     createdById: string
     mvpPlayerId?: string | null
     maxPlayers?: number
+    pixKey?: string | null
+    price?: number | null
     finishedAt?: Date | string | null
     votingTimeoutHours?: number
     ratingsConsolidated?: boolean
@@ -21706,6 +21937,7 @@ export namespace Prisma {
     sessionId: string
     status?: $Enums.ParticipantStatus
     sessionGrade?: number | null
+    isPaid?: boolean
     createdAt?: Date | string
   }
 
@@ -21796,6 +22028,8 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -21817,6 +22051,8 @@ export namespace Prisma {
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -21836,6 +22072,8 @@ export namespace Prisma {
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -21848,6 +22086,8 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -21869,6 +22109,8 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -21888,6 +22130,8 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     topScorerPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -21900,6 +22144,8 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumSessionStatusFieldUpdateOperationsInput | $Enums.SessionStatus
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -21921,6 +22167,8 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -21940,6 +22188,8 @@ export namespace Prisma {
     createdById?: StringFieldUpdateOperationsInput | string
     mvpPlayerId?: NullableStringFieldUpdateOperationsInput | string | null
     maxPlayers?: IntFieldUpdateOperationsInput | number
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     votingTimeoutHours?: IntFieldUpdateOperationsInput | number
     ratingsConsolidated?: BoolFieldUpdateOperationsInput | boolean
@@ -21950,6 +22200,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumParticipantStatusFieldUpdateOperationsInput | $Enums.ParticipantStatus
     sessionGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     session?: SessionUpdateOneRequiredWithoutParticipantsNestedInput
   }
@@ -21959,6 +22210,7 @@ export namespace Prisma {
     sessionId?: StringFieldUpdateOperationsInput | string
     status?: EnumParticipantStatusFieldUpdateOperationsInput | $Enums.ParticipantStatus
     sessionGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -21967,6 +22219,7 @@ export namespace Prisma {
     sessionId?: StringFieldUpdateOperationsInput | string
     status?: EnumParticipantStatusFieldUpdateOperationsInput | $Enums.ParticipantStatus
     sessionGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -22089,6 +22342,7 @@ export namespace Prisma {
     userId: string
     status?: $Enums.ParticipantStatus
     sessionGrade?: number | null
+    isPaid?: boolean
     createdAt?: Date | string
   }
 
@@ -22195,6 +22449,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     status?: EnumParticipantStatusFieldUpdateOperationsInput | $Enums.ParticipantStatus
     sessionGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutSessionParticipantsNestedInput
   }
@@ -22204,6 +22459,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     status?: EnumParticipantStatusFieldUpdateOperationsInput | $Enums.ParticipantStatus
     sessionGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -22212,6 +22468,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     status?: EnumParticipantStatusFieldUpdateOperationsInput | $Enums.ParticipantStatus
     sessionGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    isPaid?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
