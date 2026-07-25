@@ -43,7 +43,7 @@ export const signin: RequestHandler = async (req, res) => {
     const { email, password } = safeData.data;
 
     const user = await findByEmail(email);
-    if(!user) {
+    if(!user || !user.password) {
         res.json({ error: "Acesso negado" });
         return;
     };

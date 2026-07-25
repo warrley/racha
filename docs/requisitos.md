@@ -17,8 +17,8 @@ Este documento descreve os requisitos funcionais e não-funcionais para o sistem
 ### 2.1 Autenticação e Usuários
 | ID | Descrição | Prioridade | Status |
 | :--- | :--- | :--- | :--- |
-| **RF01** | O sistema deve permitir que novos usuários se cadastrem utilizando E-mail e Senha ou autenticação social com o **Google** (via Supabase Auth). | Alta | Pendente |
-| **RF02** | O sistema deve sincronizar automaticamente os dados do usuário autenticado no Supabase com a tabela interna de usuários (`users`) no banco de dados local. | Alta | Pendente |
+| **RF01** | O sistema deve permitir que novos usuários se cadastrem utilizando E-mail e Senha ou autenticação social com o **Google** (via Supabase Auth). | Alta | Concluído |
+| **RF02** | O sistema deve sincronizar automaticamente os dados do usuário autenticado no Supabase com a tabela interna de usuários (`users`) no banco de dados local. | Alta | Concluído |
 | **RF03** | O sistema deve diferenciar perfis de usuário comuns de perfis de Administrador (`isAdmin`). | Alta | Concluído |
 
 ### 2.2 Gerenciamento de Eventos e Presença

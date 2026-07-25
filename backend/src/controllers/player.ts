@@ -31,6 +31,24 @@ export const getPlayer = async (req: AuthRequest, res: Response) => {
     }
 };
 
+export const getMe = async (req: AuthRequest, res: Response) => {
+    const userId = req.userId as string;
+
+    try {
+        const player = await findById(userId);
+        if (!player) {
+            res.status(404).json({ error: "Jogador não encontrado" });
+            return;
+        };
+
+        const stats = await getPlayerStats(userId);
+        res.json({ error: null, player: { ...player, ...stats } });
+    } catch (e: any) {
+        console.error("getMe error:", e);
+        res.status(500).json({ error: e.message });
+    }
+};
+
 export const updatePlayer = async (req: AuthRequest, res: Response) => {
     const userId = req.userId as string;
 

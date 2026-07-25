@@ -41,7 +41,8 @@ enum BadgeType {
 model User {
   id           String   @id @default(uuid())
   email        String   @unique
-  password     String
+  password     String?
+  supabaseId   String?  @unique
   name         String
   nickname     String?
   position     Position @default(MEIO)

@@ -2069,6 +2069,7 @@ export namespace Prisma {
     id: string | null
     email: string | null
     password: string | null
+    supabaseId: string | null
     name: string | null
     nickname: string | null
     position: $Enums.Position | null
@@ -2084,6 +2085,7 @@ export namespace Prisma {
     id: string | null
     email: string | null
     password: string | null
+    supabaseId: string | null
     name: string | null
     nickname: string | null
     position: $Enums.Position | null
@@ -2099,6 +2101,7 @@ export namespace Prisma {
     id: number
     email: number
     password: number
+    supabaseId: number
     name: number
     nickname: number
     position: number
@@ -2128,6 +2131,7 @@ export namespace Prisma {
     id?: true
     email?: true
     password?: true
+    supabaseId?: true
     name?: true
     nickname?: true
     position?: true
@@ -2143,6 +2147,7 @@ export namespace Prisma {
     id?: true
     email?: true
     password?: true
+    supabaseId?: true
     name?: true
     nickname?: true
     position?: true
@@ -2158,6 +2163,7 @@ export namespace Prisma {
     id?: true
     email?: true
     password?: true
+    supabaseId?: true
     name?: true
     nickname?: true
     position?: true
@@ -2259,7 +2265,8 @@ export namespace Prisma {
   export type UserGroupByOutputType = {
     id: string
     email: string
-    password: string
+    password: string | null
+    supabaseId: string | null
     name: string
     nickname: string | null
     position: $Enums.Position
@@ -2294,6 +2301,7 @@ export namespace Prisma {
     id?: boolean
     email?: boolean
     password?: boolean
+    supabaseId?: boolean
     name?: boolean
     nickname?: boolean
     position?: boolean
@@ -2321,6 +2329,7 @@ export namespace Prisma {
     id?: boolean
     email?: boolean
     password?: boolean
+    supabaseId?: boolean
     name?: boolean
     nickname?: boolean
     position?: boolean
@@ -2336,6 +2345,7 @@ export namespace Prisma {
     id?: boolean
     email?: boolean
     password?: boolean
+    supabaseId?: boolean
     name?: boolean
     nickname?: boolean
     position?: boolean
@@ -2351,6 +2361,7 @@ export namespace Prisma {
     id?: boolean
     email?: boolean
     password?: boolean
+    supabaseId?: boolean
     name?: boolean
     nickname?: boolean
     position?: boolean
@@ -2362,7 +2373,7 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "name" | "nickname" | "position" | "rating" | "averageGrade" | "avatarIndex" | "isAdmin" | "pixKey" | "createdAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "supabaseId" | "name" | "nickname" | "position" | "rating" | "averageGrade" | "avatarIndex" | "isAdmin" | "pixKey" | "createdAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     teamPlayers?: boolean | User$teamPlayersArgs<ExtArgs>
     goals?: boolean | User$goalsArgs<ExtArgs>
@@ -2398,7 +2409,8 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       email: string
-      password: string
+      password: string | null
+      supabaseId: string | null
       name: string
       nickname: string | null
       position: $Enums.Position
@@ -2845,6 +2857,7 @@ export namespace Prisma {
     readonly id: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
+    readonly supabaseId: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
     readonly nickname: FieldRef<"User", 'String'>
     readonly position: FieldRef<"User", 'Position'>
@@ -14102,6 +14115,7 @@ export namespace Prisma {
     id: 'id',
     email: 'email',
     password: 'password',
+    supabaseId: 'supabaseId',
     name: 'name',
     nickname: 'nickname',
     position: 'position',
@@ -14386,7 +14400,8 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     id?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
-    password?: StringFilter<"User"> | string
+    password?: StringNullableFilter<"User"> | string | null
+    supabaseId?: StringNullableFilter<"User"> | string | null
     name?: StringFilter<"User"> | string
     nickname?: StringNullableFilter<"User"> | string | null
     position?: EnumPositionFilter<"User"> | $Enums.Position
@@ -14412,7 +14427,8 @@ export namespace Prisma {
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
     email?: SortOrder
-    password?: SortOrder
+    password?: SortOrderInput | SortOrder
+    supabaseId?: SortOrderInput | SortOrder
     name?: SortOrder
     nickname?: SortOrderInput | SortOrder
     position?: SortOrder
@@ -14438,10 +14454,11 @@ export namespace Prisma {
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     email?: string
+    supabaseId?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
-    password?: StringFilter<"User"> | string
+    password?: StringNullableFilter<"User"> | string | null
     name?: StringFilter<"User"> | string
     nickname?: StringNullableFilter<"User"> | string | null
     position?: EnumPositionFilter<"User"> | $Enums.Position
@@ -14462,12 +14479,13 @@ export namespace Prisma {
     receivedGrades?: SessionGradeListRelationFilter
     substitutedOut?: RoundSubstitutionListRelationFilter
     substitutedIn?: RoundSubstitutionListRelationFilter
-  }, "id" | "email">
+  }, "id" | "email" | "supabaseId">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
     email?: SortOrder
-    password?: SortOrder
+    password?: SortOrderInput | SortOrder
+    supabaseId?: SortOrderInput | SortOrder
     name?: SortOrder
     nickname?: SortOrderInput | SortOrder
     position?: SortOrder
@@ -14490,7 +14508,8 @@ export namespace Prisma {
     NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
-    password?: StringWithAggregatesFilter<"User"> | string
+    password?: StringNullableWithAggregatesFilter<"User"> | string | null
+    supabaseId?: StringNullableWithAggregatesFilter<"User"> | string | null
     name?: StringWithAggregatesFilter<"User"> | string
     nickname?: StringNullableWithAggregatesFilter<"User"> | string | null
     position?: EnumPositionWithAggregatesFilter<"User"> | $Enums.Position
@@ -15170,7 +15189,8 @@ export namespace Prisma {
   export type UserCreateInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -15196,7 +15216,8 @@ export namespace Prisma {
   export type UserUncheckedCreateInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -15222,7 +15243,8 @@ export namespace Prisma {
   export type UserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -15248,7 +15270,8 @@ export namespace Prisma {
   export type UserUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -15274,7 +15297,8 @@ export namespace Prisma {
   export type UserCreateManyInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -15289,7 +15313,8 @@ export namespace Prisma {
   export type UserUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -15304,7 +15329,8 @@ export namespace Prisma {
   export type UserUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -16087,6 +16113,7 @@ export namespace Prisma {
     id?: SortOrder
     email?: SortOrder
     password?: SortOrder
+    supabaseId?: SortOrder
     name?: SortOrder
     nickname?: SortOrder
     position?: SortOrder
@@ -16108,6 +16135,7 @@ export namespace Prisma {
     id?: SortOrder
     email?: SortOrder
     password?: SortOrder
+    supabaseId?: SortOrder
     name?: SortOrder
     nickname?: SortOrder
     position?: SortOrder
@@ -16123,6 +16151,7 @@ export namespace Prisma {
     id?: SortOrder
     email?: SortOrder
     password?: SortOrder
+    supabaseId?: SortOrder
     name?: SortOrder
     nickname?: SortOrder
     position?: SortOrder
@@ -19061,7 +19090,8 @@ export namespace Prisma {
   export type UserCreateWithoutCreatedSessionsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -19086,7 +19116,8 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutCreatedSessionsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -19116,7 +19147,8 @@ export namespace Prisma {
   export type UserCreateWithoutMvpSessionsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -19141,7 +19173,8 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutMvpSessionsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -19171,7 +19204,8 @@ export namespace Prisma {
   export type UserCreateWithoutTopScorerSessionsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -19196,7 +19230,8 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutTopScorerSessionsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -19386,7 +19421,8 @@ export namespace Prisma {
   export type UserUpdateWithoutCreatedSessionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -19411,7 +19447,8 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutCreatedSessionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -19447,7 +19484,8 @@ export namespace Prisma {
   export type UserUpdateWithoutMvpSessionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -19472,7 +19510,8 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutMvpSessionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -19508,7 +19547,8 @@ export namespace Prisma {
   export type UserUpdateWithoutTopScorerSessionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -19533,7 +19573,8 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutTopScorerSessionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -20030,7 +20071,8 @@ export namespace Prisma {
   export type UserCreateWithoutTeamPlayersInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -20055,7 +20097,8 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutTeamPlayersInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -20131,7 +20174,8 @@ export namespace Prisma {
   export type UserUpdateWithoutTeamPlayersInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -20156,7 +20200,8 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutTeamPlayersInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -20611,7 +20656,8 @@ export namespace Prisma {
   export type UserCreateWithoutSubstitutedOutInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -20636,7 +20682,8 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutSubstitutedOutInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -20666,7 +20713,8 @@ export namespace Prisma {
   export type UserCreateWithoutSubstitutedInInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -20691,7 +20739,8 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutSubstitutedInInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -20806,7 +20855,8 @@ export namespace Prisma {
   export type UserUpdateWithoutSubstitutedOutInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -20831,7 +20881,8 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutSubstitutedOutInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -20867,7 +20918,8 @@ export namespace Prisma {
   export type UserUpdateWithoutSubstitutedInInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -20892,7 +20944,8 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutSubstitutedInInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -20950,7 +21003,8 @@ export namespace Prisma {
   export type UserCreateWithoutGoalsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -20975,7 +21029,8 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutGoalsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -21055,7 +21110,8 @@ export namespace Prisma {
   export type UserUpdateWithoutGoalsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -21080,7 +21136,8 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutGoalsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -21105,7 +21162,8 @@ export namespace Prisma {
   export type UserCreateWithoutBadgesInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -21130,7 +21188,8 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutBadgesInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -21218,7 +21277,8 @@ export namespace Prisma {
   export type UserUpdateWithoutBadgesInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -21243,7 +21303,8 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutBadgesInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -21368,7 +21429,8 @@ export namespace Prisma {
   export type UserCreateWithoutSessionParticipantsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -21393,7 +21455,8 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutSessionParticipantsInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -21487,7 +21550,8 @@ export namespace Prisma {
   export type UserUpdateWithoutSessionParticipantsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -21512,7 +21576,8 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutSessionParticipantsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -21584,7 +21649,8 @@ export namespace Prisma {
   export type UserCreateWithoutEvaluatedGradesInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -21609,7 +21675,8 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutEvaluatedGradesInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -21639,7 +21706,8 @@ export namespace Prisma {
   export type UserCreateWithoutReceivedGradesInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -21664,7 +21732,8 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutReceivedGradesInput = {
     id?: string
     email: string
-    password: string
+    password?: string | null
+    supabaseId?: string | null
     name: string
     nickname?: string | null
     position?: $Enums.Position
@@ -21758,7 +21827,8 @@ export namespace Prisma {
   export type UserUpdateWithoutEvaluatedGradesInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -21783,7 +21853,8 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutEvaluatedGradesInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -21819,7 +21890,8 @@ export namespace Prisma {
   export type UserUpdateWithoutReceivedGradesInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
@@ -21844,7 +21916,8 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutReceivedGradesInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    supabaseId?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position

@@ -105,6 +105,8 @@ Para suportar as novas regras de negócio do racha, o `schema.prisma` deve ser e
 *   **User (`users`)**:
     *   `averageGrade` (Float): Nova coluna para armazenar a nota média histórica das avaliações (padrão null - sem avaliação).
     *   `pixKey` (String?): Chave Pix padrão do administrador, usada como fallback quando a sessão não define uma própria (req 2.3).
+    *   `password` (String?): Passou a ser opcional — usuários criados via Supabase Auth (Google/e-mail) não têm senha local.
+    *   `supabaseId` (String?, único): Id do usuário no Supabase Auth (`sub` do JWT), usado por `syncSupabaseUser` para vincular/criar o registro local automaticamente a cada requisição autenticada (req 2.1/RF02).
 *   **Session (`sessions`)**:
     *   `maxPlayers` (Int): Limite máximo de jogadores confirmados para a sessão (padrão `15`).
     *   `pixKey` (String?): Chave Pix específica desta sessão; sobrescreve a do perfil do administrador quando definida.

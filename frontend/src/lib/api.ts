@@ -1,12 +1,16 @@
 import axios from "axios";
 import { parseCookies } from "nookies";
+import { supabase } from "./supabase";
 
 export const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:9876",
 });
 
-api.interceptors.request.use((config) => {
-    const { "metanol.token": token } = parseCookies();
+api.interceptors.request.use(async (config) => {
+    // Prioriza a sessão do Supabase Auth (login social/e-mail); mantém o
+    // cookie legado como fallback para contas ainda no fluxo de auth antigo.
+    const { data } = await supabase.auth.getSession();
+    const token = data.session?.access_token || parseCookies()["metanol.token"];
 
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;

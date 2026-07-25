@@ -1,5 +1,9 @@
-import { Prisma } from "../generated/prisma";
+import { Prisma, Position } from "../generated/prisma";
 import { prisma } from "../utils/prisma";
+
+const VALID_POSITIONS = Object.values(Position);
+const toValidPosition = (value?: string): Position =>
+    VALID_POSITIONS.includes(value as Position) ? (value as Position) : Position.MEIO;
 
 export const findByEmail = async (email: string) => {
     return await prisma.user.findUnique({ where: { email } });
@@ -26,6 +30,41 @@ export const findById = async (id: string) => {
 
 export const save = async (data: Prisma.UserCreateInput) => {
     return await prisma.user.create({ data });
+};
+
+/**
+ * Sincroniza automaticamente um usuário autenticado via Supabase Auth com a
+ * tabela local `users` (req RF02): busca por supabaseId; se for o primeiro
+ * login de uma conta já existente (criada antes via signup local com o mesmo
+ * e-mail), vincula pelo e-mail; caso contrário cria um novo registro local.
+ */
+export const syncSupabaseUser = async (params: {
+    supabaseId: string;
+    email: string;
+    name?: string;
+    nickname?: string;
+    position?: string;
+}) => {
+    const bySupabaseId = await prisma.user.findUnique({ where: { supabaseId: params.supabaseId } });
+    if (bySupabaseId) return bySupabaseId;
+
+    const byEmail = await prisma.user.findUnique({ where: { email: params.email } });
+    if (byEmail) {
+        return await prisma.user.update({
+            where: { id: byEmail.id },
+            data: { supabaseId: params.supabaseId }
+        });
+    }
+
+    return await prisma.user.create({
+        data: {
+            supabaseId: params.supabaseId,
+            email: params.email,
+            name: params.name || params.email.split("@")[0],
+            nickname: params.nickname,
+            position: toValidPosition(params.position)
+        }
+    });
 };
 
 export const update = async (id: string, data: Prisma.UserUpdateInput) => {

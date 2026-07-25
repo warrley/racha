@@ -85,6 +85,20 @@ mainRouter.get("/players", privateRoute, playerController.getPlayers);
  *       200:
  *         description: Perfil do jogador
  */
+/**
+ * @openapi
+ * /players/me:
+ *   get:
+ *     summary: Perfil completo do jogador autenticado (sincroniza conta do Supabase Auth, se aplicável)
+ *     tags: [Players]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Perfil do jogador autenticado
+ */
+mainRouter.get("/players/me", privateRoute, playerController.getMe);
+
 mainRouter.get("/players/:id", privateRoute, playerController.getPlayer);
 
 /**

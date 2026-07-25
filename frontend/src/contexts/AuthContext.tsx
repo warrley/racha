@@ -1,9 +1,9 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { parseCookies, destroyCookie } from 'nookies';
-import { jwtDecode } from 'jwt-decode';
+import { destroyCookie, parseCookies } from 'nookies';
 import { api } from '@/lib/api';
+import { supabase } from '@/lib/supabase';
 import { Player } from '@/types';
 import { useRouter } from 'next/navigation';
 
@@ -30,18 +30,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const fetchUser = async () => {
         try {
-            const { "metanol.token": token } = parseCookies();
-            if (!token) {
+            // Sessão do Supabase Auth (login social/e-mail) ou cookie legado
+            // (fluxo de auth antigo): o backend resolve qual token é válido em
+            // /players/me e sincroniza o registro local automaticamente (RF02).
+            const { data } = await supabase.auth.getSession();
+            const hasLegacyToken = !!parseCookies()['metanol.token'];
+
+            if (!data.session && !hasLegacyToken) {
                 setUser(null);
                 setLoading(false);
                 return;
             }
 
-            const decoded = jwtDecode(token) as { userId: string };
-            const res = await api.get(`/players/${decoded.userId}`);
-            
+            const res = await api.get('/players/me');
             if (res.data && res.data.player) {
                 setUser(res.data.player);
+            } else {
+                setUser(null);
             }
         } catch (error) {
             console.error(error);
@@ -53,9 +58,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     useEffect(() => {
         fetchUser();
+
+        const { data: subscription } = supabase.auth.onAuthStateChange(() => {
+            fetchUser();
+        });
+
+        return () => subscription.subscription.unsubscribe();
     }, []);
 
     const logout = () => {
+        supabase.auth.signOut();
         destroyCookie(undefined, 'metanol.token', { path: '/' });
         setUser(null);
         router.push('/');

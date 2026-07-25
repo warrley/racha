@@ -33,9 +33,18 @@ DIRECT_URL="postgresql://USUARIO:SENHA@HOST:PORTA/postgres"
 # Porta onde o servidor Express irá rodar
 PORT=9876
 
-# Chave secreta para assinatura de tokens JWT locais
+# Chave secreta para assinatura de tokens JWT locais (fluxo de auth legado)
 JWT_SECRET_KEY="metanol_key"
+
+# JWT Secret do projeto Supabase (Settings > API > JWT Settings), usado para
+# validar localmente (sem chamada de rede) os tokens emitidos pelo Supabase Auth
+SUPABASE_JWT_SECRET="sua-chave-jwt-do-supabase"
 ```
+
+### Passo 2.1: Configurar o Supabase Auth
+1. No painel do Supabase, vá em **Authentication > Providers** e habilite **Google** (é necessário criar um OAuth Client ID/Secret no Google Cloud Console e configurar a Redirect URL fornecida pelo Supabase).
+2. Em **Authentication > URL Configuration**, defina a Site URL (`http://localhost:3000` em desenvolvimento) e adicione `/home` às Redirect URLs.
+3. Em **Settings > API**, copie a Project URL, a `anon` key e o JWT Secret para os `.env`/`.env.local` do backend e frontend.
 
 ### Passo 3: Executar as Migrações do Banco de Dados
 Sincronize o banco de dados Supabase com o seu esquema local do Prisma:
