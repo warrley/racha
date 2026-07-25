@@ -61,6 +61,8 @@ model User {
   sessionParticipants SessionParticipant[]
   evaluatedGrades     SessionGrade[]       @relation("EvaluatedBy")
   receivedGrades      SessionGrade[]       @relation("Evaluates")
+  substitutedOut      RoundSubstitution[]  @relation("SubstitutionOut")
+  substitutedIn       RoundSubstitution[]  @relation("SubstitutionIn")
 
   @@map("users")
 }
@@ -100,11 +102,12 @@ model Team {
   totalRating Float  @default(0)
 
   // Relações
-  session    Session      @relation(fields: [sessionId], references: [id])
-  players    TeamPlayer[]
-  homeRounds Round[]      @relation("HomeTeam")
-  awayRounds Round[]      @relation("AwayTeam")
-  wonRounds  Round[]      @relation("WinnerTeam")
+  session       Session             @relation(fields: [sessionId], references: [id])
+  players       TeamPlayer[]
+  homeRounds    Round[]             @relation("HomeTeam")
+  awayRounds    Round[]             @relation("AwayTeam")
+  wonRounds     Round[]             @relation("WinnerTeam")
+  substitutions RoundSubstitution[]
 
   @@map("teams")
 }
@@ -135,13 +138,35 @@ model Round {
   createdAt    DateTime @default(now())
 
   // Relações
-  session    Session @relation(fields: [sessionId], references: [id])
-  homeTeam   Team    @relation("HomeTeam", fields: [homeTeamId], references: [id])
-  awayTeam   Team    @relation("AwayTeam", fields: [awayTeamId], references: [id])
-  winnerTeam Team?   @relation("WinnerTeam", fields: [winnerTeamId], references: [id])
-  goals      Goal[]
+  session       Session             @relation(fields: [sessionId], references: [id])
+  homeTeam      Team                @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeam      Team                @relation("AwayTeam", fields: [awayTeamId], references: [id])
+  winnerTeam    Team?               @relation("WinnerTeam", fields: [winnerTeamId], references: [id])
+  goals         Goal[]
+  substitutions RoundSubstitution[]
 
   @@map("rounds")
+}
+
+// ──────────────────────────────────────────────
+// SUBSTITUIÇÕES TEMPORÁRIAS EM RODADAS (REQ 2.6)
+// ──────────────────────────────────────────────
+
+model RoundSubstitution {
+  id          Int    @id @default(autoincrement())
+  roundId     String
+  teamId      String
+  outPlayerId String
+  inPlayerId  String
+
+  // Relações: a troca vale exclusivamente para o Round em que foi registrada
+  round     Round @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  team      Team  @relation(fields: [teamId], references: [id])
+  outPlayer User  @relation("SubstitutionOut", fields: [outPlayerId], references: [id])
+  inPlayer  User  @relation("SubstitutionIn", fields: [inPlayerId], references: [id])
+
+  @@unique([roundId, outPlayerId])
+  @@map("round_substitutions")
 }
 
 model Goal {

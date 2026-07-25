@@ -21,7 +21,8 @@ export const create = async (req: AuthRequest, res: Response) => {
             safeData.data.awayScore,
             safeData.data.winnerTeamId as string,
             safeData.data.isDraw,
-            safeData.data.goals
+            safeData.data.goals,
+            safeData.data.substitutions
         );
         res.status(201).json({ error: null, round });
     } catch (err: any) {

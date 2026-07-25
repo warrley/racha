@@ -49,6 +49,16 @@ export interface Goal {
     player?: Player;
 }
 
+export interface RoundSubstitution {
+    id: number;
+    roundId: string;
+    teamId: string;
+    outPlayerId: string;
+    inPlayerId: string;
+    outPlayer?: Player;
+    inPlayer?: Player;
+}
+
 export interface Round {
     id: string;
     sessionId: string;
@@ -63,6 +73,7 @@ export interface Round {
     awayTeam?: Team;
     winnerTeam?: Team;
     goals?: Goal[];
+    substitutions?: RoundSubstitution[];
 }
 
 export interface SessionParticipant {

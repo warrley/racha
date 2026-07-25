@@ -45,6 +45,12 @@ export const findSessionById = async (id: string) => {
                         include: {
                             player: { select: { id: true, name: true, nickname: true } }
                         }
+                    },
+                    substitutions: {
+                        include: {
+                            outPlayer: { select: { id: true, name: true, nickname: true } },
+                            inPlayer: { select: { id: true, name: true, nickname: true } }
+                        }
                     }
                 },
                 orderBy: { roundNumber: "asc" }
@@ -154,7 +160,7 @@ export const closeSession = async (sessionId: string) => {
         where: { id: sessionId },
         include: {
             teams: { include: { players: true } },
-            rounds: { include: { goals: true } }
+            rounds: { include: { goals: true, substitutions: true } }
         }
     });
 
@@ -162,21 +168,38 @@ export const closeSession = async (sessionId: string) => {
     if(session.status !== "IN_PROGRESS") throw new Error("Sessão não está em andamento");
 
     // Coletar todos os jogadores da sessão
-    const allPlayers = session.teams.flatMap(t => 
+    const allPlayers = session.teams.flatMap(t =>
         t.players.map(tp => ({ playerId: tp.playerId, teamId: tp.teamId }))
     );
 
     // Calcular stats de cada jogador nessa sessão
     const playerStats: Record<string, { wins: number; losses: number; goals: number; roundResults: { won: boolean; isDraw: boolean }[] }> = {};
-    
+
     for(const p of allPlayers) {
         playerStats[p.playerId] = { wins: 0, losses: 0, goals: 0, roundResults: [] };
     };
 
+    // Jogadores substitutos que entraram em alguma rodada mas não têm escalação permanente
+    for(const round of session.rounds) {
+        for(const sub of round.substitutions) {
+            if(!playerStats[sub.inPlayerId]) {
+                playerStats[sub.inPlayerId] = { wins: 0, losses: 0, goals: 0, roundResults: [] };
+            }
+        }
+    }
+
     // Processar cada round
     for(const round of session.rounds) {
-        const homePlayerIds = allPlayers.filter(p => p.teamId === round.homeTeamId).map(p => p.playerId);
-        const awayPlayerIds = allPlayers.filter(p => p.teamId === round.awayTeamId).map(p => p.playerId);
+        // Escalação efetiva da rodada = permanente + substituições temporárias (req 2.6):
+        // o substituto acumula vitória/empate/derrota da rodada; o jogador substituído não pontua nela.
+        const homePlayerIds = new Set(allPlayers.filter(p => p.teamId === round.homeTeamId).map(p => p.playerId));
+        const awayPlayerIds = new Set(allPlayers.filter(p => p.teamId === round.awayTeamId).map(p => p.playerId));
+
+        for(const sub of round.substitutions) {
+            const target = sub.teamId === round.homeTeamId ? homePlayerIds : awayPlayerIds;
+            target.delete(sub.outPlayerId);
+            target.add(sub.inPlayerId);
+        }
 
         for(const pid of homePlayerIds) {
             if(!playerStats[pid]) continue;
@@ -194,7 +217,7 @@ export const closeSession = async (sessionId: string) => {
             else playerStats[pid].losses++;
         };
 
-        // Gols
+        // Gols (computados pelo ID de quem marcou, seja titular ou substituto)
         for(const goal of round.goals) {
             if(playerStats[goal.playerId]) {
                 playerStats[goal.playerId].goals++;

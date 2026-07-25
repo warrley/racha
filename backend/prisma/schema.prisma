@@ -52,42 +52,44 @@ model User {
   createdAt    DateTime @default(now())
 
   // Relações
-  teamPlayers      TeamPlayer[]
-  goals            Goal[]
-  badges           Badge[]
-  createdSessions  Session[]    @relation("SessionCreator")
-  mvpSessions      Session[]    @relation("SessionMvp")
-  topScorerSessions Session[]   @relation("SessionTopScorer")
+  teamPlayers         TeamPlayer[]
+  goals               Goal[]
+  badges              Badge[]
+  createdSessions     Session[]            @relation("SessionCreator")
+  mvpSessions         Session[]            @relation("SessionMvp")
+  topScorerSessions   Session[]            @relation("SessionTopScorer")
   sessionParticipants SessionParticipant[]
-  evaluatedGrades  SessionGrade[] @relation("EvaluatedBy")
-  receivedGrades   SessionGrade[] @relation("Evaluates")
+  evaluatedGrades     SessionGrade[]       @relation("EvaluatedBy")
+  receivedGrades      SessionGrade[]       @relation("Evaluates")
+  substitutedOut      RoundSubstitution[]  @relation("SubstitutionOut")
+  substitutedIn       RoundSubstitution[]  @relation("SubstitutionIn")
 
   @@map("users")
 }
 
 model Session {
-  id                   String        @id @default(uuid())
-  title                String?
-  date                 DateTime
-  status               SessionStatus @default(OPEN)
-  createdById          String
-  mvpPlayerId          String?
-  topScorerPlayerId    String?
-  maxPlayers           Int           @default(15)
-  finishedAt           DateTime?
-  votingTimeoutHours   Int           @default(24)
-  ratingsConsolidated  Boolean       @default(false)
-  createdAt            DateTime      @default(now())
+  id                  String        @id @default(uuid())
+  title               String?
+  date                DateTime
+  status              SessionStatus @default(OPEN)
+  createdById         String
+  mvpPlayerId         String?
+  topScorerPlayerId   String?
+  maxPlayers          Int           @default(15)
+  finishedAt          DateTime?
+  votingTimeoutHours  Int           @default(24)
+  ratingsConsolidated Boolean       @default(false)
+  createdAt           DateTime      @default(now())
 
   // Relações
-  createdBy      User    @relation("SessionCreator", fields: [createdById], references: [id])
-  mvpPlayer      User?   @relation("SessionMvp", fields: [mvpPlayerId], references: [id])
-  topScorerPlayer User?  @relation("SessionTopScorer", fields: [topScorerPlayerId], references: [id])
-  teams          Team[]
-  rounds         Round[]
-  badges         Badge[]
-  participants   SessionParticipant[]
-  grades         SessionGrade[]
+  createdBy       User                 @relation("SessionCreator", fields: [createdById], references: [id])
+  mvpPlayer       User?                @relation("SessionMvp", fields: [mvpPlayerId], references: [id])
+  topScorerPlayer User?                @relation("SessionTopScorer", fields: [topScorerPlayerId], references: [id])
+  teams           Team[]
+  rounds          Round[]
+  badges          Badge[]
+  participants    SessionParticipant[]
+  grades          SessionGrade[]
 
   @@map("sessions")
 }
@@ -100,11 +102,12 @@ model Team {
   totalRating Float  @default(0)
 
   // Relações
-  session     Session      @relation(fields: [sessionId], references: [id])
-  players     TeamPlayer[]
-  homeRounds  Round[]      @relation("HomeTeam")
-  awayRounds  Round[]      @relation("AwayTeam")
-  wonRounds   Round[]      @relation("WinnerTeam")
+  session       Session             @relation(fields: [sessionId], references: [id])
+  players       TeamPlayer[]
+  homeRounds    Round[]             @relation("HomeTeam")
+  awayRounds    Round[]             @relation("AwayTeam")
+  wonRounds     Round[]             @relation("WinnerTeam")
+  substitutions RoundSubstitution[]
 
   @@map("teams")
 }
@@ -123,25 +126,47 @@ model TeamPlayer {
 }
 
 model Round {
-  id           String  @id @default(uuid())
+  id           String   @id @default(uuid())
   sessionId    String
   roundNumber  Int
   homeTeamId   String
   awayTeamId   String
-  homeScore    Int     @default(0)
-  awayScore    Int     @default(0)
+  homeScore    Int      @default(0)
+  awayScore    Int      @default(0)
   winnerTeamId String?
-  isDraw       Boolean @default(false)
+  isDraw       Boolean  @default(false)
   createdAt    DateTime @default(now())
 
   // Relações
-  session    Session @relation(fields: [sessionId], references: [id])
-  homeTeam   Team    @relation("HomeTeam", fields: [homeTeamId], references: [id])
-  awayTeam   Team    @relation("AwayTeam", fields: [awayTeamId], references: [id])
-  winnerTeam Team?   @relation("WinnerTeam", fields: [winnerTeamId], references: [id])
-  goals      Goal[]
+  session       Session             @relation(fields: [sessionId], references: [id])
+  homeTeam      Team                @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeam      Team                @relation("AwayTeam", fields: [awayTeamId], references: [id])
+  winnerTeam    Team?               @relation("WinnerTeam", fields: [winnerTeamId], references: [id])
+  goals         Goal[]
+  substitutions RoundSubstitution[]
 
   @@map("rounds")
+}
+
+// ──────────────────────────────────────────────
+// SUBSTITUIÇÕES TEMPORÁRIAS EM RODADAS (REQ 2.6)
+// ──────────────────────────────────────────────
+
+model RoundSubstitution {
+  id          Int    @id @default(autoincrement())
+  roundId     String
+  teamId      String
+  outPlayerId String
+  inPlayerId  String
+
+  // Relações: a troca vale exclusivamente para o Round em que foi registrada
+  round     Round @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  team      Team  @relation(fields: [teamId], references: [id])
+  outPlayer User  @relation("SubstitutionOut", fields: [outPlayerId], references: [id])
+  inPlayer  User  @relation("SubstitutionIn", fields: [inPlayerId], references: [id])
+
+  @@unique([roundId, outPlayerId])
+  @@map("round_substitutions")
 }
 
 model Goal {
@@ -205,7 +230,7 @@ model SessionGrade {
   sessionId   String
   evaluatorId String
   evaluatedId String
-  grade       Int      // Valor de 1 a 10
+  grade       Int // Valor de 1 a 10
   createdAt   DateTime @default(now())
 
   // Relações

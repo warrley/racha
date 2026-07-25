@@ -39,6 +39,11 @@ export type TeamPlayer = $Result.DefaultSelection<Prisma.$TeamPlayerPayload>
  */
 export type Round = $Result.DefaultSelection<Prisma.$RoundPayload>
 /**
+ * Model RoundSubstitution
+ * 
+ */
+export type RoundSubstitution = $Result.DefaultSelection<Prisma.$RoundSubstitutionPayload>
+/**
  * Model Goal
  * 
  */
@@ -292,6 +297,16 @@ export class PrismaClient<
     * ```
     */
   get round(): Prisma.RoundDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.roundSubstitution`: Exposes CRUD operations for the **RoundSubstitution** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RoundSubstitutions
+    * const roundSubstitutions = await prisma.roundSubstitution.findMany()
+    * ```
+    */
+  get roundSubstitution(): Prisma.RoundSubstitutionDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.goal`: Exposes CRUD operations for the **Goal** model.
@@ -777,6 +792,7 @@ export namespace Prisma {
     Team: 'Team',
     TeamPlayer: 'TeamPlayer',
     Round: 'Round',
+    RoundSubstitution: 'RoundSubstitution',
     Goal: 'Goal',
     Badge: 'Badge',
     SessionParticipant: 'SessionParticipant',
@@ -799,7 +815,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "team" | "teamPlayer" | "round" | "goal" | "badge" | "sessionParticipant" | "sessionGrade"
+      modelProps: "user" | "session" | "team" | "teamPlayer" | "round" | "roundSubstitution" | "goal" | "badge" | "sessionParticipant" | "sessionGrade"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1170,6 +1186,80 @@ export namespace Prisma {
           count: {
             args: Prisma.RoundCountArgs<ExtArgs>
             result: $Utils.Optional<RoundCountAggregateOutputType> | number
+          }
+        }
+      }
+      RoundSubstitution: {
+        payload: Prisma.$RoundSubstitutionPayload<ExtArgs>
+        fields: Prisma.RoundSubstitutionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RoundSubstitutionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundSubstitutionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RoundSubstitutionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundSubstitutionPayload>
+          }
+          findFirst: {
+            args: Prisma.RoundSubstitutionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundSubstitutionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RoundSubstitutionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundSubstitutionPayload>
+          }
+          findMany: {
+            args: Prisma.RoundSubstitutionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundSubstitutionPayload>[]
+          }
+          create: {
+            args: Prisma.RoundSubstitutionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundSubstitutionPayload>
+          }
+          createMany: {
+            args: Prisma.RoundSubstitutionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.RoundSubstitutionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundSubstitutionPayload>[]
+          }
+          delete: {
+            args: Prisma.RoundSubstitutionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundSubstitutionPayload>
+          }
+          update: {
+            args: Prisma.RoundSubstitutionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundSubstitutionPayload>
+          }
+          deleteMany: {
+            args: Prisma.RoundSubstitutionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RoundSubstitutionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.RoundSubstitutionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundSubstitutionPayload>[]
+          }
+          upsert: {
+            args: Prisma.RoundSubstitutionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RoundSubstitutionPayload>
+          }
+          aggregate: {
+            args: Prisma.RoundSubstitutionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRoundSubstitution>
+          }
+          groupBy: {
+            args: Prisma.RoundSubstitutionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RoundSubstitutionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RoundSubstitutionCountArgs<ExtArgs>
+            result: $Utils.Optional<RoundSubstitutionCountAggregateOutputType> | number
           }
         }
       }
@@ -1558,6 +1648,7 @@ export namespace Prisma {
     team?: TeamOmit
     teamPlayer?: TeamPlayerOmit
     round?: RoundOmit
+    roundSubstitution?: RoundSubstitutionOmit
     goal?: GoalOmit
     badge?: BadgeOmit
     sessionParticipant?: SessionParticipantOmit
@@ -1665,6 +1756,8 @@ export namespace Prisma {
     sessionParticipants: number
     evaluatedGrades: number
     receivedGrades: number
+    substitutedOut: number
+    substitutedIn: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1677,6 +1770,8 @@ export namespace Prisma {
     sessionParticipants?: boolean | UserCountOutputTypeCountSessionParticipantsArgs
     evaluatedGrades?: boolean | UserCountOutputTypeCountEvaluatedGradesArgs
     receivedGrades?: boolean | UserCountOutputTypeCountReceivedGradesArgs
+    substitutedOut?: boolean | UserCountOutputTypeCountSubstitutedOutArgs
+    substitutedIn?: boolean | UserCountOutputTypeCountSubstitutedInArgs
   }
 
   // Custom InputTypes
@@ -1751,6 +1846,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountReceivedGradesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SessionGradeWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSubstitutedOutArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoundSubstitutionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSubstitutedInArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoundSubstitutionWhereInput
   }
 
 
@@ -1830,6 +1939,7 @@ export namespace Prisma {
     homeRounds: number
     awayRounds: number
     wonRounds: number
+    substitutions: number
   }
 
   export type TeamCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1837,6 +1947,7 @@ export namespace Prisma {
     homeRounds?: boolean | TeamCountOutputTypeCountHomeRoundsArgs
     awayRounds?: boolean | TeamCountOutputTypeCountAwayRoundsArgs
     wonRounds?: boolean | TeamCountOutputTypeCountWonRoundsArgs
+    substitutions?: boolean | TeamCountOutputTypeCountSubstitutionsArgs
   }
 
   // Custom InputTypes
@@ -1878,6 +1989,13 @@ export namespace Prisma {
     where?: RoundWhereInput
   }
 
+  /**
+   * TeamCountOutputType without action
+   */
+  export type TeamCountOutputTypeCountSubstitutionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoundSubstitutionWhereInput
+  }
+
 
   /**
    * Count Type RoundCountOutputType
@@ -1885,10 +2003,12 @@ export namespace Prisma {
 
   export type RoundCountOutputType = {
     goals: number
+    substitutions: number
   }
 
   export type RoundCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     goals?: boolean | RoundCountOutputTypeCountGoalsArgs
+    substitutions?: boolean | RoundCountOutputTypeCountSubstitutionsArgs
   }
 
   // Custom InputTypes
@@ -1907,6 +2027,13 @@ export namespace Prisma {
    */
   export type RoundCountOutputTypeCountGoalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: GoalWhereInput
+  }
+
+  /**
+   * RoundCountOutputType without action
+   */
+  export type RoundCountOutputTypeCountSubstitutionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoundSubstitutionWhereInput
   }
 
 
@@ -2177,6 +2304,8 @@ export namespace Prisma {
     sessionParticipants?: boolean | User$sessionParticipantsArgs<ExtArgs>
     evaluatedGrades?: boolean | User$evaluatedGradesArgs<ExtArgs>
     receivedGrades?: boolean | User$receivedGradesArgs<ExtArgs>
+    substitutedOut?: boolean | User$substitutedOutArgs<ExtArgs>
+    substitutedIn?: boolean | User$substitutedInArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2233,6 +2362,8 @@ export namespace Prisma {
     sessionParticipants?: boolean | User$sessionParticipantsArgs<ExtArgs>
     evaluatedGrades?: boolean | User$evaluatedGradesArgs<ExtArgs>
     receivedGrades?: boolean | User$receivedGradesArgs<ExtArgs>
+    substitutedOut?: boolean | User$substitutedOutArgs<ExtArgs>
+    substitutedIn?: boolean | User$substitutedInArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2250,6 +2381,8 @@ export namespace Prisma {
       sessionParticipants: Prisma.$SessionParticipantPayload<ExtArgs>[]
       evaluatedGrades: Prisma.$SessionGradePayload<ExtArgs>[]
       receivedGrades: Prisma.$SessionGradePayload<ExtArgs>[]
+      substitutedOut: Prisma.$RoundSubstitutionPayload<ExtArgs>[]
+      substitutedIn: Prisma.$RoundSubstitutionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2666,6 +2799,8 @@ export namespace Prisma {
     sessionParticipants<T extends User$sessionParticipantsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionParticipantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     evaluatedGrades<T extends User$evaluatedGradesArgs<ExtArgs> = {}>(args?: Subset<T, User$evaluatedGradesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionGradePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     receivedGrades<T extends User$receivedGradesArgs<ExtArgs> = {}>(args?: Subset<T, User$receivedGradesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionGradePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    substitutedOut<T extends User$substitutedOutArgs<ExtArgs> = {}>(args?: Subset<T, User$substitutedOutArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoundSubstitutionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    substitutedIn<T extends User$substitutedInArgs<ExtArgs> = {}>(args?: Subset<T, User$substitutedInArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoundSubstitutionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3307,6 +3442,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SessionGradeScalarFieldEnum | SessionGradeScalarFieldEnum[]
+  }
+
+  /**
+   * User.substitutedOut
+   */
+  export type User$substitutedOutArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundSubstitution
+     */
+    select?: RoundSubstitutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundSubstitution
+     */
+    omit?: RoundSubstitutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundSubstitutionInclude<ExtArgs> | null
+    where?: RoundSubstitutionWhereInput
+    orderBy?: RoundSubstitutionOrderByWithRelationInput | RoundSubstitutionOrderByWithRelationInput[]
+    cursor?: RoundSubstitutionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RoundSubstitutionScalarFieldEnum | RoundSubstitutionScalarFieldEnum[]
+  }
+
+  /**
+   * User.substitutedIn
+   */
+  export type User$substitutedInArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundSubstitution
+     */
+    select?: RoundSubstitutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundSubstitution
+     */
+    omit?: RoundSubstitutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundSubstitutionInclude<ExtArgs> | null
+    where?: RoundSubstitutionWhereInput
+    orderBy?: RoundSubstitutionOrderByWithRelationInput | RoundSubstitutionOrderByWithRelationInput[]
+    cursor?: RoundSubstitutionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RoundSubstitutionScalarFieldEnum | RoundSubstitutionScalarFieldEnum[]
   }
 
   /**
@@ -4914,6 +5097,7 @@ export namespace Prisma {
     homeRounds?: boolean | Team$homeRoundsArgs<ExtArgs>
     awayRounds?: boolean | Team$awayRoundsArgs<ExtArgs>
     wonRounds?: boolean | Team$wonRoundsArgs<ExtArgs>
+    substitutions?: boolean | Team$substitutionsArgs<ExtArgs>
     _count?: boolean | TeamCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["team"]>
 
@@ -4950,6 +5134,7 @@ export namespace Prisma {
     homeRounds?: boolean | Team$homeRoundsArgs<ExtArgs>
     awayRounds?: boolean | Team$awayRoundsArgs<ExtArgs>
     wonRounds?: boolean | Team$wonRoundsArgs<ExtArgs>
+    substitutions?: boolean | Team$substitutionsArgs<ExtArgs>
     _count?: boolean | TeamCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TeamIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4967,6 +5152,7 @@ export namespace Prisma {
       homeRounds: Prisma.$RoundPayload<ExtArgs>[]
       awayRounds: Prisma.$RoundPayload<ExtArgs>[]
       wonRounds: Prisma.$RoundPayload<ExtArgs>[]
+      substitutions: Prisma.$RoundSubstitutionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5373,6 +5559,7 @@ export namespace Prisma {
     homeRounds<T extends Team$homeRoundsArgs<ExtArgs> = {}>(args?: Subset<T, Team$homeRoundsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     awayRounds<T extends Team$awayRoundsArgs<ExtArgs> = {}>(args?: Subset<T, Team$awayRoundsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     wonRounds<T extends Team$wonRoundsArgs<ExtArgs> = {}>(args?: Subset<T, Team$wonRoundsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoundPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    substitutions<T extends Team$substitutionsArgs<ExtArgs> = {}>(args?: Subset<T, Team$substitutionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoundSubstitutionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5896,6 +6083,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: RoundScalarFieldEnum | RoundScalarFieldEnum[]
+  }
+
+  /**
+   * Team.substitutions
+   */
+  export type Team$substitutionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundSubstitution
+     */
+    select?: RoundSubstitutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundSubstitution
+     */
+    omit?: RoundSubstitutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundSubstitutionInclude<ExtArgs> | null
+    where?: RoundSubstitutionWhereInput
+    orderBy?: RoundSubstitutionOrderByWithRelationInput | RoundSubstitutionOrderByWithRelationInput[]
+    cursor?: RoundSubstitutionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RoundSubstitutionScalarFieldEnum | RoundSubstitutionScalarFieldEnum[]
   }
 
   /**
@@ -7242,6 +7453,7 @@ export namespace Prisma {
     awayTeam?: boolean | TeamDefaultArgs<ExtArgs>
     winnerTeam?: boolean | Round$winnerTeamArgs<ExtArgs>
     goals?: boolean | Round$goalsArgs<ExtArgs>
+    substitutions?: boolean | Round$substitutionsArgs<ExtArgs>
     _count?: boolean | RoundCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["round"]>
 
@@ -7299,6 +7511,7 @@ export namespace Prisma {
     awayTeam?: boolean | TeamDefaultArgs<ExtArgs>
     winnerTeam?: boolean | Round$winnerTeamArgs<ExtArgs>
     goals?: boolean | Round$goalsArgs<ExtArgs>
+    substitutions?: boolean | Round$substitutionsArgs<ExtArgs>
     _count?: boolean | RoundCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RoundIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7322,6 +7535,7 @@ export namespace Prisma {
       awayTeam: Prisma.$TeamPayload<ExtArgs>
       winnerTeam: Prisma.$TeamPayload<ExtArgs> | null
       goals: Prisma.$GoalPayload<ExtArgs>[]
+      substitutions: Prisma.$RoundSubstitutionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7733,6 +7947,7 @@ export namespace Prisma {
     awayTeam<T extends TeamDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TeamDefaultArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     winnerTeam<T extends Round$winnerTeamArgs<ExtArgs> = {}>(args?: Subset<T, Round$winnerTeamArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     goals<T extends Round$goalsArgs<ExtArgs> = {}>(args?: Subset<T, Round$goalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GoalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    substitutions<T extends Round$substitutionsArgs<ExtArgs> = {}>(args?: Subset<T, Round$substitutionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoundSubstitutionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8211,6 +8426,30 @@ export namespace Prisma {
   }
 
   /**
+   * Round.substitutions
+   */
+  export type Round$substitutionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundSubstitution
+     */
+    select?: RoundSubstitutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundSubstitution
+     */
+    omit?: RoundSubstitutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundSubstitutionInclude<ExtArgs> | null
+    where?: RoundSubstitutionWhereInput
+    orderBy?: RoundSubstitutionOrderByWithRelationInput | RoundSubstitutionOrderByWithRelationInput[]
+    cursor?: RoundSubstitutionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RoundSubstitutionScalarFieldEnum | RoundSubstitutionScalarFieldEnum[]
+  }
+
+  /**
    * Round without action
    */
   export type RoundDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8226,6 +8465,1122 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: RoundInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RoundSubstitution
+   */
+
+  export type AggregateRoundSubstitution = {
+    _count: RoundSubstitutionCountAggregateOutputType | null
+    _avg: RoundSubstitutionAvgAggregateOutputType | null
+    _sum: RoundSubstitutionSumAggregateOutputType | null
+    _min: RoundSubstitutionMinAggregateOutputType | null
+    _max: RoundSubstitutionMaxAggregateOutputType | null
+  }
+
+  export type RoundSubstitutionAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type RoundSubstitutionSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type RoundSubstitutionMinAggregateOutputType = {
+    id: number | null
+    roundId: string | null
+    teamId: string | null
+    outPlayerId: string | null
+    inPlayerId: string | null
+  }
+
+  export type RoundSubstitutionMaxAggregateOutputType = {
+    id: number | null
+    roundId: string | null
+    teamId: string | null
+    outPlayerId: string | null
+    inPlayerId: string | null
+  }
+
+  export type RoundSubstitutionCountAggregateOutputType = {
+    id: number
+    roundId: number
+    teamId: number
+    outPlayerId: number
+    inPlayerId: number
+    _all: number
+  }
+
+
+  export type RoundSubstitutionAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type RoundSubstitutionSumAggregateInputType = {
+    id?: true
+  }
+
+  export type RoundSubstitutionMinAggregateInputType = {
+    id?: true
+    roundId?: true
+    teamId?: true
+    outPlayerId?: true
+    inPlayerId?: true
+  }
+
+  export type RoundSubstitutionMaxAggregateInputType = {
+    id?: true
+    roundId?: true
+    teamId?: true
+    outPlayerId?: true
+    inPlayerId?: true
+  }
+
+  export type RoundSubstitutionCountAggregateInputType = {
+    id?: true
+    roundId?: true
+    teamId?: true
+    outPlayerId?: true
+    inPlayerId?: true
+    _all?: true
+  }
+
+  export type RoundSubstitutionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RoundSubstitution to aggregate.
+     */
+    where?: RoundSubstitutionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoundSubstitutions to fetch.
+     */
+    orderBy?: RoundSubstitutionOrderByWithRelationInput | RoundSubstitutionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RoundSubstitutionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoundSubstitutions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoundSubstitutions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RoundSubstitutions
+    **/
+    _count?: true | RoundSubstitutionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RoundSubstitutionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RoundSubstitutionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RoundSubstitutionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RoundSubstitutionMaxAggregateInputType
+  }
+
+  export type GetRoundSubstitutionAggregateType<T extends RoundSubstitutionAggregateArgs> = {
+        [P in keyof T & keyof AggregateRoundSubstitution]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRoundSubstitution[P]>
+      : GetScalarType<T[P], AggregateRoundSubstitution[P]>
+  }
+
+
+
+
+  export type RoundSubstitutionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RoundSubstitutionWhereInput
+    orderBy?: RoundSubstitutionOrderByWithAggregationInput | RoundSubstitutionOrderByWithAggregationInput[]
+    by: RoundSubstitutionScalarFieldEnum[] | RoundSubstitutionScalarFieldEnum
+    having?: RoundSubstitutionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RoundSubstitutionCountAggregateInputType | true
+    _avg?: RoundSubstitutionAvgAggregateInputType
+    _sum?: RoundSubstitutionSumAggregateInputType
+    _min?: RoundSubstitutionMinAggregateInputType
+    _max?: RoundSubstitutionMaxAggregateInputType
+  }
+
+  export type RoundSubstitutionGroupByOutputType = {
+    id: number
+    roundId: string
+    teamId: string
+    outPlayerId: string
+    inPlayerId: string
+    _count: RoundSubstitutionCountAggregateOutputType | null
+    _avg: RoundSubstitutionAvgAggregateOutputType | null
+    _sum: RoundSubstitutionSumAggregateOutputType | null
+    _min: RoundSubstitutionMinAggregateOutputType | null
+    _max: RoundSubstitutionMaxAggregateOutputType | null
+  }
+
+  type GetRoundSubstitutionGroupByPayload<T extends RoundSubstitutionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RoundSubstitutionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RoundSubstitutionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RoundSubstitutionGroupByOutputType[P]>
+            : GetScalarType<T[P], RoundSubstitutionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RoundSubstitutionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    roundId?: boolean
+    teamId?: boolean
+    outPlayerId?: boolean
+    inPlayerId?: boolean
+    round?: boolean | RoundDefaultArgs<ExtArgs>
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+    outPlayer?: boolean | UserDefaultArgs<ExtArgs>
+    inPlayer?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["roundSubstitution"]>
+
+  export type RoundSubstitutionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    roundId?: boolean
+    teamId?: boolean
+    outPlayerId?: boolean
+    inPlayerId?: boolean
+    round?: boolean | RoundDefaultArgs<ExtArgs>
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+    outPlayer?: boolean | UserDefaultArgs<ExtArgs>
+    inPlayer?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["roundSubstitution"]>
+
+  export type RoundSubstitutionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    roundId?: boolean
+    teamId?: boolean
+    outPlayerId?: boolean
+    inPlayerId?: boolean
+    round?: boolean | RoundDefaultArgs<ExtArgs>
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+    outPlayer?: boolean | UserDefaultArgs<ExtArgs>
+    inPlayer?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["roundSubstitution"]>
+
+  export type RoundSubstitutionSelectScalar = {
+    id?: boolean
+    roundId?: boolean
+    teamId?: boolean
+    outPlayerId?: boolean
+    inPlayerId?: boolean
+  }
+
+  export type RoundSubstitutionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "roundId" | "teamId" | "outPlayerId" | "inPlayerId", ExtArgs["result"]["roundSubstitution"]>
+  export type RoundSubstitutionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    round?: boolean | RoundDefaultArgs<ExtArgs>
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+    outPlayer?: boolean | UserDefaultArgs<ExtArgs>
+    inPlayer?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type RoundSubstitutionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    round?: boolean | RoundDefaultArgs<ExtArgs>
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+    outPlayer?: boolean | UserDefaultArgs<ExtArgs>
+    inPlayer?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type RoundSubstitutionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    round?: boolean | RoundDefaultArgs<ExtArgs>
+    team?: boolean | TeamDefaultArgs<ExtArgs>
+    outPlayer?: boolean | UserDefaultArgs<ExtArgs>
+    inPlayer?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $RoundSubstitutionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RoundSubstitution"
+    objects: {
+      round: Prisma.$RoundPayload<ExtArgs>
+      team: Prisma.$TeamPayload<ExtArgs>
+      outPlayer: Prisma.$UserPayload<ExtArgs>
+      inPlayer: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      roundId: string
+      teamId: string
+      outPlayerId: string
+      inPlayerId: string
+    }, ExtArgs["result"]["roundSubstitution"]>
+    composites: {}
+  }
+
+  type RoundSubstitutionGetPayload<S extends boolean | null | undefined | RoundSubstitutionDefaultArgs> = $Result.GetResult<Prisma.$RoundSubstitutionPayload, S>
+
+  type RoundSubstitutionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RoundSubstitutionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RoundSubstitutionCountAggregateInputType | true
+    }
+
+  export interface RoundSubstitutionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RoundSubstitution'], meta: { name: 'RoundSubstitution' } }
+    /**
+     * Find zero or one RoundSubstitution that matches the filter.
+     * @param {RoundSubstitutionFindUniqueArgs} args - Arguments to find a RoundSubstitution
+     * @example
+     * // Get one RoundSubstitution
+     * const roundSubstitution = await prisma.roundSubstitution.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RoundSubstitutionFindUniqueArgs>(args: SelectSubset<T, RoundSubstitutionFindUniqueArgs<ExtArgs>>): Prisma__RoundSubstitutionClient<$Result.GetResult<Prisma.$RoundSubstitutionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RoundSubstitution that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RoundSubstitutionFindUniqueOrThrowArgs} args - Arguments to find a RoundSubstitution
+     * @example
+     * // Get one RoundSubstitution
+     * const roundSubstitution = await prisma.roundSubstitution.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RoundSubstitutionFindUniqueOrThrowArgs>(args: SelectSubset<T, RoundSubstitutionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RoundSubstitutionClient<$Result.GetResult<Prisma.$RoundSubstitutionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RoundSubstitution that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundSubstitutionFindFirstArgs} args - Arguments to find a RoundSubstitution
+     * @example
+     * // Get one RoundSubstitution
+     * const roundSubstitution = await prisma.roundSubstitution.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RoundSubstitutionFindFirstArgs>(args?: SelectSubset<T, RoundSubstitutionFindFirstArgs<ExtArgs>>): Prisma__RoundSubstitutionClient<$Result.GetResult<Prisma.$RoundSubstitutionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RoundSubstitution that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundSubstitutionFindFirstOrThrowArgs} args - Arguments to find a RoundSubstitution
+     * @example
+     * // Get one RoundSubstitution
+     * const roundSubstitution = await prisma.roundSubstitution.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RoundSubstitutionFindFirstOrThrowArgs>(args?: SelectSubset<T, RoundSubstitutionFindFirstOrThrowArgs<ExtArgs>>): Prisma__RoundSubstitutionClient<$Result.GetResult<Prisma.$RoundSubstitutionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RoundSubstitutions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundSubstitutionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RoundSubstitutions
+     * const roundSubstitutions = await prisma.roundSubstitution.findMany()
+     * 
+     * // Get first 10 RoundSubstitutions
+     * const roundSubstitutions = await prisma.roundSubstitution.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const roundSubstitutionWithIdOnly = await prisma.roundSubstitution.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RoundSubstitutionFindManyArgs>(args?: SelectSubset<T, RoundSubstitutionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoundSubstitutionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RoundSubstitution.
+     * @param {RoundSubstitutionCreateArgs} args - Arguments to create a RoundSubstitution.
+     * @example
+     * // Create one RoundSubstitution
+     * const RoundSubstitution = await prisma.roundSubstitution.create({
+     *   data: {
+     *     // ... data to create a RoundSubstitution
+     *   }
+     * })
+     * 
+     */
+    create<T extends RoundSubstitutionCreateArgs>(args: SelectSubset<T, RoundSubstitutionCreateArgs<ExtArgs>>): Prisma__RoundSubstitutionClient<$Result.GetResult<Prisma.$RoundSubstitutionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RoundSubstitutions.
+     * @param {RoundSubstitutionCreateManyArgs} args - Arguments to create many RoundSubstitutions.
+     * @example
+     * // Create many RoundSubstitutions
+     * const roundSubstitution = await prisma.roundSubstitution.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RoundSubstitutionCreateManyArgs>(args?: SelectSubset<T, RoundSubstitutionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many RoundSubstitutions and returns the data saved in the database.
+     * @param {RoundSubstitutionCreateManyAndReturnArgs} args - Arguments to create many RoundSubstitutions.
+     * @example
+     * // Create many RoundSubstitutions
+     * const roundSubstitution = await prisma.roundSubstitution.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many RoundSubstitutions and only return the `id`
+     * const roundSubstitutionWithIdOnly = await prisma.roundSubstitution.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends RoundSubstitutionCreateManyAndReturnArgs>(args?: SelectSubset<T, RoundSubstitutionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoundSubstitutionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a RoundSubstitution.
+     * @param {RoundSubstitutionDeleteArgs} args - Arguments to delete one RoundSubstitution.
+     * @example
+     * // Delete one RoundSubstitution
+     * const RoundSubstitution = await prisma.roundSubstitution.delete({
+     *   where: {
+     *     // ... filter to delete one RoundSubstitution
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RoundSubstitutionDeleteArgs>(args: SelectSubset<T, RoundSubstitutionDeleteArgs<ExtArgs>>): Prisma__RoundSubstitutionClient<$Result.GetResult<Prisma.$RoundSubstitutionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RoundSubstitution.
+     * @param {RoundSubstitutionUpdateArgs} args - Arguments to update one RoundSubstitution.
+     * @example
+     * // Update one RoundSubstitution
+     * const roundSubstitution = await prisma.roundSubstitution.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RoundSubstitutionUpdateArgs>(args: SelectSubset<T, RoundSubstitutionUpdateArgs<ExtArgs>>): Prisma__RoundSubstitutionClient<$Result.GetResult<Prisma.$RoundSubstitutionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RoundSubstitutions.
+     * @param {RoundSubstitutionDeleteManyArgs} args - Arguments to filter RoundSubstitutions to delete.
+     * @example
+     * // Delete a few RoundSubstitutions
+     * const { count } = await prisma.roundSubstitution.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RoundSubstitutionDeleteManyArgs>(args?: SelectSubset<T, RoundSubstitutionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RoundSubstitutions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundSubstitutionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RoundSubstitutions
+     * const roundSubstitution = await prisma.roundSubstitution.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RoundSubstitutionUpdateManyArgs>(args: SelectSubset<T, RoundSubstitutionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RoundSubstitutions and returns the data updated in the database.
+     * @param {RoundSubstitutionUpdateManyAndReturnArgs} args - Arguments to update many RoundSubstitutions.
+     * @example
+     * // Update many RoundSubstitutions
+     * const roundSubstitution = await prisma.roundSubstitution.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more RoundSubstitutions and only return the `id`
+     * const roundSubstitutionWithIdOnly = await prisma.roundSubstitution.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends RoundSubstitutionUpdateManyAndReturnArgs>(args: SelectSubset<T, RoundSubstitutionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RoundSubstitutionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one RoundSubstitution.
+     * @param {RoundSubstitutionUpsertArgs} args - Arguments to update or create a RoundSubstitution.
+     * @example
+     * // Update or create a RoundSubstitution
+     * const roundSubstitution = await prisma.roundSubstitution.upsert({
+     *   create: {
+     *     // ... data to create a RoundSubstitution
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RoundSubstitution we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RoundSubstitutionUpsertArgs>(args: SelectSubset<T, RoundSubstitutionUpsertArgs<ExtArgs>>): Prisma__RoundSubstitutionClient<$Result.GetResult<Prisma.$RoundSubstitutionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RoundSubstitutions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundSubstitutionCountArgs} args - Arguments to filter RoundSubstitutions to count.
+     * @example
+     * // Count the number of RoundSubstitutions
+     * const count = await prisma.roundSubstitution.count({
+     *   where: {
+     *     // ... the filter for the RoundSubstitutions we want to count
+     *   }
+     * })
+    **/
+    count<T extends RoundSubstitutionCountArgs>(
+      args?: Subset<T, RoundSubstitutionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RoundSubstitutionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RoundSubstitution.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundSubstitutionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RoundSubstitutionAggregateArgs>(args: Subset<T, RoundSubstitutionAggregateArgs>): Prisma.PrismaPromise<GetRoundSubstitutionAggregateType<T>>
+
+    /**
+     * Group by RoundSubstitution.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RoundSubstitutionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RoundSubstitutionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RoundSubstitutionGroupByArgs['orderBy'] }
+        : { orderBy?: RoundSubstitutionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RoundSubstitutionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRoundSubstitutionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RoundSubstitution model
+   */
+  readonly fields: RoundSubstitutionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RoundSubstitution.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RoundSubstitutionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    round<T extends RoundDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoundDefaultArgs<ExtArgs>>): Prisma__RoundClient<$Result.GetResult<Prisma.$RoundPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    team<T extends TeamDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TeamDefaultArgs<ExtArgs>>): Prisma__TeamClient<$Result.GetResult<Prisma.$TeamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    outPlayer<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    inPlayer<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RoundSubstitution model
+   */
+  interface RoundSubstitutionFieldRefs {
+    readonly id: FieldRef<"RoundSubstitution", 'Int'>
+    readonly roundId: FieldRef<"RoundSubstitution", 'String'>
+    readonly teamId: FieldRef<"RoundSubstitution", 'String'>
+    readonly outPlayerId: FieldRef<"RoundSubstitution", 'String'>
+    readonly inPlayerId: FieldRef<"RoundSubstitution", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RoundSubstitution findUnique
+   */
+  export type RoundSubstitutionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundSubstitution
+     */
+    select?: RoundSubstitutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundSubstitution
+     */
+    omit?: RoundSubstitutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundSubstitutionInclude<ExtArgs> | null
+    /**
+     * Filter, which RoundSubstitution to fetch.
+     */
+    where: RoundSubstitutionWhereUniqueInput
+  }
+
+  /**
+   * RoundSubstitution findUniqueOrThrow
+   */
+  export type RoundSubstitutionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundSubstitution
+     */
+    select?: RoundSubstitutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundSubstitution
+     */
+    omit?: RoundSubstitutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundSubstitutionInclude<ExtArgs> | null
+    /**
+     * Filter, which RoundSubstitution to fetch.
+     */
+    where: RoundSubstitutionWhereUniqueInput
+  }
+
+  /**
+   * RoundSubstitution findFirst
+   */
+  export type RoundSubstitutionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundSubstitution
+     */
+    select?: RoundSubstitutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundSubstitution
+     */
+    omit?: RoundSubstitutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundSubstitutionInclude<ExtArgs> | null
+    /**
+     * Filter, which RoundSubstitution to fetch.
+     */
+    where?: RoundSubstitutionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoundSubstitutions to fetch.
+     */
+    orderBy?: RoundSubstitutionOrderByWithRelationInput | RoundSubstitutionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RoundSubstitutions.
+     */
+    cursor?: RoundSubstitutionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoundSubstitutions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoundSubstitutions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RoundSubstitutions.
+     */
+    distinct?: RoundSubstitutionScalarFieldEnum | RoundSubstitutionScalarFieldEnum[]
+  }
+
+  /**
+   * RoundSubstitution findFirstOrThrow
+   */
+  export type RoundSubstitutionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundSubstitution
+     */
+    select?: RoundSubstitutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundSubstitution
+     */
+    omit?: RoundSubstitutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundSubstitutionInclude<ExtArgs> | null
+    /**
+     * Filter, which RoundSubstitution to fetch.
+     */
+    where?: RoundSubstitutionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoundSubstitutions to fetch.
+     */
+    orderBy?: RoundSubstitutionOrderByWithRelationInput | RoundSubstitutionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RoundSubstitutions.
+     */
+    cursor?: RoundSubstitutionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoundSubstitutions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoundSubstitutions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RoundSubstitutions.
+     */
+    distinct?: RoundSubstitutionScalarFieldEnum | RoundSubstitutionScalarFieldEnum[]
+  }
+
+  /**
+   * RoundSubstitution findMany
+   */
+  export type RoundSubstitutionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundSubstitution
+     */
+    select?: RoundSubstitutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundSubstitution
+     */
+    omit?: RoundSubstitutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundSubstitutionInclude<ExtArgs> | null
+    /**
+     * Filter, which RoundSubstitutions to fetch.
+     */
+    where?: RoundSubstitutionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RoundSubstitutions to fetch.
+     */
+    orderBy?: RoundSubstitutionOrderByWithRelationInput | RoundSubstitutionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RoundSubstitutions.
+     */
+    cursor?: RoundSubstitutionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RoundSubstitutions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RoundSubstitutions.
+     */
+    skip?: number
+    distinct?: RoundSubstitutionScalarFieldEnum | RoundSubstitutionScalarFieldEnum[]
+  }
+
+  /**
+   * RoundSubstitution create
+   */
+  export type RoundSubstitutionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundSubstitution
+     */
+    select?: RoundSubstitutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundSubstitution
+     */
+    omit?: RoundSubstitutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundSubstitutionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RoundSubstitution.
+     */
+    data: XOR<RoundSubstitutionCreateInput, RoundSubstitutionUncheckedCreateInput>
+  }
+
+  /**
+   * RoundSubstitution createMany
+   */
+  export type RoundSubstitutionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RoundSubstitutions.
+     */
+    data: RoundSubstitutionCreateManyInput | RoundSubstitutionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RoundSubstitution createManyAndReturn
+   */
+  export type RoundSubstitutionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundSubstitution
+     */
+    select?: RoundSubstitutionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundSubstitution
+     */
+    omit?: RoundSubstitutionOmit<ExtArgs> | null
+    /**
+     * The data used to create many RoundSubstitutions.
+     */
+    data: RoundSubstitutionCreateManyInput | RoundSubstitutionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundSubstitutionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RoundSubstitution update
+   */
+  export type RoundSubstitutionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundSubstitution
+     */
+    select?: RoundSubstitutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundSubstitution
+     */
+    omit?: RoundSubstitutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundSubstitutionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RoundSubstitution.
+     */
+    data: XOR<RoundSubstitutionUpdateInput, RoundSubstitutionUncheckedUpdateInput>
+    /**
+     * Choose, which RoundSubstitution to update.
+     */
+    where: RoundSubstitutionWhereUniqueInput
+  }
+
+  /**
+   * RoundSubstitution updateMany
+   */
+  export type RoundSubstitutionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RoundSubstitutions.
+     */
+    data: XOR<RoundSubstitutionUpdateManyMutationInput, RoundSubstitutionUncheckedUpdateManyInput>
+    /**
+     * Filter which RoundSubstitutions to update
+     */
+    where?: RoundSubstitutionWhereInput
+    /**
+     * Limit how many RoundSubstitutions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RoundSubstitution updateManyAndReturn
+   */
+  export type RoundSubstitutionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundSubstitution
+     */
+    select?: RoundSubstitutionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundSubstitution
+     */
+    omit?: RoundSubstitutionOmit<ExtArgs> | null
+    /**
+     * The data used to update RoundSubstitutions.
+     */
+    data: XOR<RoundSubstitutionUpdateManyMutationInput, RoundSubstitutionUncheckedUpdateManyInput>
+    /**
+     * Filter which RoundSubstitutions to update
+     */
+    where?: RoundSubstitutionWhereInput
+    /**
+     * Limit how many RoundSubstitutions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundSubstitutionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * RoundSubstitution upsert
+   */
+  export type RoundSubstitutionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundSubstitution
+     */
+    select?: RoundSubstitutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundSubstitution
+     */
+    omit?: RoundSubstitutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundSubstitutionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RoundSubstitution to update in case it exists.
+     */
+    where: RoundSubstitutionWhereUniqueInput
+    /**
+     * In case the RoundSubstitution found by the `where` argument doesn't exist, create a new RoundSubstitution with this data.
+     */
+    create: XOR<RoundSubstitutionCreateInput, RoundSubstitutionUncheckedCreateInput>
+    /**
+     * In case the RoundSubstitution was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RoundSubstitutionUpdateInput, RoundSubstitutionUncheckedUpdateInput>
+  }
+
+  /**
+   * RoundSubstitution delete
+   */
+  export type RoundSubstitutionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundSubstitution
+     */
+    select?: RoundSubstitutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundSubstitution
+     */
+    omit?: RoundSubstitutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundSubstitutionInclude<ExtArgs> | null
+    /**
+     * Filter which RoundSubstitution to delete.
+     */
+    where: RoundSubstitutionWhereUniqueInput
+  }
+
+  /**
+   * RoundSubstitution deleteMany
+   */
+  export type RoundSubstitutionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RoundSubstitutions to delete
+     */
+    where?: RoundSubstitutionWhereInput
+    /**
+     * Limit how many RoundSubstitutions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RoundSubstitution without action
+   */
+  export type RoundSubstitutionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RoundSubstitution
+     */
+    select?: RoundSubstitutionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RoundSubstitution
+     */
+    omit?: RoundSubstitutionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoundSubstitutionInclude<ExtArgs> | null
   }
 
 
@@ -12758,6 +14113,17 @@ export namespace Prisma {
   export type RoundScalarFieldEnum = (typeof RoundScalarFieldEnum)[keyof typeof RoundScalarFieldEnum]
 
 
+  export const RoundSubstitutionScalarFieldEnum: {
+    id: 'id',
+    roundId: 'roundId',
+    teamId: 'teamId',
+    outPlayerId: 'outPlayerId',
+    inPlayerId: 'inPlayerId'
+  };
+
+  export type RoundSubstitutionScalarFieldEnum = (typeof RoundSubstitutionScalarFieldEnum)[keyof typeof RoundSubstitutionScalarFieldEnum]
+
+
   export const GoalScalarFieldEnum: {
     id: 'id',
     roundId: 'roundId',
@@ -12978,6 +14344,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantListRelationFilter
     evaluatedGrades?: SessionGradeListRelationFilter
     receivedGrades?: SessionGradeListRelationFilter
+    substitutedOut?: RoundSubstitutionListRelationFilter
+    substitutedIn?: RoundSubstitutionListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -13001,6 +14369,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantOrderByRelationAggregateInput
     evaluatedGrades?: SessionGradeOrderByRelationAggregateInput
     receivedGrades?: SessionGradeOrderByRelationAggregateInput
+    substitutedOut?: RoundSubstitutionOrderByRelationAggregateInput
+    substitutedIn?: RoundSubstitutionOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -13027,6 +14397,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantListRelationFilter
     evaluatedGrades?: SessionGradeListRelationFilter
     receivedGrades?: SessionGradeListRelationFilter
+    substitutedOut?: RoundSubstitutionListRelationFilter
+    substitutedIn?: RoundSubstitutionListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -13192,6 +14564,7 @@ export namespace Prisma {
     homeRounds?: RoundListRelationFilter
     awayRounds?: RoundListRelationFilter
     wonRounds?: RoundListRelationFilter
+    substitutions?: RoundSubstitutionListRelationFilter
   }
 
   export type TeamOrderByWithRelationInput = {
@@ -13205,6 +14578,7 @@ export namespace Prisma {
     homeRounds?: RoundOrderByRelationAggregateInput
     awayRounds?: RoundOrderByRelationAggregateInput
     wonRounds?: RoundOrderByRelationAggregateInput
+    substitutions?: RoundSubstitutionOrderByRelationAggregateInput
   }
 
   export type TeamWhereUniqueInput = Prisma.AtLeast<{
@@ -13221,6 +14595,7 @@ export namespace Prisma {
     homeRounds?: RoundListRelationFilter
     awayRounds?: RoundListRelationFilter
     wonRounds?: RoundListRelationFilter
+    substitutions?: RoundSubstitutionListRelationFilter
   }, "id">
 
   export type TeamOrderByWithAggregationInput = {
@@ -13317,6 +14692,7 @@ export namespace Prisma {
     awayTeam?: XOR<TeamScalarRelationFilter, TeamWhereInput>
     winnerTeam?: XOR<TeamNullableScalarRelationFilter, TeamWhereInput> | null
     goals?: GoalListRelationFilter
+    substitutions?: RoundSubstitutionListRelationFilter
   }
 
   export type RoundOrderByWithRelationInput = {
@@ -13335,6 +14711,7 @@ export namespace Prisma {
     awayTeam?: TeamOrderByWithRelationInput
     winnerTeam?: TeamOrderByWithRelationInput
     goals?: GoalOrderByRelationAggregateInput
+    substitutions?: RoundSubstitutionOrderByRelationAggregateInput
   }
 
   export type RoundWhereUniqueInput = Prisma.AtLeast<{
@@ -13356,6 +14733,7 @@ export namespace Prisma {
     awayTeam?: XOR<TeamScalarRelationFilter, TeamWhereInput>
     winnerTeam?: XOR<TeamNullableScalarRelationFilter, TeamWhereInput> | null
     goals?: GoalListRelationFilter
+    substitutions?: RoundSubstitutionListRelationFilter
   }, "id">
 
   export type RoundOrderByWithAggregationInput = {
@@ -13390,6 +14768,73 @@ export namespace Prisma {
     winnerTeamId?: StringNullableWithAggregatesFilter<"Round"> | string | null
     isDraw?: BoolWithAggregatesFilter<"Round"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Round"> | Date | string
+  }
+
+  export type RoundSubstitutionWhereInput = {
+    AND?: RoundSubstitutionWhereInput | RoundSubstitutionWhereInput[]
+    OR?: RoundSubstitutionWhereInput[]
+    NOT?: RoundSubstitutionWhereInput | RoundSubstitutionWhereInput[]
+    id?: IntFilter<"RoundSubstitution"> | number
+    roundId?: StringFilter<"RoundSubstitution"> | string
+    teamId?: StringFilter<"RoundSubstitution"> | string
+    outPlayerId?: StringFilter<"RoundSubstitution"> | string
+    inPlayerId?: StringFilter<"RoundSubstitution"> | string
+    round?: XOR<RoundScalarRelationFilter, RoundWhereInput>
+    team?: XOR<TeamScalarRelationFilter, TeamWhereInput>
+    outPlayer?: XOR<UserScalarRelationFilter, UserWhereInput>
+    inPlayer?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type RoundSubstitutionOrderByWithRelationInput = {
+    id?: SortOrder
+    roundId?: SortOrder
+    teamId?: SortOrder
+    outPlayerId?: SortOrder
+    inPlayerId?: SortOrder
+    round?: RoundOrderByWithRelationInput
+    team?: TeamOrderByWithRelationInput
+    outPlayer?: UserOrderByWithRelationInput
+    inPlayer?: UserOrderByWithRelationInput
+  }
+
+  export type RoundSubstitutionWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    roundId_outPlayerId?: RoundSubstitutionRoundIdOutPlayerIdCompoundUniqueInput
+    AND?: RoundSubstitutionWhereInput | RoundSubstitutionWhereInput[]
+    OR?: RoundSubstitutionWhereInput[]
+    NOT?: RoundSubstitutionWhereInput | RoundSubstitutionWhereInput[]
+    roundId?: StringFilter<"RoundSubstitution"> | string
+    teamId?: StringFilter<"RoundSubstitution"> | string
+    outPlayerId?: StringFilter<"RoundSubstitution"> | string
+    inPlayerId?: StringFilter<"RoundSubstitution"> | string
+    round?: XOR<RoundScalarRelationFilter, RoundWhereInput>
+    team?: XOR<TeamScalarRelationFilter, TeamWhereInput>
+    outPlayer?: XOR<UserScalarRelationFilter, UserWhereInput>
+    inPlayer?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "roundId_outPlayerId">
+
+  export type RoundSubstitutionOrderByWithAggregationInput = {
+    id?: SortOrder
+    roundId?: SortOrder
+    teamId?: SortOrder
+    outPlayerId?: SortOrder
+    inPlayerId?: SortOrder
+    _count?: RoundSubstitutionCountOrderByAggregateInput
+    _avg?: RoundSubstitutionAvgOrderByAggregateInput
+    _max?: RoundSubstitutionMaxOrderByAggregateInput
+    _min?: RoundSubstitutionMinOrderByAggregateInput
+    _sum?: RoundSubstitutionSumOrderByAggregateInput
+  }
+
+  export type RoundSubstitutionScalarWhereWithAggregatesInput = {
+    AND?: RoundSubstitutionScalarWhereWithAggregatesInput | RoundSubstitutionScalarWhereWithAggregatesInput[]
+    OR?: RoundSubstitutionScalarWhereWithAggregatesInput[]
+    NOT?: RoundSubstitutionScalarWhereWithAggregatesInput | RoundSubstitutionScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"RoundSubstitution"> | number
+    roundId?: StringWithAggregatesFilter<"RoundSubstitution"> | string
+    teamId?: StringWithAggregatesFilter<"RoundSubstitution"> | string
+    outPlayerId?: StringWithAggregatesFilter<"RoundSubstitution"> | string
+    inPlayerId?: StringWithAggregatesFilter<"RoundSubstitution"> | string
   }
 
   export type GoalWhereInput = {
@@ -13663,6 +15108,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantCreateNestedManyWithoutUserInput
     evaluatedGrades?: SessionGradeCreateNestedManyWithoutEvaluatorInput
     receivedGrades?: SessionGradeCreateNestedManyWithoutEvaluatedInput
+    substitutedOut?: RoundSubstitutionCreateNestedManyWithoutOutPlayerInput
+    substitutedIn?: RoundSubstitutionCreateNestedManyWithoutInPlayerInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -13686,6 +15133,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
     evaluatedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput
     receivedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput
+    substitutedOut?: RoundSubstitutionUncheckedCreateNestedManyWithoutOutPlayerInput
+    substitutedIn?: RoundSubstitutionUncheckedCreateNestedManyWithoutInPlayerInput
   }
 
   export type UserUpdateInput = {
@@ -13709,6 +15158,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUpdateManyWithoutUserNestedInput
     evaluatedGrades?: SessionGradeUpdateManyWithoutEvaluatorNestedInput
     receivedGrades?: SessionGradeUpdateManyWithoutEvaluatedNestedInput
+    substitutedOut?: RoundSubstitutionUpdateManyWithoutOutPlayerNestedInput
+    substitutedIn?: RoundSubstitutionUpdateManyWithoutInPlayerNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -13732,6 +15183,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
     evaluatedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput
     receivedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput
+    substitutedOut?: RoundSubstitutionUncheckedUpdateManyWithoutOutPlayerNestedInput
+    substitutedIn?: RoundSubstitutionUncheckedUpdateManyWithoutInPlayerNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -13908,6 +15361,7 @@ export namespace Prisma {
     homeRounds?: RoundCreateNestedManyWithoutHomeTeamInput
     awayRounds?: RoundCreateNestedManyWithoutAwayTeamInput
     wonRounds?: RoundCreateNestedManyWithoutWinnerTeamInput
+    substitutions?: RoundSubstitutionCreateNestedManyWithoutTeamInput
   }
 
   export type TeamUncheckedCreateInput = {
@@ -13920,6 +15374,7 @@ export namespace Prisma {
     homeRounds?: RoundUncheckedCreateNestedManyWithoutHomeTeamInput
     awayRounds?: RoundUncheckedCreateNestedManyWithoutAwayTeamInput
     wonRounds?: RoundUncheckedCreateNestedManyWithoutWinnerTeamInput
+    substitutions?: RoundSubstitutionUncheckedCreateNestedManyWithoutTeamInput
   }
 
   export type TeamUpdateInput = {
@@ -13932,6 +15387,7 @@ export namespace Prisma {
     homeRounds?: RoundUpdateManyWithoutHomeTeamNestedInput
     awayRounds?: RoundUpdateManyWithoutAwayTeamNestedInput
     wonRounds?: RoundUpdateManyWithoutWinnerTeamNestedInput
+    substitutions?: RoundSubstitutionUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamUncheckedUpdateInput = {
@@ -13944,6 +15400,7 @@ export namespace Prisma {
     homeRounds?: RoundUncheckedUpdateManyWithoutHomeTeamNestedInput
     awayRounds?: RoundUncheckedUpdateManyWithoutAwayTeamNestedInput
     wonRounds?: RoundUncheckedUpdateManyWithoutWinnerTeamNestedInput
+    substitutions?: RoundSubstitutionUncheckedUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamCreateManyInput = {
@@ -14019,6 +15476,7 @@ export namespace Prisma {
     awayTeam: TeamCreateNestedOneWithoutAwayRoundsInput
     winnerTeam?: TeamCreateNestedOneWithoutWonRoundsInput
     goals?: GoalCreateNestedManyWithoutRoundInput
+    substitutions?: RoundSubstitutionCreateNestedManyWithoutRoundInput
   }
 
   export type RoundUncheckedCreateInput = {
@@ -14033,6 +15491,7 @@ export namespace Prisma {
     isDraw?: boolean
     createdAt?: Date | string
     goals?: GoalUncheckedCreateNestedManyWithoutRoundInput
+    substitutions?: RoundSubstitutionUncheckedCreateNestedManyWithoutRoundInput
   }
 
   export type RoundUpdateInput = {
@@ -14047,6 +15506,7 @@ export namespace Prisma {
     awayTeam?: TeamUpdateOneRequiredWithoutAwayRoundsNestedInput
     winnerTeam?: TeamUpdateOneWithoutWonRoundsNestedInput
     goals?: GoalUpdateManyWithoutRoundNestedInput
+    substitutions?: RoundSubstitutionUpdateManyWithoutRoundNestedInput
   }
 
   export type RoundUncheckedUpdateInput = {
@@ -14061,6 +15521,7 @@ export namespace Prisma {
     isDraw?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     goals?: GoalUncheckedUpdateManyWithoutRoundNestedInput
+    substitutions?: RoundSubstitutionUncheckedUpdateManyWithoutRoundNestedInput
   }
 
   export type RoundCreateManyInput = {
@@ -14096,6 +15557,56 @@ export namespace Prisma {
     winnerTeamId?: NullableStringFieldUpdateOperationsInput | string | null
     isDraw?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RoundSubstitutionCreateInput = {
+    round: RoundCreateNestedOneWithoutSubstitutionsInput
+    team: TeamCreateNestedOneWithoutSubstitutionsInput
+    outPlayer: UserCreateNestedOneWithoutSubstitutedOutInput
+    inPlayer: UserCreateNestedOneWithoutSubstitutedInInput
+  }
+
+  export type RoundSubstitutionUncheckedCreateInput = {
+    id?: number
+    roundId: string
+    teamId: string
+    outPlayerId: string
+    inPlayerId: string
+  }
+
+  export type RoundSubstitutionUpdateInput = {
+    round?: RoundUpdateOneRequiredWithoutSubstitutionsNestedInput
+    team?: TeamUpdateOneRequiredWithoutSubstitutionsNestedInput
+    outPlayer?: UserUpdateOneRequiredWithoutSubstitutedOutNestedInput
+    inPlayer?: UserUpdateOneRequiredWithoutSubstitutedInNestedInput
+  }
+
+  export type RoundSubstitutionUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    roundId?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    outPlayerId?: StringFieldUpdateOperationsInput | string
+    inPlayerId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RoundSubstitutionCreateManyInput = {
+    id?: number
+    roundId: string
+    teamId: string
+    outPlayerId: string
+    inPlayerId: string
+  }
+
+  export type RoundSubstitutionUpdateManyMutationInput = {
+
+  }
+
+  export type RoundSubstitutionUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    roundId?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    outPlayerId?: StringFieldUpdateOperationsInput | string
+    inPlayerId?: StringFieldUpdateOperationsInput | string
   }
 
   export type GoalCreateInput = {
@@ -14425,6 +15936,12 @@ export namespace Prisma {
     none?: SessionGradeWhereInput
   }
 
+  export type RoundSubstitutionListRelationFilter = {
+    every?: RoundSubstitutionWhereInput
+    some?: RoundSubstitutionWhereInput
+    none?: RoundSubstitutionWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -14451,6 +15968,10 @@ export namespace Prisma {
   }
 
   export type SessionGradeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RoundSubstitutionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -14891,6 +16412,48 @@ export namespace Prisma {
     awayScore?: SortOrder
   }
 
+  export type RoundScalarRelationFilter = {
+    is?: RoundWhereInput
+    isNot?: RoundWhereInput
+  }
+
+  export type RoundSubstitutionRoundIdOutPlayerIdCompoundUniqueInput = {
+    roundId: string
+    outPlayerId: string
+  }
+
+  export type RoundSubstitutionCountOrderByAggregateInput = {
+    id?: SortOrder
+    roundId?: SortOrder
+    teamId?: SortOrder
+    outPlayerId?: SortOrder
+    inPlayerId?: SortOrder
+  }
+
+  export type RoundSubstitutionAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type RoundSubstitutionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    roundId?: SortOrder
+    teamId?: SortOrder
+    outPlayerId?: SortOrder
+    inPlayerId?: SortOrder
+  }
+
+  export type RoundSubstitutionMinOrderByAggregateInput = {
+    id?: SortOrder
+    roundId?: SortOrder
+    teamId?: SortOrder
+    outPlayerId?: SortOrder
+    inPlayerId?: SortOrder
+  }
+
+  export type RoundSubstitutionSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -14900,11 +16463,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type RoundScalarRelationFilter = {
-    is?: RoundWhereInput
-    isNot?: RoundWhereInput
   }
 
   export type GoalCountOrderByAggregateInput = {
@@ -15169,6 +16727,20 @@ export namespace Prisma {
     connect?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
   }
 
+  export type RoundSubstitutionCreateNestedManyWithoutOutPlayerInput = {
+    create?: XOR<RoundSubstitutionCreateWithoutOutPlayerInput, RoundSubstitutionUncheckedCreateWithoutOutPlayerInput> | RoundSubstitutionCreateWithoutOutPlayerInput[] | RoundSubstitutionUncheckedCreateWithoutOutPlayerInput[]
+    connectOrCreate?: RoundSubstitutionCreateOrConnectWithoutOutPlayerInput | RoundSubstitutionCreateOrConnectWithoutOutPlayerInput[]
+    createMany?: RoundSubstitutionCreateManyOutPlayerInputEnvelope
+    connect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+  }
+
+  export type RoundSubstitutionCreateNestedManyWithoutInPlayerInput = {
+    create?: XOR<RoundSubstitutionCreateWithoutInPlayerInput, RoundSubstitutionUncheckedCreateWithoutInPlayerInput> | RoundSubstitutionCreateWithoutInPlayerInput[] | RoundSubstitutionUncheckedCreateWithoutInPlayerInput[]
+    connectOrCreate?: RoundSubstitutionCreateOrConnectWithoutInPlayerInput | RoundSubstitutionCreateOrConnectWithoutInPlayerInput[]
+    createMany?: RoundSubstitutionCreateManyInPlayerInputEnvelope
+    connect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+  }
+
   export type TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput = {
     create?: XOR<TeamPlayerCreateWithoutPlayerInput, TeamPlayerUncheckedCreateWithoutPlayerInput> | TeamPlayerCreateWithoutPlayerInput[] | TeamPlayerUncheckedCreateWithoutPlayerInput[]
     connectOrCreate?: TeamPlayerCreateOrConnectWithoutPlayerInput | TeamPlayerCreateOrConnectWithoutPlayerInput[]
@@ -15230,6 +16802,20 @@ export namespace Prisma {
     connectOrCreate?: SessionGradeCreateOrConnectWithoutEvaluatedInput | SessionGradeCreateOrConnectWithoutEvaluatedInput[]
     createMany?: SessionGradeCreateManyEvaluatedInputEnvelope
     connect?: SessionGradeWhereUniqueInput | SessionGradeWhereUniqueInput[]
+  }
+
+  export type RoundSubstitutionUncheckedCreateNestedManyWithoutOutPlayerInput = {
+    create?: XOR<RoundSubstitutionCreateWithoutOutPlayerInput, RoundSubstitutionUncheckedCreateWithoutOutPlayerInput> | RoundSubstitutionCreateWithoutOutPlayerInput[] | RoundSubstitutionUncheckedCreateWithoutOutPlayerInput[]
+    connectOrCreate?: RoundSubstitutionCreateOrConnectWithoutOutPlayerInput | RoundSubstitutionCreateOrConnectWithoutOutPlayerInput[]
+    createMany?: RoundSubstitutionCreateManyOutPlayerInputEnvelope
+    connect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+  }
+
+  export type RoundSubstitutionUncheckedCreateNestedManyWithoutInPlayerInput = {
+    create?: XOR<RoundSubstitutionCreateWithoutInPlayerInput, RoundSubstitutionUncheckedCreateWithoutInPlayerInput> | RoundSubstitutionCreateWithoutInPlayerInput[] | RoundSubstitutionUncheckedCreateWithoutInPlayerInput[]
+    connectOrCreate?: RoundSubstitutionCreateOrConnectWithoutInPlayerInput | RoundSubstitutionCreateOrConnectWithoutInPlayerInput[]
+    createMany?: RoundSubstitutionCreateManyInPlayerInputEnvelope
+    connect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -15394,6 +16980,34 @@ export namespace Prisma {
     deleteMany?: SessionGradeScalarWhereInput | SessionGradeScalarWhereInput[]
   }
 
+  export type RoundSubstitutionUpdateManyWithoutOutPlayerNestedInput = {
+    create?: XOR<RoundSubstitutionCreateWithoutOutPlayerInput, RoundSubstitutionUncheckedCreateWithoutOutPlayerInput> | RoundSubstitutionCreateWithoutOutPlayerInput[] | RoundSubstitutionUncheckedCreateWithoutOutPlayerInput[]
+    connectOrCreate?: RoundSubstitutionCreateOrConnectWithoutOutPlayerInput | RoundSubstitutionCreateOrConnectWithoutOutPlayerInput[]
+    upsert?: RoundSubstitutionUpsertWithWhereUniqueWithoutOutPlayerInput | RoundSubstitutionUpsertWithWhereUniqueWithoutOutPlayerInput[]
+    createMany?: RoundSubstitutionCreateManyOutPlayerInputEnvelope
+    set?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    disconnect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    delete?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    connect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    update?: RoundSubstitutionUpdateWithWhereUniqueWithoutOutPlayerInput | RoundSubstitutionUpdateWithWhereUniqueWithoutOutPlayerInput[]
+    updateMany?: RoundSubstitutionUpdateManyWithWhereWithoutOutPlayerInput | RoundSubstitutionUpdateManyWithWhereWithoutOutPlayerInput[]
+    deleteMany?: RoundSubstitutionScalarWhereInput | RoundSubstitutionScalarWhereInput[]
+  }
+
+  export type RoundSubstitutionUpdateManyWithoutInPlayerNestedInput = {
+    create?: XOR<RoundSubstitutionCreateWithoutInPlayerInput, RoundSubstitutionUncheckedCreateWithoutInPlayerInput> | RoundSubstitutionCreateWithoutInPlayerInput[] | RoundSubstitutionUncheckedCreateWithoutInPlayerInput[]
+    connectOrCreate?: RoundSubstitutionCreateOrConnectWithoutInPlayerInput | RoundSubstitutionCreateOrConnectWithoutInPlayerInput[]
+    upsert?: RoundSubstitutionUpsertWithWhereUniqueWithoutInPlayerInput | RoundSubstitutionUpsertWithWhereUniqueWithoutInPlayerInput[]
+    createMany?: RoundSubstitutionCreateManyInPlayerInputEnvelope
+    set?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    disconnect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    delete?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    connect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    update?: RoundSubstitutionUpdateWithWhereUniqueWithoutInPlayerInput | RoundSubstitutionUpdateWithWhereUniqueWithoutInPlayerInput[]
+    updateMany?: RoundSubstitutionUpdateManyWithWhereWithoutInPlayerInput | RoundSubstitutionUpdateManyWithWhereWithoutInPlayerInput[]
+    deleteMany?: RoundSubstitutionScalarWhereInput | RoundSubstitutionScalarWhereInput[]
+  }
+
   export type TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput = {
     create?: XOR<TeamPlayerCreateWithoutPlayerInput, TeamPlayerUncheckedCreateWithoutPlayerInput> | TeamPlayerCreateWithoutPlayerInput[] | TeamPlayerUncheckedCreateWithoutPlayerInput[]
     connectOrCreate?: TeamPlayerCreateOrConnectWithoutPlayerInput | TeamPlayerCreateOrConnectWithoutPlayerInput[]
@@ -15518,6 +17132,34 @@ export namespace Prisma {
     update?: SessionGradeUpdateWithWhereUniqueWithoutEvaluatedInput | SessionGradeUpdateWithWhereUniqueWithoutEvaluatedInput[]
     updateMany?: SessionGradeUpdateManyWithWhereWithoutEvaluatedInput | SessionGradeUpdateManyWithWhereWithoutEvaluatedInput[]
     deleteMany?: SessionGradeScalarWhereInput | SessionGradeScalarWhereInput[]
+  }
+
+  export type RoundSubstitutionUncheckedUpdateManyWithoutOutPlayerNestedInput = {
+    create?: XOR<RoundSubstitutionCreateWithoutOutPlayerInput, RoundSubstitutionUncheckedCreateWithoutOutPlayerInput> | RoundSubstitutionCreateWithoutOutPlayerInput[] | RoundSubstitutionUncheckedCreateWithoutOutPlayerInput[]
+    connectOrCreate?: RoundSubstitutionCreateOrConnectWithoutOutPlayerInput | RoundSubstitutionCreateOrConnectWithoutOutPlayerInput[]
+    upsert?: RoundSubstitutionUpsertWithWhereUniqueWithoutOutPlayerInput | RoundSubstitutionUpsertWithWhereUniqueWithoutOutPlayerInput[]
+    createMany?: RoundSubstitutionCreateManyOutPlayerInputEnvelope
+    set?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    disconnect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    delete?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    connect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    update?: RoundSubstitutionUpdateWithWhereUniqueWithoutOutPlayerInput | RoundSubstitutionUpdateWithWhereUniqueWithoutOutPlayerInput[]
+    updateMany?: RoundSubstitutionUpdateManyWithWhereWithoutOutPlayerInput | RoundSubstitutionUpdateManyWithWhereWithoutOutPlayerInput[]
+    deleteMany?: RoundSubstitutionScalarWhereInput | RoundSubstitutionScalarWhereInput[]
+  }
+
+  export type RoundSubstitutionUncheckedUpdateManyWithoutInPlayerNestedInput = {
+    create?: XOR<RoundSubstitutionCreateWithoutInPlayerInput, RoundSubstitutionUncheckedCreateWithoutInPlayerInput> | RoundSubstitutionCreateWithoutInPlayerInput[] | RoundSubstitutionUncheckedCreateWithoutInPlayerInput[]
+    connectOrCreate?: RoundSubstitutionCreateOrConnectWithoutInPlayerInput | RoundSubstitutionCreateOrConnectWithoutInPlayerInput[]
+    upsert?: RoundSubstitutionUpsertWithWhereUniqueWithoutInPlayerInput | RoundSubstitutionUpsertWithWhereUniqueWithoutInPlayerInput[]
+    createMany?: RoundSubstitutionCreateManyInPlayerInputEnvelope
+    set?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    disconnect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    delete?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    connect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    update?: RoundSubstitutionUpdateWithWhereUniqueWithoutInPlayerInput | RoundSubstitutionUpdateWithWhereUniqueWithoutInPlayerInput[]
+    updateMany?: RoundSubstitutionUpdateManyWithWhereWithoutInPlayerInput | RoundSubstitutionUpdateManyWithWhereWithoutInPlayerInput[]
+    deleteMany?: RoundSubstitutionScalarWhereInput | RoundSubstitutionScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutCreatedSessionsInput = {
@@ -15818,6 +17460,13 @@ export namespace Prisma {
     connect?: RoundWhereUniqueInput | RoundWhereUniqueInput[]
   }
 
+  export type RoundSubstitutionCreateNestedManyWithoutTeamInput = {
+    create?: XOR<RoundSubstitutionCreateWithoutTeamInput, RoundSubstitutionUncheckedCreateWithoutTeamInput> | RoundSubstitutionCreateWithoutTeamInput[] | RoundSubstitutionUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: RoundSubstitutionCreateOrConnectWithoutTeamInput | RoundSubstitutionCreateOrConnectWithoutTeamInput[]
+    createMany?: RoundSubstitutionCreateManyTeamInputEnvelope
+    connect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+  }
+
   export type TeamPlayerUncheckedCreateNestedManyWithoutTeamInput = {
     create?: XOR<TeamPlayerCreateWithoutTeamInput, TeamPlayerUncheckedCreateWithoutTeamInput> | TeamPlayerCreateWithoutTeamInput[] | TeamPlayerUncheckedCreateWithoutTeamInput[]
     connectOrCreate?: TeamPlayerCreateOrConnectWithoutTeamInput | TeamPlayerCreateOrConnectWithoutTeamInput[]
@@ -15844,6 +17493,13 @@ export namespace Prisma {
     connectOrCreate?: RoundCreateOrConnectWithoutWinnerTeamInput | RoundCreateOrConnectWithoutWinnerTeamInput[]
     createMany?: RoundCreateManyWinnerTeamInputEnvelope
     connect?: RoundWhereUniqueInput | RoundWhereUniqueInput[]
+  }
+
+  export type RoundSubstitutionUncheckedCreateNestedManyWithoutTeamInput = {
+    create?: XOR<RoundSubstitutionCreateWithoutTeamInput, RoundSubstitutionUncheckedCreateWithoutTeamInput> | RoundSubstitutionCreateWithoutTeamInput[] | RoundSubstitutionUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: RoundSubstitutionCreateOrConnectWithoutTeamInput | RoundSubstitutionCreateOrConnectWithoutTeamInput[]
+    createMany?: RoundSubstitutionCreateManyTeamInputEnvelope
+    connect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -15918,6 +17574,20 @@ export namespace Prisma {
     deleteMany?: RoundScalarWhereInput | RoundScalarWhereInput[]
   }
 
+  export type RoundSubstitutionUpdateManyWithoutTeamNestedInput = {
+    create?: XOR<RoundSubstitutionCreateWithoutTeamInput, RoundSubstitutionUncheckedCreateWithoutTeamInput> | RoundSubstitutionCreateWithoutTeamInput[] | RoundSubstitutionUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: RoundSubstitutionCreateOrConnectWithoutTeamInput | RoundSubstitutionCreateOrConnectWithoutTeamInput[]
+    upsert?: RoundSubstitutionUpsertWithWhereUniqueWithoutTeamInput | RoundSubstitutionUpsertWithWhereUniqueWithoutTeamInput[]
+    createMany?: RoundSubstitutionCreateManyTeamInputEnvelope
+    set?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    disconnect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    delete?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    connect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    update?: RoundSubstitutionUpdateWithWhereUniqueWithoutTeamInput | RoundSubstitutionUpdateWithWhereUniqueWithoutTeamInput[]
+    updateMany?: RoundSubstitutionUpdateManyWithWhereWithoutTeamInput | RoundSubstitutionUpdateManyWithWhereWithoutTeamInput[]
+    deleteMany?: RoundSubstitutionScalarWhereInput | RoundSubstitutionScalarWhereInput[]
+  }
+
   export type TeamPlayerUncheckedUpdateManyWithoutTeamNestedInput = {
     create?: XOR<TeamPlayerCreateWithoutTeamInput, TeamPlayerUncheckedCreateWithoutTeamInput> | TeamPlayerCreateWithoutTeamInput[] | TeamPlayerUncheckedCreateWithoutTeamInput[]
     connectOrCreate?: TeamPlayerCreateOrConnectWithoutTeamInput | TeamPlayerCreateOrConnectWithoutTeamInput[]
@@ -15972,6 +17642,20 @@ export namespace Prisma {
     update?: RoundUpdateWithWhereUniqueWithoutWinnerTeamInput | RoundUpdateWithWhereUniqueWithoutWinnerTeamInput[]
     updateMany?: RoundUpdateManyWithWhereWithoutWinnerTeamInput | RoundUpdateManyWithWhereWithoutWinnerTeamInput[]
     deleteMany?: RoundScalarWhereInput | RoundScalarWhereInput[]
+  }
+
+  export type RoundSubstitutionUncheckedUpdateManyWithoutTeamNestedInput = {
+    create?: XOR<RoundSubstitutionCreateWithoutTeamInput, RoundSubstitutionUncheckedCreateWithoutTeamInput> | RoundSubstitutionCreateWithoutTeamInput[] | RoundSubstitutionUncheckedCreateWithoutTeamInput[]
+    connectOrCreate?: RoundSubstitutionCreateOrConnectWithoutTeamInput | RoundSubstitutionCreateOrConnectWithoutTeamInput[]
+    upsert?: RoundSubstitutionUpsertWithWhereUniqueWithoutTeamInput | RoundSubstitutionUpsertWithWhereUniqueWithoutTeamInput[]
+    createMany?: RoundSubstitutionCreateManyTeamInputEnvelope
+    set?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    disconnect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    delete?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    connect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    update?: RoundSubstitutionUpdateWithWhereUniqueWithoutTeamInput | RoundSubstitutionUpdateWithWhereUniqueWithoutTeamInput[]
+    updateMany?: RoundSubstitutionUpdateManyWithWhereWithoutTeamInput | RoundSubstitutionUpdateManyWithWhereWithoutTeamInput[]
+    deleteMany?: RoundSubstitutionScalarWhereInput | RoundSubstitutionScalarWhereInput[]
   }
 
   export type TeamCreateNestedOneWithoutPlayersInput = {
@@ -16033,11 +17717,25 @@ export namespace Prisma {
     connect?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
   }
 
+  export type RoundSubstitutionCreateNestedManyWithoutRoundInput = {
+    create?: XOR<RoundSubstitutionCreateWithoutRoundInput, RoundSubstitutionUncheckedCreateWithoutRoundInput> | RoundSubstitutionCreateWithoutRoundInput[] | RoundSubstitutionUncheckedCreateWithoutRoundInput[]
+    connectOrCreate?: RoundSubstitutionCreateOrConnectWithoutRoundInput | RoundSubstitutionCreateOrConnectWithoutRoundInput[]
+    createMany?: RoundSubstitutionCreateManyRoundInputEnvelope
+    connect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+  }
+
   export type GoalUncheckedCreateNestedManyWithoutRoundInput = {
     create?: XOR<GoalCreateWithoutRoundInput, GoalUncheckedCreateWithoutRoundInput> | GoalCreateWithoutRoundInput[] | GoalUncheckedCreateWithoutRoundInput[]
     connectOrCreate?: GoalCreateOrConnectWithoutRoundInput | GoalCreateOrConnectWithoutRoundInput[]
     createMany?: GoalCreateManyRoundInputEnvelope
     connect?: GoalWhereUniqueInput | GoalWhereUniqueInput[]
+  }
+
+  export type RoundSubstitutionUncheckedCreateNestedManyWithoutRoundInput = {
+    create?: XOR<RoundSubstitutionCreateWithoutRoundInput, RoundSubstitutionUncheckedCreateWithoutRoundInput> | RoundSubstitutionCreateWithoutRoundInput[] | RoundSubstitutionUncheckedCreateWithoutRoundInput[]
+    connectOrCreate?: RoundSubstitutionCreateOrConnectWithoutRoundInput | RoundSubstitutionCreateOrConnectWithoutRoundInput[]
+    createMany?: RoundSubstitutionCreateManyRoundInputEnvelope
+    connect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
   }
 
   export type SessionUpdateOneRequiredWithoutRoundsNestedInput = {
@@ -16088,6 +17786,20 @@ export namespace Prisma {
     deleteMany?: GoalScalarWhereInput | GoalScalarWhereInput[]
   }
 
+  export type RoundSubstitutionUpdateManyWithoutRoundNestedInput = {
+    create?: XOR<RoundSubstitutionCreateWithoutRoundInput, RoundSubstitutionUncheckedCreateWithoutRoundInput> | RoundSubstitutionCreateWithoutRoundInput[] | RoundSubstitutionUncheckedCreateWithoutRoundInput[]
+    connectOrCreate?: RoundSubstitutionCreateOrConnectWithoutRoundInput | RoundSubstitutionCreateOrConnectWithoutRoundInput[]
+    upsert?: RoundSubstitutionUpsertWithWhereUniqueWithoutRoundInput | RoundSubstitutionUpsertWithWhereUniqueWithoutRoundInput[]
+    createMany?: RoundSubstitutionCreateManyRoundInputEnvelope
+    set?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    disconnect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    delete?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    connect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    update?: RoundSubstitutionUpdateWithWhereUniqueWithoutRoundInput | RoundSubstitutionUpdateWithWhereUniqueWithoutRoundInput[]
+    updateMany?: RoundSubstitutionUpdateManyWithWhereWithoutRoundInput | RoundSubstitutionUpdateManyWithWhereWithoutRoundInput[]
+    deleteMany?: RoundSubstitutionScalarWhereInput | RoundSubstitutionScalarWhereInput[]
+  }
+
   export type GoalUncheckedUpdateManyWithoutRoundNestedInput = {
     create?: XOR<GoalCreateWithoutRoundInput, GoalUncheckedCreateWithoutRoundInput> | GoalCreateWithoutRoundInput[] | GoalUncheckedCreateWithoutRoundInput[]
     connectOrCreate?: GoalCreateOrConnectWithoutRoundInput | GoalCreateOrConnectWithoutRoundInput[]
@@ -16100,6 +17812,76 @@ export namespace Prisma {
     update?: GoalUpdateWithWhereUniqueWithoutRoundInput | GoalUpdateWithWhereUniqueWithoutRoundInput[]
     updateMany?: GoalUpdateManyWithWhereWithoutRoundInput | GoalUpdateManyWithWhereWithoutRoundInput[]
     deleteMany?: GoalScalarWhereInput | GoalScalarWhereInput[]
+  }
+
+  export type RoundSubstitutionUncheckedUpdateManyWithoutRoundNestedInput = {
+    create?: XOR<RoundSubstitutionCreateWithoutRoundInput, RoundSubstitutionUncheckedCreateWithoutRoundInput> | RoundSubstitutionCreateWithoutRoundInput[] | RoundSubstitutionUncheckedCreateWithoutRoundInput[]
+    connectOrCreate?: RoundSubstitutionCreateOrConnectWithoutRoundInput | RoundSubstitutionCreateOrConnectWithoutRoundInput[]
+    upsert?: RoundSubstitutionUpsertWithWhereUniqueWithoutRoundInput | RoundSubstitutionUpsertWithWhereUniqueWithoutRoundInput[]
+    createMany?: RoundSubstitutionCreateManyRoundInputEnvelope
+    set?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    disconnect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    delete?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    connect?: RoundSubstitutionWhereUniqueInput | RoundSubstitutionWhereUniqueInput[]
+    update?: RoundSubstitutionUpdateWithWhereUniqueWithoutRoundInput | RoundSubstitutionUpdateWithWhereUniqueWithoutRoundInput[]
+    updateMany?: RoundSubstitutionUpdateManyWithWhereWithoutRoundInput | RoundSubstitutionUpdateManyWithWhereWithoutRoundInput[]
+    deleteMany?: RoundSubstitutionScalarWhereInput | RoundSubstitutionScalarWhereInput[]
+  }
+
+  export type RoundCreateNestedOneWithoutSubstitutionsInput = {
+    create?: XOR<RoundCreateWithoutSubstitutionsInput, RoundUncheckedCreateWithoutSubstitutionsInput>
+    connectOrCreate?: RoundCreateOrConnectWithoutSubstitutionsInput
+    connect?: RoundWhereUniqueInput
+  }
+
+  export type TeamCreateNestedOneWithoutSubstitutionsInput = {
+    create?: XOR<TeamCreateWithoutSubstitutionsInput, TeamUncheckedCreateWithoutSubstitutionsInput>
+    connectOrCreate?: TeamCreateOrConnectWithoutSubstitutionsInput
+    connect?: TeamWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutSubstitutedOutInput = {
+    create?: XOR<UserCreateWithoutSubstitutedOutInput, UserUncheckedCreateWithoutSubstitutedOutInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSubstitutedOutInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutSubstitutedInInput = {
+    create?: XOR<UserCreateWithoutSubstitutedInInput, UserUncheckedCreateWithoutSubstitutedInInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSubstitutedInInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type RoundUpdateOneRequiredWithoutSubstitutionsNestedInput = {
+    create?: XOR<RoundCreateWithoutSubstitutionsInput, RoundUncheckedCreateWithoutSubstitutionsInput>
+    connectOrCreate?: RoundCreateOrConnectWithoutSubstitutionsInput
+    upsert?: RoundUpsertWithoutSubstitutionsInput
+    connect?: RoundWhereUniqueInput
+    update?: XOR<XOR<RoundUpdateToOneWithWhereWithoutSubstitutionsInput, RoundUpdateWithoutSubstitutionsInput>, RoundUncheckedUpdateWithoutSubstitutionsInput>
+  }
+
+  export type TeamUpdateOneRequiredWithoutSubstitutionsNestedInput = {
+    create?: XOR<TeamCreateWithoutSubstitutionsInput, TeamUncheckedCreateWithoutSubstitutionsInput>
+    connectOrCreate?: TeamCreateOrConnectWithoutSubstitutionsInput
+    upsert?: TeamUpsertWithoutSubstitutionsInput
+    connect?: TeamWhereUniqueInput
+    update?: XOR<XOR<TeamUpdateToOneWithWhereWithoutSubstitutionsInput, TeamUpdateWithoutSubstitutionsInput>, TeamUncheckedUpdateWithoutSubstitutionsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutSubstitutedOutNestedInput = {
+    create?: XOR<UserCreateWithoutSubstitutedOutInput, UserUncheckedCreateWithoutSubstitutedOutInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSubstitutedOutInput
+    upsert?: UserUpsertWithoutSubstitutedOutInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSubstitutedOutInput, UserUpdateWithoutSubstitutedOutInput>, UserUncheckedUpdateWithoutSubstitutedOutInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutSubstitutedInNestedInput = {
+    create?: XOR<UserCreateWithoutSubstitutedInInput, UserUncheckedCreateWithoutSubstitutedInInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSubstitutedInInput
+    upsert?: UserUpsertWithoutSubstitutedInInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSubstitutedInInput, UserUpdateWithoutSubstitutedInInput>, UserUncheckedUpdateWithoutSubstitutedInInput>
   }
 
   export type RoundCreateNestedOneWithoutGoalsInput = {
@@ -16832,6 +18614,52 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type RoundSubstitutionCreateWithoutOutPlayerInput = {
+    round: RoundCreateNestedOneWithoutSubstitutionsInput
+    team: TeamCreateNestedOneWithoutSubstitutionsInput
+    inPlayer: UserCreateNestedOneWithoutSubstitutedInInput
+  }
+
+  export type RoundSubstitutionUncheckedCreateWithoutOutPlayerInput = {
+    id?: number
+    roundId: string
+    teamId: string
+    inPlayerId: string
+  }
+
+  export type RoundSubstitutionCreateOrConnectWithoutOutPlayerInput = {
+    where: RoundSubstitutionWhereUniqueInput
+    create: XOR<RoundSubstitutionCreateWithoutOutPlayerInput, RoundSubstitutionUncheckedCreateWithoutOutPlayerInput>
+  }
+
+  export type RoundSubstitutionCreateManyOutPlayerInputEnvelope = {
+    data: RoundSubstitutionCreateManyOutPlayerInput | RoundSubstitutionCreateManyOutPlayerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RoundSubstitutionCreateWithoutInPlayerInput = {
+    round: RoundCreateNestedOneWithoutSubstitutionsInput
+    team: TeamCreateNestedOneWithoutSubstitutionsInput
+    outPlayer: UserCreateNestedOneWithoutSubstitutedOutInput
+  }
+
+  export type RoundSubstitutionUncheckedCreateWithoutInPlayerInput = {
+    id?: number
+    roundId: string
+    teamId: string
+    outPlayerId: string
+  }
+
+  export type RoundSubstitutionCreateOrConnectWithoutInPlayerInput = {
+    where: RoundSubstitutionWhereUniqueInput
+    create: XOR<RoundSubstitutionCreateWithoutInPlayerInput, RoundSubstitutionUncheckedCreateWithoutInPlayerInput>
+  }
+
+  export type RoundSubstitutionCreateManyInPlayerInputEnvelope = {
+    data: RoundSubstitutionCreateManyInPlayerInput | RoundSubstitutionCreateManyInPlayerInput[]
+    skipDuplicates?: boolean
+  }
+
   export type TeamPlayerUpsertWithWhereUniqueWithoutPlayerInput = {
     where: TeamPlayerWhereUniqueInput
     update: XOR<TeamPlayerUpdateWithoutPlayerInput, TeamPlayerUncheckedUpdateWithoutPlayerInput>
@@ -17048,6 +18876,49 @@ export namespace Prisma {
     data: XOR<SessionGradeUpdateManyMutationInput, SessionGradeUncheckedUpdateManyWithoutEvaluatedInput>
   }
 
+  export type RoundSubstitutionUpsertWithWhereUniqueWithoutOutPlayerInput = {
+    where: RoundSubstitutionWhereUniqueInput
+    update: XOR<RoundSubstitutionUpdateWithoutOutPlayerInput, RoundSubstitutionUncheckedUpdateWithoutOutPlayerInput>
+    create: XOR<RoundSubstitutionCreateWithoutOutPlayerInput, RoundSubstitutionUncheckedCreateWithoutOutPlayerInput>
+  }
+
+  export type RoundSubstitutionUpdateWithWhereUniqueWithoutOutPlayerInput = {
+    where: RoundSubstitutionWhereUniqueInput
+    data: XOR<RoundSubstitutionUpdateWithoutOutPlayerInput, RoundSubstitutionUncheckedUpdateWithoutOutPlayerInput>
+  }
+
+  export type RoundSubstitutionUpdateManyWithWhereWithoutOutPlayerInput = {
+    where: RoundSubstitutionScalarWhereInput
+    data: XOR<RoundSubstitutionUpdateManyMutationInput, RoundSubstitutionUncheckedUpdateManyWithoutOutPlayerInput>
+  }
+
+  export type RoundSubstitutionScalarWhereInput = {
+    AND?: RoundSubstitutionScalarWhereInput | RoundSubstitutionScalarWhereInput[]
+    OR?: RoundSubstitutionScalarWhereInput[]
+    NOT?: RoundSubstitutionScalarWhereInput | RoundSubstitutionScalarWhereInput[]
+    id?: IntFilter<"RoundSubstitution"> | number
+    roundId?: StringFilter<"RoundSubstitution"> | string
+    teamId?: StringFilter<"RoundSubstitution"> | string
+    outPlayerId?: StringFilter<"RoundSubstitution"> | string
+    inPlayerId?: StringFilter<"RoundSubstitution"> | string
+  }
+
+  export type RoundSubstitutionUpsertWithWhereUniqueWithoutInPlayerInput = {
+    where: RoundSubstitutionWhereUniqueInput
+    update: XOR<RoundSubstitutionUpdateWithoutInPlayerInput, RoundSubstitutionUncheckedUpdateWithoutInPlayerInput>
+    create: XOR<RoundSubstitutionCreateWithoutInPlayerInput, RoundSubstitutionUncheckedCreateWithoutInPlayerInput>
+  }
+
+  export type RoundSubstitutionUpdateWithWhereUniqueWithoutInPlayerInput = {
+    where: RoundSubstitutionWhereUniqueInput
+    data: XOR<RoundSubstitutionUpdateWithoutInPlayerInput, RoundSubstitutionUncheckedUpdateWithoutInPlayerInput>
+  }
+
+  export type RoundSubstitutionUpdateManyWithWhereWithoutInPlayerInput = {
+    where: RoundSubstitutionScalarWhereInput
+    data: XOR<RoundSubstitutionUpdateManyMutationInput, RoundSubstitutionUncheckedUpdateManyWithoutInPlayerInput>
+  }
+
   export type UserCreateWithoutCreatedSessionsInput = {
     id?: string
     email: string
@@ -17068,6 +18939,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantCreateNestedManyWithoutUserInput
     evaluatedGrades?: SessionGradeCreateNestedManyWithoutEvaluatorInput
     receivedGrades?: SessionGradeCreateNestedManyWithoutEvaluatedInput
+    substitutedOut?: RoundSubstitutionCreateNestedManyWithoutOutPlayerInput
+    substitutedIn?: RoundSubstitutionCreateNestedManyWithoutInPlayerInput
   }
 
   export type UserUncheckedCreateWithoutCreatedSessionsInput = {
@@ -17090,6 +18963,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
     evaluatedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput
     receivedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput
+    substitutedOut?: RoundSubstitutionUncheckedCreateNestedManyWithoutOutPlayerInput
+    substitutedIn?: RoundSubstitutionUncheckedCreateNestedManyWithoutInPlayerInput
   }
 
   export type UserCreateOrConnectWithoutCreatedSessionsInput = {
@@ -17117,6 +18992,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantCreateNestedManyWithoutUserInput
     evaluatedGrades?: SessionGradeCreateNestedManyWithoutEvaluatorInput
     receivedGrades?: SessionGradeCreateNestedManyWithoutEvaluatedInput
+    substitutedOut?: RoundSubstitutionCreateNestedManyWithoutOutPlayerInput
+    substitutedIn?: RoundSubstitutionCreateNestedManyWithoutInPlayerInput
   }
 
   export type UserUncheckedCreateWithoutMvpSessionsInput = {
@@ -17139,6 +19016,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
     evaluatedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput
     receivedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput
+    substitutedOut?: RoundSubstitutionUncheckedCreateNestedManyWithoutOutPlayerInput
+    substitutedIn?: RoundSubstitutionUncheckedCreateNestedManyWithoutInPlayerInput
   }
 
   export type UserCreateOrConnectWithoutMvpSessionsInput = {
@@ -17166,6 +19045,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantCreateNestedManyWithoutUserInput
     evaluatedGrades?: SessionGradeCreateNestedManyWithoutEvaluatorInput
     receivedGrades?: SessionGradeCreateNestedManyWithoutEvaluatedInput
+    substitutedOut?: RoundSubstitutionCreateNestedManyWithoutOutPlayerInput
+    substitutedIn?: RoundSubstitutionCreateNestedManyWithoutInPlayerInput
   }
 
   export type UserUncheckedCreateWithoutTopScorerSessionsInput = {
@@ -17188,6 +19069,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
     evaluatedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput
     receivedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput
+    substitutedOut?: RoundSubstitutionUncheckedCreateNestedManyWithoutOutPlayerInput
+    substitutedIn?: RoundSubstitutionUncheckedCreateNestedManyWithoutInPlayerInput
   }
 
   export type UserCreateOrConnectWithoutTopScorerSessionsInput = {
@@ -17204,6 +19087,7 @@ export namespace Prisma {
     homeRounds?: RoundCreateNestedManyWithoutHomeTeamInput
     awayRounds?: RoundCreateNestedManyWithoutAwayTeamInput
     wonRounds?: RoundCreateNestedManyWithoutWinnerTeamInput
+    substitutions?: RoundSubstitutionCreateNestedManyWithoutTeamInput
   }
 
   export type TeamUncheckedCreateWithoutSessionInput = {
@@ -17215,6 +19099,7 @@ export namespace Prisma {
     homeRounds?: RoundUncheckedCreateNestedManyWithoutHomeTeamInput
     awayRounds?: RoundUncheckedCreateNestedManyWithoutAwayTeamInput
     wonRounds?: RoundUncheckedCreateNestedManyWithoutWinnerTeamInput
+    substitutions?: RoundSubstitutionUncheckedCreateNestedManyWithoutTeamInput
   }
 
   export type TeamCreateOrConnectWithoutSessionInput = {
@@ -17238,6 +19123,7 @@ export namespace Prisma {
     awayTeam: TeamCreateNestedOneWithoutAwayRoundsInput
     winnerTeam?: TeamCreateNestedOneWithoutWonRoundsInput
     goals?: GoalCreateNestedManyWithoutRoundInput
+    substitutions?: RoundSubstitutionCreateNestedManyWithoutRoundInput
   }
 
   export type RoundUncheckedCreateWithoutSessionInput = {
@@ -17251,6 +19137,7 @@ export namespace Prisma {
     isDraw?: boolean
     createdAt?: Date | string
     goals?: GoalUncheckedCreateNestedManyWithoutRoundInput
+    substitutions?: RoundSubstitutionUncheckedCreateNestedManyWithoutRoundInput
   }
 
   export type RoundCreateOrConnectWithoutSessionInput = {
@@ -17369,6 +19256,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUpdateManyWithoutUserNestedInput
     evaluatedGrades?: SessionGradeUpdateManyWithoutEvaluatorNestedInput
     receivedGrades?: SessionGradeUpdateManyWithoutEvaluatedNestedInput
+    substitutedOut?: RoundSubstitutionUpdateManyWithoutOutPlayerNestedInput
+    substitutedIn?: RoundSubstitutionUpdateManyWithoutInPlayerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedSessionsInput = {
@@ -17391,6 +19280,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
     evaluatedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput
     receivedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput
+    substitutedOut?: RoundSubstitutionUncheckedUpdateManyWithoutOutPlayerNestedInput
+    substitutedIn?: RoundSubstitutionUncheckedUpdateManyWithoutInPlayerNestedInput
   }
 
   export type UserUpsertWithoutMvpSessionsInput = {
@@ -17424,6 +19315,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUpdateManyWithoutUserNestedInput
     evaluatedGrades?: SessionGradeUpdateManyWithoutEvaluatorNestedInput
     receivedGrades?: SessionGradeUpdateManyWithoutEvaluatedNestedInput
+    substitutedOut?: RoundSubstitutionUpdateManyWithoutOutPlayerNestedInput
+    substitutedIn?: RoundSubstitutionUpdateManyWithoutInPlayerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMvpSessionsInput = {
@@ -17446,6 +19339,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
     evaluatedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput
     receivedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput
+    substitutedOut?: RoundSubstitutionUncheckedUpdateManyWithoutOutPlayerNestedInput
+    substitutedIn?: RoundSubstitutionUncheckedUpdateManyWithoutInPlayerNestedInput
   }
 
   export type UserUpsertWithoutTopScorerSessionsInput = {
@@ -17479,6 +19374,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUpdateManyWithoutUserNestedInput
     evaluatedGrades?: SessionGradeUpdateManyWithoutEvaluatorNestedInput
     receivedGrades?: SessionGradeUpdateManyWithoutEvaluatedNestedInput
+    substitutedOut?: RoundSubstitutionUpdateManyWithoutOutPlayerNestedInput
+    substitutedIn?: RoundSubstitutionUpdateManyWithoutInPlayerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopScorerSessionsInput = {
@@ -17501,6 +19398,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
     evaluatedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput
     receivedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput
+    substitutedOut?: RoundSubstitutionUncheckedUpdateManyWithoutOutPlayerNestedInput
+    substitutedIn?: RoundSubstitutionUncheckedUpdateManyWithoutInPlayerNestedInput
   }
 
   export type TeamUpsertWithWhereUniqueWithoutSessionInput = {
@@ -17683,6 +19582,7 @@ export namespace Prisma {
     awayTeam: TeamCreateNestedOneWithoutAwayRoundsInput
     winnerTeam?: TeamCreateNestedOneWithoutWonRoundsInput
     goals?: GoalCreateNestedManyWithoutRoundInput
+    substitutions?: RoundSubstitutionCreateNestedManyWithoutRoundInput
   }
 
   export type RoundUncheckedCreateWithoutHomeTeamInput = {
@@ -17696,6 +19596,7 @@ export namespace Prisma {
     isDraw?: boolean
     createdAt?: Date | string
     goals?: GoalUncheckedCreateNestedManyWithoutRoundInput
+    substitutions?: RoundSubstitutionUncheckedCreateNestedManyWithoutRoundInput
   }
 
   export type RoundCreateOrConnectWithoutHomeTeamInput = {
@@ -17719,6 +19620,7 @@ export namespace Prisma {
     homeTeam: TeamCreateNestedOneWithoutHomeRoundsInput
     winnerTeam?: TeamCreateNestedOneWithoutWonRoundsInput
     goals?: GoalCreateNestedManyWithoutRoundInput
+    substitutions?: RoundSubstitutionCreateNestedManyWithoutRoundInput
   }
 
   export type RoundUncheckedCreateWithoutAwayTeamInput = {
@@ -17732,6 +19634,7 @@ export namespace Prisma {
     isDraw?: boolean
     createdAt?: Date | string
     goals?: GoalUncheckedCreateNestedManyWithoutRoundInput
+    substitutions?: RoundSubstitutionUncheckedCreateNestedManyWithoutRoundInput
   }
 
   export type RoundCreateOrConnectWithoutAwayTeamInput = {
@@ -17755,6 +19658,7 @@ export namespace Prisma {
     homeTeam: TeamCreateNestedOneWithoutHomeRoundsInput
     awayTeam: TeamCreateNestedOneWithoutAwayRoundsInput
     goals?: GoalCreateNestedManyWithoutRoundInput
+    substitutions?: RoundSubstitutionCreateNestedManyWithoutRoundInput
   }
 
   export type RoundUncheckedCreateWithoutWinnerTeamInput = {
@@ -17768,6 +19672,7 @@ export namespace Prisma {
     isDraw?: boolean
     createdAt?: Date | string
     goals?: GoalUncheckedCreateNestedManyWithoutRoundInput
+    substitutions?: RoundSubstitutionUncheckedCreateNestedManyWithoutRoundInput
   }
 
   export type RoundCreateOrConnectWithoutWinnerTeamInput = {
@@ -17777,6 +19682,29 @@ export namespace Prisma {
 
   export type RoundCreateManyWinnerTeamInputEnvelope = {
     data: RoundCreateManyWinnerTeamInput | RoundCreateManyWinnerTeamInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RoundSubstitutionCreateWithoutTeamInput = {
+    round: RoundCreateNestedOneWithoutSubstitutionsInput
+    outPlayer: UserCreateNestedOneWithoutSubstitutedOutInput
+    inPlayer: UserCreateNestedOneWithoutSubstitutedInInput
+  }
+
+  export type RoundSubstitutionUncheckedCreateWithoutTeamInput = {
+    id?: number
+    roundId: string
+    outPlayerId: string
+    inPlayerId: string
+  }
+
+  export type RoundSubstitutionCreateOrConnectWithoutTeamInput = {
+    where: RoundSubstitutionWhereUniqueInput
+    create: XOR<RoundSubstitutionCreateWithoutTeamInput, RoundSubstitutionUncheckedCreateWithoutTeamInput>
+  }
+
+  export type RoundSubstitutionCreateManyTeamInputEnvelope = {
+    data: RoundSubstitutionCreateManyTeamInput | RoundSubstitutionCreateManyTeamInput[]
     skipDuplicates?: boolean
   }
 
@@ -17893,6 +19821,22 @@ export namespace Prisma {
     data: XOR<RoundUpdateManyMutationInput, RoundUncheckedUpdateManyWithoutWinnerTeamInput>
   }
 
+  export type RoundSubstitutionUpsertWithWhereUniqueWithoutTeamInput = {
+    where: RoundSubstitutionWhereUniqueInput
+    update: XOR<RoundSubstitutionUpdateWithoutTeamInput, RoundSubstitutionUncheckedUpdateWithoutTeamInput>
+    create: XOR<RoundSubstitutionCreateWithoutTeamInput, RoundSubstitutionUncheckedCreateWithoutTeamInput>
+  }
+
+  export type RoundSubstitutionUpdateWithWhereUniqueWithoutTeamInput = {
+    where: RoundSubstitutionWhereUniqueInput
+    data: XOR<RoundSubstitutionUpdateWithoutTeamInput, RoundSubstitutionUncheckedUpdateWithoutTeamInput>
+  }
+
+  export type RoundSubstitutionUpdateManyWithWhereWithoutTeamInput = {
+    where: RoundSubstitutionScalarWhereInput
+    data: XOR<RoundSubstitutionUpdateManyMutationInput, RoundSubstitutionUncheckedUpdateManyWithoutTeamInput>
+  }
+
   export type TeamCreateWithoutPlayersInput = {
     id?: string
     name: string
@@ -17902,6 +19846,7 @@ export namespace Prisma {
     homeRounds?: RoundCreateNestedManyWithoutHomeTeamInput
     awayRounds?: RoundCreateNestedManyWithoutAwayTeamInput
     wonRounds?: RoundCreateNestedManyWithoutWinnerTeamInput
+    substitutions?: RoundSubstitutionCreateNestedManyWithoutTeamInput
   }
 
   export type TeamUncheckedCreateWithoutPlayersInput = {
@@ -17913,6 +19858,7 @@ export namespace Prisma {
     homeRounds?: RoundUncheckedCreateNestedManyWithoutHomeTeamInput
     awayRounds?: RoundUncheckedCreateNestedManyWithoutAwayTeamInput
     wonRounds?: RoundUncheckedCreateNestedManyWithoutWinnerTeamInput
+    substitutions?: RoundSubstitutionUncheckedCreateNestedManyWithoutTeamInput
   }
 
   export type TeamCreateOrConnectWithoutPlayersInput = {
@@ -17940,6 +19886,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantCreateNestedManyWithoutUserInput
     evaluatedGrades?: SessionGradeCreateNestedManyWithoutEvaluatorInput
     receivedGrades?: SessionGradeCreateNestedManyWithoutEvaluatedInput
+    substitutedOut?: RoundSubstitutionCreateNestedManyWithoutOutPlayerInput
+    substitutedIn?: RoundSubstitutionCreateNestedManyWithoutInPlayerInput
   }
 
   export type UserUncheckedCreateWithoutTeamPlayersInput = {
@@ -17962,6 +19910,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
     evaluatedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput
     receivedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput
+    substitutedOut?: RoundSubstitutionUncheckedCreateNestedManyWithoutOutPlayerInput
+    substitutedIn?: RoundSubstitutionUncheckedCreateNestedManyWithoutInPlayerInput
   }
 
   export type UserCreateOrConnectWithoutTeamPlayersInput = {
@@ -17989,6 +19939,7 @@ export namespace Prisma {
     homeRounds?: RoundUpdateManyWithoutHomeTeamNestedInput
     awayRounds?: RoundUpdateManyWithoutAwayTeamNestedInput
     wonRounds?: RoundUpdateManyWithoutWinnerTeamNestedInput
+    substitutions?: RoundSubstitutionUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamUncheckedUpdateWithoutPlayersInput = {
@@ -18000,6 +19951,7 @@ export namespace Prisma {
     homeRounds?: RoundUncheckedUpdateManyWithoutHomeTeamNestedInput
     awayRounds?: RoundUncheckedUpdateManyWithoutAwayTeamNestedInput
     wonRounds?: RoundUncheckedUpdateManyWithoutWinnerTeamNestedInput
+    substitutions?: RoundSubstitutionUncheckedUpdateManyWithoutTeamNestedInput
   }
 
   export type UserUpsertWithoutTeamPlayersInput = {
@@ -18033,6 +19985,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUpdateManyWithoutUserNestedInput
     evaluatedGrades?: SessionGradeUpdateManyWithoutEvaluatorNestedInput
     receivedGrades?: SessionGradeUpdateManyWithoutEvaluatedNestedInput
+    substitutedOut?: RoundSubstitutionUpdateManyWithoutOutPlayerNestedInput
+    substitutedIn?: RoundSubstitutionUpdateManyWithoutInPlayerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTeamPlayersInput = {
@@ -18055,6 +20009,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
     evaluatedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput
     receivedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput
+    substitutedOut?: RoundSubstitutionUncheckedUpdateManyWithoutOutPlayerNestedInput
+    substitutedIn?: RoundSubstitutionUncheckedUpdateManyWithoutInPlayerNestedInput
   }
 
   export type SessionCreateWithoutRoundsInput = {
@@ -18109,6 +20065,7 @@ export namespace Prisma {
     players?: TeamPlayerCreateNestedManyWithoutTeamInput
     awayRounds?: RoundCreateNestedManyWithoutAwayTeamInput
     wonRounds?: RoundCreateNestedManyWithoutWinnerTeamInput
+    substitutions?: RoundSubstitutionCreateNestedManyWithoutTeamInput
   }
 
   export type TeamUncheckedCreateWithoutHomeRoundsInput = {
@@ -18120,6 +20077,7 @@ export namespace Prisma {
     players?: TeamPlayerUncheckedCreateNestedManyWithoutTeamInput
     awayRounds?: RoundUncheckedCreateNestedManyWithoutAwayTeamInput
     wonRounds?: RoundUncheckedCreateNestedManyWithoutWinnerTeamInput
+    substitutions?: RoundSubstitutionUncheckedCreateNestedManyWithoutTeamInput
   }
 
   export type TeamCreateOrConnectWithoutHomeRoundsInput = {
@@ -18136,6 +20094,7 @@ export namespace Prisma {
     players?: TeamPlayerCreateNestedManyWithoutTeamInput
     homeRounds?: RoundCreateNestedManyWithoutHomeTeamInput
     wonRounds?: RoundCreateNestedManyWithoutWinnerTeamInput
+    substitutions?: RoundSubstitutionCreateNestedManyWithoutTeamInput
   }
 
   export type TeamUncheckedCreateWithoutAwayRoundsInput = {
@@ -18147,6 +20106,7 @@ export namespace Prisma {
     players?: TeamPlayerUncheckedCreateNestedManyWithoutTeamInput
     homeRounds?: RoundUncheckedCreateNestedManyWithoutHomeTeamInput
     wonRounds?: RoundUncheckedCreateNestedManyWithoutWinnerTeamInput
+    substitutions?: RoundSubstitutionUncheckedCreateNestedManyWithoutTeamInput
   }
 
   export type TeamCreateOrConnectWithoutAwayRoundsInput = {
@@ -18163,6 +20123,7 @@ export namespace Prisma {
     players?: TeamPlayerCreateNestedManyWithoutTeamInput
     homeRounds?: RoundCreateNestedManyWithoutHomeTeamInput
     awayRounds?: RoundCreateNestedManyWithoutAwayTeamInput
+    substitutions?: RoundSubstitutionCreateNestedManyWithoutTeamInput
   }
 
   export type TeamUncheckedCreateWithoutWonRoundsInput = {
@@ -18174,6 +20135,7 @@ export namespace Prisma {
     players?: TeamPlayerUncheckedCreateNestedManyWithoutTeamInput
     homeRounds?: RoundUncheckedCreateNestedManyWithoutHomeTeamInput
     awayRounds?: RoundUncheckedCreateNestedManyWithoutAwayTeamInput
+    substitutions?: RoundSubstitutionUncheckedCreateNestedManyWithoutTeamInput
   }
 
   export type TeamCreateOrConnectWithoutWonRoundsInput = {
@@ -18199,6 +20161,29 @@ export namespace Prisma {
 
   export type GoalCreateManyRoundInputEnvelope = {
     data: GoalCreateManyRoundInput | GoalCreateManyRoundInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RoundSubstitutionCreateWithoutRoundInput = {
+    team: TeamCreateNestedOneWithoutSubstitutionsInput
+    outPlayer: UserCreateNestedOneWithoutSubstitutedOutInput
+    inPlayer: UserCreateNestedOneWithoutSubstitutedInInput
+  }
+
+  export type RoundSubstitutionUncheckedCreateWithoutRoundInput = {
+    id?: number
+    teamId: string
+    outPlayerId: string
+    inPlayerId: string
+  }
+
+  export type RoundSubstitutionCreateOrConnectWithoutRoundInput = {
+    where: RoundSubstitutionWhereUniqueInput
+    create: XOR<RoundSubstitutionCreateWithoutRoundInput, RoundSubstitutionUncheckedCreateWithoutRoundInput>
+  }
+
+  export type RoundSubstitutionCreateManyRoundInputEnvelope = {
+    data: RoundSubstitutionCreateManyRoundInput | RoundSubstitutionCreateManyRoundInput[]
     skipDuplicates?: boolean
   }
 
@@ -18271,6 +20256,7 @@ export namespace Prisma {
     players?: TeamPlayerUpdateManyWithoutTeamNestedInput
     awayRounds?: RoundUpdateManyWithoutAwayTeamNestedInput
     wonRounds?: RoundUpdateManyWithoutWinnerTeamNestedInput
+    substitutions?: RoundSubstitutionUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamUncheckedUpdateWithoutHomeRoundsInput = {
@@ -18282,6 +20268,7 @@ export namespace Prisma {
     players?: TeamPlayerUncheckedUpdateManyWithoutTeamNestedInput
     awayRounds?: RoundUncheckedUpdateManyWithoutAwayTeamNestedInput
     wonRounds?: RoundUncheckedUpdateManyWithoutWinnerTeamNestedInput
+    substitutions?: RoundSubstitutionUncheckedUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamUpsertWithoutAwayRoundsInput = {
@@ -18304,6 +20291,7 @@ export namespace Prisma {
     players?: TeamPlayerUpdateManyWithoutTeamNestedInput
     homeRounds?: RoundUpdateManyWithoutHomeTeamNestedInput
     wonRounds?: RoundUpdateManyWithoutWinnerTeamNestedInput
+    substitutions?: RoundSubstitutionUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamUncheckedUpdateWithoutAwayRoundsInput = {
@@ -18315,6 +20303,7 @@ export namespace Prisma {
     players?: TeamPlayerUncheckedUpdateManyWithoutTeamNestedInput
     homeRounds?: RoundUncheckedUpdateManyWithoutHomeTeamNestedInput
     wonRounds?: RoundUncheckedUpdateManyWithoutWinnerTeamNestedInput
+    substitutions?: RoundSubstitutionUncheckedUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamUpsertWithoutWonRoundsInput = {
@@ -18337,6 +20326,7 @@ export namespace Prisma {
     players?: TeamPlayerUpdateManyWithoutTeamNestedInput
     homeRounds?: RoundUpdateManyWithoutHomeTeamNestedInput
     awayRounds?: RoundUpdateManyWithoutAwayTeamNestedInput
+    substitutions?: RoundSubstitutionUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamUncheckedUpdateWithoutWonRoundsInput = {
@@ -18348,6 +20338,7 @@ export namespace Prisma {
     players?: TeamPlayerUncheckedUpdateManyWithoutTeamNestedInput
     homeRounds?: RoundUncheckedUpdateManyWithoutHomeTeamNestedInput
     awayRounds?: RoundUncheckedUpdateManyWithoutAwayTeamNestedInput
+    substitutions?: RoundSubstitutionUncheckedUpdateManyWithoutTeamNestedInput
   }
 
   export type GoalUpsertWithWhereUniqueWithoutRoundInput = {
@@ -18366,6 +20357,382 @@ export namespace Prisma {
     data: XOR<GoalUpdateManyMutationInput, GoalUncheckedUpdateManyWithoutRoundInput>
   }
 
+  export type RoundSubstitutionUpsertWithWhereUniqueWithoutRoundInput = {
+    where: RoundSubstitutionWhereUniqueInput
+    update: XOR<RoundSubstitutionUpdateWithoutRoundInput, RoundSubstitutionUncheckedUpdateWithoutRoundInput>
+    create: XOR<RoundSubstitutionCreateWithoutRoundInput, RoundSubstitutionUncheckedCreateWithoutRoundInput>
+  }
+
+  export type RoundSubstitutionUpdateWithWhereUniqueWithoutRoundInput = {
+    where: RoundSubstitutionWhereUniqueInput
+    data: XOR<RoundSubstitutionUpdateWithoutRoundInput, RoundSubstitutionUncheckedUpdateWithoutRoundInput>
+  }
+
+  export type RoundSubstitutionUpdateManyWithWhereWithoutRoundInput = {
+    where: RoundSubstitutionScalarWhereInput
+    data: XOR<RoundSubstitutionUpdateManyMutationInput, RoundSubstitutionUncheckedUpdateManyWithoutRoundInput>
+  }
+
+  export type RoundCreateWithoutSubstitutionsInput = {
+    id?: string
+    roundNumber: number
+    homeScore?: number
+    awayScore?: number
+    isDraw?: boolean
+    createdAt?: Date | string
+    session: SessionCreateNestedOneWithoutRoundsInput
+    homeTeam: TeamCreateNestedOneWithoutHomeRoundsInput
+    awayTeam: TeamCreateNestedOneWithoutAwayRoundsInput
+    winnerTeam?: TeamCreateNestedOneWithoutWonRoundsInput
+    goals?: GoalCreateNestedManyWithoutRoundInput
+  }
+
+  export type RoundUncheckedCreateWithoutSubstitutionsInput = {
+    id?: string
+    sessionId: string
+    roundNumber: number
+    homeTeamId: string
+    awayTeamId: string
+    homeScore?: number
+    awayScore?: number
+    winnerTeamId?: string | null
+    isDraw?: boolean
+    createdAt?: Date | string
+    goals?: GoalUncheckedCreateNestedManyWithoutRoundInput
+  }
+
+  export type RoundCreateOrConnectWithoutSubstitutionsInput = {
+    where: RoundWhereUniqueInput
+    create: XOR<RoundCreateWithoutSubstitutionsInput, RoundUncheckedCreateWithoutSubstitutionsInput>
+  }
+
+  export type TeamCreateWithoutSubstitutionsInput = {
+    id?: string
+    name: string
+    color: string
+    totalRating?: number
+    session: SessionCreateNestedOneWithoutTeamsInput
+    players?: TeamPlayerCreateNestedManyWithoutTeamInput
+    homeRounds?: RoundCreateNestedManyWithoutHomeTeamInput
+    awayRounds?: RoundCreateNestedManyWithoutAwayTeamInput
+    wonRounds?: RoundCreateNestedManyWithoutWinnerTeamInput
+  }
+
+  export type TeamUncheckedCreateWithoutSubstitutionsInput = {
+    id?: string
+    sessionId: string
+    name: string
+    color: string
+    totalRating?: number
+    players?: TeamPlayerUncheckedCreateNestedManyWithoutTeamInput
+    homeRounds?: RoundUncheckedCreateNestedManyWithoutHomeTeamInput
+    awayRounds?: RoundUncheckedCreateNestedManyWithoutAwayTeamInput
+    wonRounds?: RoundUncheckedCreateNestedManyWithoutWinnerTeamInput
+  }
+
+  export type TeamCreateOrConnectWithoutSubstitutionsInput = {
+    where: TeamWhereUniqueInput
+    create: XOR<TeamCreateWithoutSubstitutionsInput, TeamUncheckedCreateWithoutSubstitutionsInput>
+  }
+
+  export type UserCreateWithoutSubstitutedOutInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    nickname?: string | null
+    position?: $Enums.Position
+    rating?: number
+    averageGrade?: number | null
+    avatarIndex?: number
+    isAdmin?: boolean
+    createdAt?: Date | string
+    teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
+    goals?: GoalCreateNestedManyWithoutPlayerInput
+    badges?: BadgeCreateNestedManyWithoutPlayerInput
+    createdSessions?: SessionCreateNestedManyWithoutCreatedByInput
+    mvpSessions?: SessionCreateNestedManyWithoutMvpPlayerInput
+    topScorerSessions?: SessionCreateNestedManyWithoutTopScorerPlayerInput
+    sessionParticipants?: SessionParticipantCreateNestedManyWithoutUserInput
+    evaluatedGrades?: SessionGradeCreateNestedManyWithoutEvaluatorInput
+    receivedGrades?: SessionGradeCreateNestedManyWithoutEvaluatedInput
+    substitutedIn?: RoundSubstitutionCreateNestedManyWithoutInPlayerInput
+  }
+
+  export type UserUncheckedCreateWithoutSubstitutedOutInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    nickname?: string | null
+    position?: $Enums.Position
+    rating?: number
+    averageGrade?: number | null
+    avatarIndex?: number
+    isAdmin?: boolean
+    createdAt?: Date | string
+    teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
+    goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutPlayerInput
+    createdSessions?: SessionUncheckedCreateNestedManyWithoutCreatedByInput
+    mvpSessions?: SessionUncheckedCreateNestedManyWithoutMvpPlayerInput
+    topScorerSessions?: SessionUncheckedCreateNestedManyWithoutTopScorerPlayerInput
+    sessionParticipants?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
+    evaluatedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput
+    receivedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput
+    substitutedIn?: RoundSubstitutionUncheckedCreateNestedManyWithoutInPlayerInput
+  }
+
+  export type UserCreateOrConnectWithoutSubstitutedOutInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSubstitutedOutInput, UserUncheckedCreateWithoutSubstitutedOutInput>
+  }
+
+  export type UserCreateWithoutSubstitutedInInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    nickname?: string | null
+    position?: $Enums.Position
+    rating?: number
+    averageGrade?: number | null
+    avatarIndex?: number
+    isAdmin?: boolean
+    createdAt?: Date | string
+    teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
+    goals?: GoalCreateNestedManyWithoutPlayerInput
+    badges?: BadgeCreateNestedManyWithoutPlayerInput
+    createdSessions?: SessionCreateNestedManyWithoutCreatedByInput
+    mvpSessions?: SessionCreateNestedManyWithoutMvpPlayerInput
+    topScorerSessions?: SessionCreateNestedManyWithoutTopScorerPlayerInput
+    sessionParticipants?: SessionParticipantCreateNestedManyWithoutUserInput
+    evaluatedGrades?: SessionGradeCreateNestedManyWithoutEvaluatorInput
+    receivedGrades?: SessionGradeCreateNestedManyWithoutEvaluatedInput
+    substitutedOut?: RoundSubstitutionCreateNestedManyWithoutOutPlayerInput
+  }
+
+  export type UserUncheckedCreateWithoutSubstitutedInInput = {
+    id?: string
+    email: string
+    password: string
+    name: string
+    nickname?: string | null
+    position?: $Enums.Position
+    rating?: number
+    averageGrade?: number | null
+    avatarIndex?: number
+    isAdmin?: boolean
+    createdAt?: Date | string
+    teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
+    goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
+    badges?: BadgeUncheckedCreateNestedManyWithoutPlayerInput
+    createdSessions?: SessionUncheckedCreateNestedManyWithoutCreatedByInput
+    mvpSessions?: SessionUncheckedCreateNestedManyWithoutMvpPlayerInput
+    topScorerSessions?: SessionUncheckedCreateNestedManyWithoutTopScorerPlayerInput
+    sessionParticipants?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
+    evaluatedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput
+    receivedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput
+    substitutedOut?: RoundSubstitutionUncheckedCreateNestedManyWithoutOutPlayerInput
+  }
+
+  export type UserCreateOrConnectWithoutSubstitutedInInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSubstitutedInInput, UserUncheckedCreateWithoutSubstitutedInInput>
+  }
+
+  export type RoundUpsertWithoutSubstitutionsInput = {
+    update: XOR<RoundUpdateWithoutSubstitutionsInput, RoundUncheckedUpdateWithoutSubstitutionsInput>
+    create: XOR<RoundCreateWithoutSubstitutionsInput, RoundUncheckedCreateWithoutSubstitutionsInput>
+    where?: RoundWhereInput
+  }
+
+  export type RoundUpdateToOneWithWhereWithoutSubstitutionsInput = {
+    where?: RoundWhereInput
+    data: XOR<RoundUpdateWithoutSubstitutionsInput, RoundUncheckedUpdateWithoutSubstitutionsInput>
+  }
+
+  export type RoundUpdateWithoutSubstitutionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roundNumber?: IntFieldUpdateOperationsInput | number
+    homeScore?: IntFieldUpdateOperationsInput | number
+    awayScore?: IntFieldUpdateOperationsInput | number
+    isDraw?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    session?: SessionUpdateOneRequiredWithoutRoundsNestedInput
+    homeTeam?: TeamUpdateOneRequiredWithoutHomeRoundsNestedInput
+    awayTeam?: TeamUpdateOneRequiredWithoutAwayRoundsNestedInput
+    winnerTeam?: TeamUpdateOneWithoutWonRoundsNestedInput
+    goals?: GoalUpdateManyWithoutRoundNestedInput
+  }
+
+  export type RoundUncheckedUpdateWithoutSubstitutionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    roundNumber?: IntFieldUpdateOperationsInput | number
+    homeTeamId?: StringFieldUpdateOperationsInput | string
+    awayTeamId?: StringFieldUpdateOperationsInput | string
+    homeScore?: IntFieldUpdateOperationsInput | number
+    awayScore?: IntFieldUpdateOperationsInput | number
+    winnerTeamId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDraw?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    goals?: GoalUncheckedUpdateManyWithoutRoundNestedInput
+  }
+
+  export type TeamUpsertWithoutSubstitutionsInput = {
+    update: XOR<TeamUpdateWithoutSubstitutionsInput, TeamUncheckedUpdateWithoutSubstitutionsInput>
+    create: XOR<TeamCreateWithoutSubstitutionsInput, TeamUncheckedCreateWithoutSubstitutionsInput>
+    where?: TeamWhereInput
+  }
+
+  export type TeamUpdateToOneWithWhereWithoutSubstitutionsInput = {
+    where?: TeamWhereInput
+    data: XOR<TeamUpdateWithoutSubstitutionsInput, TeamUncheckedUpdateWithoutSubstitutionsInput>
+  }
+
+  export type TeamUpdateWithoutSubstitutionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    totalRating?: FloatFieldUpdateOperationsInput | number
+    session?: SessionUpdateOneRequiredWithoutTeamsNestedInput
+    players?: TeamPlayerUpdateManyWithoutTeamNestedInput
+    homeRounds?: RoundUpdateManyWithoutHomeTeamNestedInput
+    awayRounds?: RoundUpdateManyWithoutAwayTeamNestedInput
+    wonRounds?: RoundUpdateManyWithoutWinnerTeamNestedInput
+  }
+
+  export type TeamUncheckedUpdateWithoutSubstitutionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sessionId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    totalRating?: FloatFieldUpdateOperationsInput | number
+    players?: TeamPlayerUncheckedUpdateManyWithoutTeamNestedInput
+    homeRounds?: RoundUncheckedUpdateManyWithoutHomeTeamNestedInput
+    awayRounds?: RoundUncheckedUpdateManyWithoutAwayTeamNestedInput
+    wonRounds?: RoundUncheckedUpdateManyWithoutWinnerTeamNestedInput
+  }
+
+  export type UserUpsertWithoutSubstitutedOutInput = {
+    update: XOR<UserUpdateWithoutSubstitutedOutInput, UserUncheckedUpdateWithoutSubstitutedOutInput>
+    create: XOR<UserCreateWithoutSubstitutedOutInput, UserUncheckedCreateWithoutSubstitutedOutInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSubstitutedOutInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSubstitutedOutInput, UserUncheckedUpdateWithoutSubstitutedOutInput>
+  }
+
+  export type UserUpdateWithoutSubstitutedOutInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nickname?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
+    rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    avatarIndex?: IntFieldUpdateOperationsInput | number
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
+    goals?: GoalUpdateManyWithoutPlayerNestedInput
+    badges?: BadgeUpdateManyWithoutPlayerNestedInput
+    createdSessions?: SessionUpdateManyWithoutCreatedByNestedInput
+    mvpSessions?: SessionUpdateManyWithoutMvpPlayerNestedInput
+    topScorerSessions?: SessionUpdateManyWithoutTopScorerPlayerNestedInput
+    sessionParticipants?: SessionParticipantUpdateManyWithoutUserNestedInput
+    evaluatedGrades?: SessionGradeUpdateManyWithoutEvaluatorNestedInput
+    receivedGrades?: SessionGradeUpdateManyWithoutEvaluatedNestedInput
+    substitutedIn?: RoundSubstitutionUpdateManyWithoutInPlayerNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSubstitutedOutInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nickname?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
+    rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    avatarIndex?: IntFieldUpdateOperationsInput | number
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
+    goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutPlayerNestedInput
+    createdSessions?: SessionUncheckedUpdateManyWithoutCreatedByNestedInput
+    mvpSessions?: SessionUncheckedUpdateManyWithoutMvpPlayerNestedInput
+    topScorerSessions?: SessionUncheckedUpdateManyWithoutTopScorerPlayerNestedInput
+    sessionParticipants?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
+    evaluatedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput
+    receivedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput
+    substitutedIn?: RoundSubstitutionUncheckedUpdateManyWithoutInPlayerNestedInput
+  }
+
+  export type UserUpsertWithoutSubstitutedInInput = {
+    update: XOR<UserUpdateWithoutSubstitutedInInput, UserUncheckedUpdateWithoutSubstitutedInInput>
+    create: XOR<UserCreateWithoutSubstitutedInInput, UserUncheckedCreateWithoutSubstitutedInInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSubstitutedInInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSubstitutedInInput, UserUncheckedUpdateWithoutSubstitutedInInput>
+  }
+
+  export type UserUpdateWithoutSubstitutedInInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nickname?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
+    rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    avatarIndex?: IntFieldUpdateOperationsInput | number
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
+    goals?: GoalUpdateManyWithoutPlayerNestedInput
+    badges?: BadgeUpdateManyWithoutPlayerNestedInput
+    createdSessions?: SessionUpdateManyWithoutCreatedByNestedInput
+    mvpSessions?: SessionUpdateManyWithoutMvpPlayerNestedInput
+    topScorerSessions?: SessionUpdateManyWithoutTopScorerPlayerNestedInput
+    sessionParticipants?: SessionParticipantUpdateManyWithoutUserNestedInput
+    evaluatedGrades?: SessionGradeUpdateManyWithoutEvaluatorNestedInput
+    receivedGrades?: SessionGradeUpdateManyWithoutEvaluatedNestedInput
+    substitutedOut?: RoundSubstitutionUpdateManyWithoutOutPlayerNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSubstitutedInInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    nickname?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
+    rating?: IntFieldUpdateOperationsInput | number
+    averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
+    avatarIndex?: IntFieldUpdateOperationsInput | number
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
+    goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
+    badges?: BadgeUncheckedUpdateManyWithoutPlayerNestedInput
+    createdSessions?: SessionUncheckedUpdateManyWithoutCreatedByNestedInput
+    mvpSessions?: SessionUncheckedUpdateManyWithoutMvpPlayerNestedInput
+    topScorerSessions?: SessionUncheckedUpdateManyWithoutTopScorerPlayerNestedInput
+    sessionParticipants?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
+    evaluatedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput
+    receivedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput
+    substitutedOut?: RoundSubstitutionUncheckedUpdateManyWithoutOutPlayerNestedInput
+  }
+
   export type RoundCreateWithoutGoalsInput = {
     id?: string
     roundNumber: number
@@ -18377,6 +20744,7 @@ export namespace Prisma {
     homeTeam: TeamCreateNestedOneWithoutHomeRoundsInput
     awayTeam: TeamCreateNestedOneWithoutAwayRoundsInput
     winnerTeam?: TeamCreateNestedOneWithoutWonRoundsInput
+    substitutions?: RoundSubstitutionCreateNestedManyWithoutRoundInput
   }
 
   export type RoundUncheckedCreateWithoutGoalsInput = {
@@ -18390,6 +20758,7 @@ export namespace Prisma {
     winnerTeamId?: string | null
     isDraw?: boolean
     createdAt?: Date | string
+    substitutions?: RoundSubstitutionUncheckedCreateNestedManyWithoutRoundInput
   }
 
   export type RoundCreateOrConnectWithoutGoalsInput = {
@@ -18417,6 +20786,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantCreateNestedManyWithoutUserInput
     evaluatedGrades?: SessionGradeCreateNestedManyWithoutEvaluatorInput
     receivedGrades?: SessionGradeCreateNestedManyWithoutEvaluatedInput
+    substitutedOut?: RoundSubstitutionCreateNestedManyWithoutOutPlayerInput
+    substitutedIn?: RoundSubstitutionCreateNestedManyWithoutInPlayerInput
   }
 
   export type UserUncheckedCreateWithoutGoalsInput = {
@@ -18439,6 +20810,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
     evaluatedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput
     receivedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput
+    substitutedOut?: RoundSubstitutionUncheckedCreateNestedManyWithoutOutPlayerInput
+    substitutedIn?: RoundSubstitutionUncheckedCreateNestedManyWithoutInPlayerInput
   }
 
   export type UserCreateOrConnectWithoutGoalsInput = {
@@ -18468,6 +20841,7 @@ export namespace Prisma {
     homeTeam?: TeamUpdateOneRequiredWithoutHomeRoundsNestedInput
     awayTeam?: TeamUpdateOneRequiredWithoutAwayRoundsNestedInput
     winnerTeam?: TeamUpdateOneWithoutWonRoundsNestedInput
+    substitutions?: RoundSubstitutionUpdateManyWithoutRoundNestedInput
   }
 
   export type RoundUncheckedUpdateWithoutGoalsInput = {
@@ -18481,6 +20855,7 @@ export namespace Prisma {
     winnerTeamId?: NullableStringFieldUpdateOperationsInput | string | null
     isDraw?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    substitutions?: RoundSubstitutionUncheckedUpdateManyWithoutRoundNestedInput
   }
 
   export type UserUpsertWithoutGoalsInput = {
@@ -18514,6 +20889,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUpdateManyWithoutUserNestedInput
     evaluatedGrades?: SessionGradeUpdateManyWithoutEvaluatorNestedInput
     receivedGrades?: SessionGradeUpdateManyWithoutEvaluatedNestedInput
+    substitutedOut?: RoundSubstitutionUpdateManyWithoutOutPlayerNestedInput
+    substitutedIn?: RoundSubstitutionUpdateManyWithoutInPlayerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGoalsInput = {
@@ -18536,6 +20913,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
     evaluatedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput
     receivedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput
+    substitutedOut?: RoundSubstitutionUncheckedUpdateManyWithoutOutPlayerNestedInput
+    substitutedIn?: RoundSubstitutionUncheckedUpdateManyWithoutInPlayerNestedInput
   }
 
   export type UserCreateWithoutBadgesInput = {
@@ -18558,6 +20937,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantCreateNestedManyWithoutUserInput
     evaluatedGrades?: SessionGradeCreateNestedManyWithoutEvaluatorInput
     receivedGrades?: SessionGradeCreateNestedManyWithoutEvaluatedInput
+    substitutedOut?: RoundSubstitutionCreateNestedManyWithoutOutPlayerInput
+    substitutedIn?: RoundSubstitutionCreateNestedManyWithoutInPlayerInput
   }
 
   export type UserUncheckedCreateWithoutBadgesInput = {
@@ -18580,6 +20961,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
     evaluatedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput
     receivedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput
+    substitutedOut?: RoundSubstitutionUncheckedCreateNestedManyWithoutOutPlayerInput
+    substitutedIn?: RoundSubstitutionUncheckedCreateNestedManyWithoutInPlayerInput
   }
 
   export type UserCreateOrConnectWithoutBadgesInput = {
@@ -18661,6 +21044,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUpdateManyWithoutUserNestedInput
     evaluatedGrades?: SessionGradeUpdateManyWithoutEvaluatorNestedInput
     receivedGrades?: SessionGradeUpdateManyWithoutEvaluatedNestedInput
+    substitutedOut?: RoundSubstitutionUpdateManyWithoutOutPlayerNestedInput
+    substitutedIn?: RoundSubstitutionUpdateManyWithoutInPlayerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBadgesInput = {
@@ -18683,6 +21068,8 @@ export namespace Prisma {
     sessionParticipants?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
     evaluatedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput
     receivedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput
+    substitutedOut?: RoundSubstitutionUncheckedUpdateManyWithoutOutPlayerNestedInput
+    substitutedIn?: RoundSubstitutionUncheckedUpdateManyWithoutInPlayerNestedInput
   }
 
   export type SessionUpsertWithoutBadgesInput = {
@@ -18797,6 +21184,8 @@ export namespace Prisma {
     topScorerSessions?: SessionCreateNestedManyWithoutTopScorerPlayerInput
     evaluatedGrades?: SessionGradeCreateNestedManyWithoutEvaluatorInput
     receivedGrades?: SessionGradeCreateNestedManyWithoutEvaluatedInput
+    substitutedOut?: RoundSubstitutionCreateNestedManyWithoutOutPlayerInput
+    substitutedIn?: RoundSubstitutionCreateNestedManyWithoutInPlayerInput
   }
 
   export type UserUncheckedCreateWithoutSessionParticipantsInput = {
@@ -18819,6 +21208,8 @@ export namespace Prisma {
     topScorerSessions?: SessionUncheckedCreateNestedManyWithoutTopScorerPlayerInput
     evaluatedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput
     receivedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput
+    substitutedOut?: RoundSubstitutionUncheckedCreateNestedManyWithoutOutPlayerInput
+    substitutedIn?: RoundSubstitutionUncheckedCreateNestedManyWithoutInPlayerInput
   }
 
   export type UserCreateOrConnectWithoutSessionParticipantsInput = {
@@ -18906,6 +21297,8 @@ export namespace Prisma {
     topScorerSessions?: SessionUpdateManyWithoutTopScorerPlayerNestedInput
     evaluatedGrades?: SessionGradeUpdateManyWithoutEvaluatorNestedInput
     receivedGrades?: SessionGradeUpdateManyWithoutEvaluatedNestedInput
+    substitutedOut?: RoundSubstitutionUpdateManyWithoutOutPlayerNestedInput
+    substitutedIn?: RoundSubstitutionUpdateManyWithoutInPlayerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionParticipantsInput = {
@@ -18928,6 +21321,8 @@ export namespace Prisma {
     topScorerSessions?: SessionUncheckedUpdateManyWithoutTopScorerPlayerNestedInput
     evaluatedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput
     receivedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput
+    substitutedOut?: RoundSubstitutionUncheckedUpdateManyWithoutOutPlayerNestedInput
+    substitutedIn?: RoundSubstitutionUncheckedUpdateManyWithoutInPlayerNestedInput
   }
 
   export type SessionCreateWithoutGradesInput = {
@@ -18993,6 +21388,8 @@ export namespace Prisma {
     topScorerSessions?: SessionCreateNestedManyWithoutTopScorerPlayerInput
     sessionParticipants?: SessionParticipantCreateNestedManyWithoutUserInput
     receivedGrades?: SessionGradeCreateNestedManyWithoutEvaluatedInput
+    substitutedOut?: RoundSubstitutionCreateNestedManyWithoutOutPlayerInput
+    substitutedIn?: RoundSubstitutionCreateNestedManyWithoutInPlayerInput
   }
 
   export type UserUncheckedCreateWithoutEvaluatedGradesInput = {
@@ -19015,6 +21412,8 @@ export namespace Prisma {
     topScorerSessions?: SessionUncheckedCreateNestedManyWithoutTopScorerPlayerInput
     sessionParticipants?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
     receivedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatedInput
+    substitutedOut?: RoundSubstitutionUncheckedCreateNestedManyWithoutOutPlayerInput
+    substitutedIn?: RoundSubstitutionUncheckedCreateNestedManyWithoutInPlayerInput
   }
 
   export type UserCreateOrConnectWithoutEvaluatedGradesInput = {
@@ -19042,6 +21441,8 @@ export namespace Prisma {
     topScorerSessions?: SessionCreateNestedManyWithoutTopScorerPlayerInput
     sessionParticipants?: SessionParticipantCreateNestedManyWithoutUserInput
     evaluatedGrades?: SessionGradeCreateNestedManyWithoutEvaluatorInput
+    substitutedOut?: RoundSubstitutionCreateNestedManyWithoutOutPlayerInput
+    substitutedIn?: RoundSubstitutionCreateNestedManyWithoutInPlayerInput
   }
 
   export type UserUncheckedCreateWithoutReceivedGradesInput = {
@@ -19064,6 +21465,8 @@ export namespace Prisma {
     topScorerSessions?: SessionUncheckedCreateNestedManyWithoutTopScorerPlayerInput
     sessionParticipants?: SessionParticipantUncheckedCreateNestedManyWithoutUserInput
     evaluatedGrades?: SessionGradeUncheckedCreateNestedManyWithoutEvaluatorInput
+    substitutedOut?: RoundSubstitutionUncheckedCreateNestedManyWithoutOutPlayerInput
+    substitutedIn?: RoundSubstitutionUncheckedCreateNestedManyWithoutInPlayerInput
   }
 
   export type UserCreateOrConnectWithoutReceivedGradesInput = {
@@ -19151,6 +21554,8 @@ export namespace Prisma {
     topScorerSessions?: SessionUpdateManyWithoutTopScorerPlayerNestedInput
     sessionParticipants?: SessionParticipantUpdateManyWithoutUserNestedInput
     receivedGrades?: SessionGradeUpdateManyWithoutEvaluatedNestedInput
+    substitutedOut?: RoundSubstitutionUpdateManyWithoutOutPlayerNestedInput
+    substitutedIn?: RoundSubstitutionUpdateManyWithoutInPlayerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutEvaluatedGradesInput = {
@@ -19173,6 +21578,8 @@ export namespace Prisma {
     topScorerSessions?: SessionUncheckedUpdateManyWithoutTopScorerPlayerNestedInput
     sessionParticipants?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
     receivedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatedNestedInput
+    substitutedOut?: RoundSubstitutionUncheckedUpdateManyWithoutOutPlayerNestedInput
+    substitutedIn?: RoundSubstitutionUncheckedUpdateManyWithoutInPlayerNestedInput
   }
 
   export type UserUpsertWithoutReceivedGradesInput = {
@@ -19206,6 +21613,8 @@ export namespace Prisma {
     topScorerSessions?: SessionUpdateManyWithoutTopScorerPlayerNestedInput
     sessionParticipants?: SessionParticipantUpdateManyWithoutUserNestedInput
     evaluatedGrades?: SessionGradeUpdateManyWithoutEvaluatorNestedInput
+    substitutedOut?: RoundSubstitutionUpdateManyWithoutOutPlayerNestedInput
+    substitutedIn?: RoundSubstitutionUpdateManyWithoutInPlayerNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedGradesInput = {
@@ -19228,6 +21637,8 @@ export namespace Prisma {
     topScorerSessions?: SessionUncheckedUpdateManyWithoutTopScorerPlayerNestedInput
     sessionParticipants?: SessionParticipantUncheckedUpdateManyWithoutUserNestedInput
     evaluatedGrades?: SessionGradeUncheckedUpdateManyWithoutEvaluatorNestedInput
+    substitutedOut?: RoundSubstitutionUncheckedUpdateManyWithoutOutPlayerNestedInput
+    substitutedIn?: RoundSubstitutionUncheckedUpdateManyWithoutInPlayerNestedInput
   }
 
   export type TeamPlayerCreateManyPlayerInput = {
@@ -19312,6 +21723,20 @@ export namespace Prisma {
     evaluatorId: string
     grade: number
     createdAt?: Date | string
+  }
+
+  export type RoundSubstitutionCreateManyOutPlayerInput = {
+    id?: number
+    roundId: string
+    teamId: string
+    inPlayerId: string
+  }
+
+  export type RoundSubstitutionCreateManyInPlayerInput = {
+    id?: number
+    roundId: string
+    teamId: string
+    outPlayerId: string
   }
 
   export type TeamPlayerUpdateWithoutPlayerInput = {
@@ -19593,6 +22018,46 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type RoundSubstitutionUpdateWithoutOutPlayerInput = {
+    round?: RoundUpdateOneRequiredWithoutSubstitutionsNestedInput
+    team?: TeamUpdateOneRequiredWithoutSubstitutionsNestedInput
+    inPlayer?: UserUpdateOneRequiredWithoutSubstitutedInNestedInput
+  }
+
+  export type RoundSubstitutionUncheckedUpdateWithoutOutPlayerInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    roundId?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    inPlayerId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RoundSubstitutionUncheckedUpdateManyWithoutOutPlayerInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    roundId?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    inPlayerId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RoundSubstitutionUpdateWithoutInPlayerInput = {
+    round?: RoundUpdateOneRequiredWithoutSubstitutionsNestedInput
+    team?: TeamUpdateOneRequiredWithoutSubstitutionsNestedInput
+    outPlayer?: UserUpdateOneRequiredWithoutSubstitutedOutNestedInput
+  }
+
+  export type RoundSubstitutionUncheckedUpdateWithoutInPlayerInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    roundId?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    outPlayerId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RoundSubstitutionUncheckedUpdateManyWithoutInPlayerInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    roundId?: StringFieldUpdateOperationsInput | string
+    teamId?: StringFieldUpdateOperationsInput | string
+    outPlayerId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type TeamCreateManySessionInput = {
     id?: string
     name: string
@@ -19644,6 +22109,7 @@ export namespace Prisma {
     homeRounds?: RoundUpdateManyWithoutHomeTeamNestedInput
     awayRounds?: RoundUpdateManyWithoutAwayTeamNestedInput
     wonRounds?: RoundUpdateManyWithoutWinnerTeamNestedInput
+    substitutions?: RoundSubstitutionUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamUncheckedUpdateWithoutSessionInput = {
@@ -19655,6 +22121,7 @@ export namespace Prisma {
     homeRounds?: RoundUncheckedUpdateManyWithoutHomeTeamNestedInput
     awayRounds?: RoundUncheckedUpdateManyWithoutAwayTeamNestedInput
     wonRounds?: RoundUncheckedUpdateManyWithoutWinnerTeamNestedInput
+    substitutions?: RoundSubstitutionUncheckedUpdateManyWithoutTeamNestedInput
   }
 
   export type TeamUncheckedUpdateManyWithoutSessionInput = {
@@ -19675,6 +22142,7 @@ export namespace Prisma {
     awayTeam?: TeamUpdateOneRequiredWithoutAwayRoundsNestedInput
     winnerTeam?: TeamUpdateOneWithoutWonRoundsNestedInput
     goals?: GoalUpdateManyWithoutRoundNestedInput
+    substitutions?: RoundSubstitutionUpdateManyWithoutRoundNestedInput
   }
 
   export type RoundUncheckedUpdateWithoutSessionInput = {
@@ -19688,6 +22156,7 @@ export namespace Prisma {
     isDraw?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     goals?: GoalUncheckedUpdateManyWithoutRoundNestedInput
+    substitutions?: RoundSubstitutionUncheckedUpdateManyWithoutRoundNestedInput
   }
 
   export type RoundUncheckedUpdateManyWithoutSessionInput = {
@@ -19811,6 +22280,13 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type RoundSubstitutionCreateManyTeamInput = {
+    id?: number
+    roundId: string
+    outPlayerId: string
+    inPlayerId: string
+  }
+
   export type TeamPlayerUpdateWithoutTeamInput = {
     player?: UserUpdateOneRequiredWithoutTeamPlayersNestedInput
   }
@@ -19836,6 +22312,7 @@ export namespace Prisma {
     awayTeam?: TeamUpdateOneRequiredWithoutAwayRoundsNestedInput
     winnerTeam?: TeamUpdateOneWithoutWonRoundsNestedInput
     goals?: GoalUpdateManyWithoutRoundNestedInput
+    substitutions?: RoundSubstitutionUpdateManyWithoutRoundNestedInput
   }
 
   export type RoundUncheckedUpdateWithoutHomeTeamInput = {
@@ -19849,6 +22326,7 @@ export namespace Prisma {
     isDraw?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     goals?: GoalUncheckedUpdateManyWithoutRoundNestedInput
+    substitutions?: RoundSubstitutionUncheckedUpdateManyWithoutRoundNestedInput
   }
 
   export type RoundUncheckedUpdateManyWithoutHomeTeamInput = {
@@ -19874,6 +22352,7 @@ export namespace Prisma {
     homeTeam?: TeamUpdateOneRequiredWithoutHomeRoundsNestedInput
     winnerTeam?: TeamUpdateOneWithoutWonRoundsNestedInput
     goals?: GoalUpdateManyWithoutRoundNestedInput
+    substitutions?: RoundSubstitutionUpdateManyWithoutRoundNestedInput
   }
 
   export type RoundUncheckedUpdateWithoutAwayTeamInput = {
@@ -19887,6 +22366,7 @@ export namespace Prisma {
     isDraw?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     goals?: GoalUncheckedUpdateManyWithoutRoundNestedInput
+    substitutions?: RoundSubstitutionUncheckedUpdateManyWithoutRoundNestedInput
   }
 
   export type RoundUncheckedUpdateManyWithoutAwayTeamInput = {
@@ -19912,6 +22392,7 @@ export namespace Prisma {
     homeTeam?: TeamUpdateOneRequiredWithoutHomeRoundsNestedInput
     awayTeam?: TeamUpdateOneRequiredWithoutAwayRoundsNestedInput
     goals?: GoalUpdateManyWithoutRoundNestedInput
+    substitutions?: RoundSubstitutionUpdateManyWithoutRoundNestedInput
   }
 
   export type RoundUncheckedUpdateWithoutWinnerTeamInput = {
@@ -19925,6 +22406,7 @@ export namespace Prisma {
     isDraw?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     goals?: GoalUncheckedUpdateManyWithoutRoundNestedInput
+    substitutions?: RoundSubstitutionUncheckedUpdateManyWithoutRoundNestedInput
   }
 
   export type RoundUncheckedUpdateManyWithoutWinnerTeamInput = {
@@ -19939,10 +22421,37 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type RoundSubstitutionUpdateWithoutTeamInput = {
+    round?: RoundUpdateOneRequiredWithoutSubstitutionsNestedInput
+    outPlayer?: UserUpdateOneRequiredWithoutSubstitutedOutNestedInput
+    inPlayer?: UserUpdateOneRequiredWithoutSubstitutedInNestedInput
+  }
+
+  export type RoundSubstitutionUncheckedUpdateWithoutTeamInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    roundId?: StringFieldUpdateOperationsInput | string
+    outPlayerId?: StringFieldUpdateOperationsInput | string
+    inPlayerId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RoundSubstitutionUncheckedUpdateManyWithoutTeamInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    roundId?: StringFieldUpdateOperationsInput | string
+    outPlayerId?: StringFieldUpdateOperationsInput | string
+    inPlayerId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type GoalCreateManyRoundInput = {
     id?: number
     playerId: string
     minute?: number | null
+  }
+
+  export type RoundSubstitutionCreateManyRoundInput = {
+    id?: number
+    teamId: string
+    outPlayerId: string
+    inPlayerId: string
   }
 
   export type GoalUpdateWithoutRoundInput = {
@@ -19960,6 +22469,26 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     playerId?: StringFieldUpdateOperationsInput | string
     minute?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type RoundSubstitutionUpdateWithoutRoundInput = {
+    team?: TeamUpdateOneRequiredWithoutSubstitutionsNestedInput
+    outPlayer?: UserUpdateOneRequiredWithoutSubstitutedOutNestedInput
+    inPlayer?: UserUpdateOneRequiredWithoutSubstitutedInNestedInput
+  }
+
+  export type RoundSubstitutionUncheckedUpdateWithoutRoundInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    teamId?: StringFieldUpdateOperationsInput | string
+    outPlayerId?: StringFieldUpdateOperationsInput | string
+    inPlayerId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type RoundSubstitutionUncheckedUpdateManyWithoutRoundInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    teamId?: StringFieldUpdateOperationsInput | string
+    outPlayerId?: StringFieldUpdateOperationsInput | string
+    inPlayerId?: StringFieldUpdateOperationsInput | string
   }
 
 

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/api';
 import { useRouter, useParams } from 'next/navigation';
-import { ChevronDown, CheckCircle2, Circle, Trophy, Goal, Play, Shuffle, CalendarDays, History, MapPin, Trash2, StopCircle, UserPlus, Users, Clock, Plus, X, Star, Send, Lock } from 'lucide-react';
+import { ChevronDown, CheckCircle2, Circle, Trophy, Goal, Play, Shuffle, CalendarDays, History, MapPin, Trash2, StopCircle, UserPlus, Users, Clock, Plus, X, Star, Send, Lock, Repeat } from 'lucide-react';
 import { Button } from '@/components/Button';
 import { UserAvatar } from '@/components/UserAvatar';
 import { Header } from '@/components/Header';
@@ -649,6 +649,10 @@ export default function SessionDetailsScreen() {
                                         playerTeamMap[tp.player.id] = t.id;
                                     });
                                 });
+                                // Substituições temporárias valem só para esta rodada (req 2.6)
+                                round.substitutions?.forEach((sub) => {
+                                    playerTeamMap[sub.inPlayerId] = sub.teamId;
+                                });
 
                                 const homeGoals = round.goals?.filter((g: GoalType) => playerTeamMap[g.player?.id || ''] === round.homeTeam?.id) || [];
                                 const awayGoals = round.goals?.filter((g: GoalType) => playerTeamMap[g.player?.id || ''] === round.awayTeam?.id) || [];
@@ -700,6 +704,16 @@ export default function SessionDetailsScreen() {
                                                         </span>
                                                     ))}
                                                 </div>
+                                            </div>
+                                        )}
+
+                                        {round.substitutions && round.substitutions.length > 0 && (
+                                            <div className="flex flex-col gap-0.5 text-[10px] text-amber-600 font-bold px-2 pt-2 border-t border-slate-50 mt-1">
+                                                {round.substitutions.map((sub, i) => (
+                                                    <span key={i} className="flex items-center gap-1">
+                                                        <Repeat className="w-3 h-3" /> {sub.inPlayer?.nickname || sub.inPlayer?.name} entrou no lugar de {sub.outPlayer?.nickname || sub.outPlayer?.name}
+                                                    </span>
+                                                ))}
                                             </div>
                                         )}
                                     </div>

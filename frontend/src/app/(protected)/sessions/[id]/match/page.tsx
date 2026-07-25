@@ -3,10 +3,10 @@
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/api';
 import { useRouter, useParams } from 'next/navigation';
-import { Plus, Minus, Goal, Save, Play, Pause, RotateCcw } from 'lucide-react';
+import { Plus, Minus, Goal, Save, Play, Pause, RotateCcw, Repeat, X } from 'lucide-react';
 import { Modal } from '@/components/Modal';
 import { Button } from '@/components/Button';
-import { Session, Team, Round, TeamPlayer } from '@/types';
+import { Session, Team, TeamPlayer, Player } from '@/types';
 import { Header } from '@/components/Header';
 import { getHexColor } from '@/lib/colors';
 
@@ -23,6 +23,10 @@ export default function MatchScreen() {
 
     const [homeGoals, setHomeGoals] = useState<string[]>([]);
     const [awayGoals, setAwayGoals] = useState<string[]>([]);
+
+    type Substitution = { teamId: string; outPlayerId: string; inPlayerId: string };
+    const [substitutions, setSubstitutions] = useState<Substitution[]>([]);
+    const [substitutingOut, setSubstitutingOut] = useState<{ teamId: string; player: Player } | null>(null);
 
     const [timeLeft, setTimeLeft] = useState(7 * 60 * 1000);
     const [timerActive, setTimerActive] = useState(false);
@@ -150,6 +154,48 @@ export default function MatchScreen() {
     const homeTeam = teams.find((t: Team) => t.id === homeTeamId);
     const awayTeam = teams.find((t: Team) => t.id === awayTeamId);
 
+    // Times que folgam nesta rodada emprestam jogadores para substituições temporárias (req 2.6)
+    const restingPlayers: Player[] = teams
+        .filter((t: Team) => t.id !== homeTeamId && t.id !== awayTeamId)
+        .flatMap((t: Team) => (t.players || []).map((tp: TeamPlayer) => tp.player))
+        .filter((p: Player) => !substitutions.some(s => s.inPlayerId === p.id));
+
+    type EffectiveEntry = { originalPlayerId: string; displayPlayer: Player; isSub: boolean; originalName?: string };
+
+    const getEffectiveEntries = (team: Team | undefined): EffectiveEntry[] => {
+        if (!team) return [];
+        const subsForTeam = substitutions.filter(s => s.teamId === team.id);
+        return (team.players || []).map((tp: TeamPlayer) => {
+            const sub = subsForTeam.find(s => s.outPlayerId === tp.playerId);
+            if (!sub) return { originalPlayerId: tp.playerId, displayPlayer: tp.player, isSub: false };
+
+            const allTeamPlayers = teams.flatMap((t: Team) => (t.players || []).map((p: TeamPlayer) => p.player));
+            const inPlayer = allTeamPlayers.find((p: Player) => p.id === sub.inPlayerId);
+            return {
+                originalPlayerId: tp.playerId,
+                displayPlayer: inPlayer || tp.player,
+                isSub: !!inPlayer,
+                originalName: tp.player.nickname || tp.player.name
+            };
+        });
+    };
+
+    const addSubstitution = (teamId: string, outPlayerId: string, inPlayerId: string) => {
+        setSubstitutions(prev => [...prev.filter(s => s.outPlayerId !== outPlayerId), { teamId, outPlayerId, inPlayerId }]);
+        setHomeGoals(prev => prev.filter(id => id !== outPlayerId));
+        setAwayGoals(prev => prev.filter(id => id !== outPlayerId));
+        setSubstitutingOut(null);
+    };
+
+    const undoSubstitution = (outPlayerId: string) => {
+        const sub = substitutions.find(s => s.outPlayerId === outPlayerId);
+        if (sub) {
+            setHomeGoals(prev => prev.filter(id => id !== sub.inPlayerId));
+            setAwayGoals(prev => prev.filter(id => id !== sub.inPlayerId));
+        }
+        setSubstitutions(prev => prev.filter(s => s.outPlayerId !== outPlayerId));
+    };
+
     const addHomeGoal = (playerId: string) => setHomeGoals([...homeGoals, playerId]);
     const removeHomeGoal = (playerId: string) => {
         const index = homeGoals.indexOf(playerId);
@@ -195,7 +241,8 @@ export default function MatchScreen() {
                 awayScore,
                 winnerTeamId,
                 isDraw,
-                goals
+                goals,
+                substitutions
             });
             alert("Partida salva com sucesso!");
             router.push(`/sessions/${sessionId}`);
@@ -243,6 +290,7 @@ export default function MatchScreen() {
                                 onChange={(e) => {
                                     setHomeTeamId(e.target.value);
                                     setHomeGoals([]);
+                                    setSubstitutions([]);
                                 }}
                                 className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold text-slate-800 outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                             >
@@ -264,6 +312,7 @@ export default function MatchScreen() {
                                 onChange={(e) => {
                                     setAwayTeamId(e.target.value);
                                     setAwayGoals([]);
+                                    setSubstitutions([]);
                                 }}
                                 className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold text-slate-800 outline-none focus:border-primary focus:ring-1 focus:ring-primary"
                             >
@@ -302,13 +351,31 @@ export default function MatchScreen() {
                                 <span className="text-primary">{homeGoals.length} GOLS</span>
                             </h3>
                             <div className="space-y-3">
-                                {homeTeam.players?.map((tp: TeamPlayer) => {
-                                    const p = tp.player;
+                                {getEffectiveEntries(homeTeam).map((entry) => {
+                                    const p = entry.displayPlayer;
                                     const goalsScored = homeGoals.filter(id => id === p.id).length;
                                     return (
-                                        <div key={p.id} className="flex items-center justify-between bg-slate-50 p-2 pl-3 rounded-2xl border border-slate-100">
-                                            <span className="font-bold text-slate-700 text-sm truncate max-w-30">{p.nickname}</span>
-                                            <div className="flex items-center gap-3">
+                                        <div key={entry.originalPlayerId} className="flex items-center justify-between bg-slate-50 p-2 pl-3 rounded-2xl border border-slate-100">
+                                            <div className="flex flex-col min-w-0">
+                                                <span className="font-bold text-slate-700 text-sm truncate max-w-30">{p.nickname || p.name}</span>
+                                                {entry.isSub && (
+                                                    <span className="text-[9px] font-black uppercase text-amber-600 flex items-center gap-1">
+                                                        <Repeat className="w-2.5 h-2.5" /> Entrou por {entry.originalName}
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                {entry.isSub ? (
+                                                    <button onClick={() => undoSubstitution(entry.originalPlayerId)} title="Desfazer substituição" className="w-7 h-7 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center hover:bg-amber-200 transition-all">
+                                                        <X className="w-3.5 h-3.5" />
+                                                    </button>
+                                                ) : (
+                                                    restingPlayers.length > 0 && (
+                                                        <button onClick={() => setSubstitutingOut({ teamId: homeTeam.id, player: p })} title="Substituir jogador" className="w-7 h-7 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center hover:bg-slate-200 hover:text-slate-600 transition-all">
+                                                            <Repeat className="w-3.5 h-3.5" />
+                                                        </button>
+                                                    )
+                                                )}
                                                 <button onClick={() => removeHomeGoal(p.id)} disabled={goalsScored === 0} className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${goalsScored > 0 ? 'bg-red-100 text-red-600 hover:bg-red-200' : 'bg-slate-100 text-slate-300'}`}>
                                                     <Minus className="w-4 h-4" />
                                                 </button>
@@ -329,13 +396,31 @@ export default function MatchScreen() {
                                 <span className="text-primary">{awayGoals.length} GOLS</span>
                             </h3>
                             <div className="space-y-3">
-                                {awayTeam.players?.map((tp: TeamPlayer) => {
-                                    const p = tp.player;
+                                {getEffectiveEntries(awayTeam).map((entry) => {
+                                    const p = entry.displayPlayer;
                                     const goalsScored = awayGoals.filter(id => id === p.id).length;
                                     return (
-                                        <div key={p.id} className="flex items-center justify-between bg-slate-50 p-2 pl-3 rounded-2xl border border-slate-100">
-                                            <span className="font-bold text-slate-700 text-sm truncate max-w-30">{p.nickname}</span>
-                                            <div className="flex items-center gap-3">
+                                        <div key={entry.originalPlayerId} className="flex items-center justify-between bg-slate-50 p-2 pl-3 rounded-2xl border border-slate-100">
+                                            <div className="flex flex-col min-w-0">
+                                                <span className="font-bold text-slate-700 text-sm truncate max-w-30">{p.nickname || p.name}</span>
+                                                {entry.isSub && (
+                                                    <span className="text-[9px] font-black uppercase text-amber-600 flex items-center gap-1">
+                                                        <Repeat className="w-2.5 h-2.5" /> Entrou por {entry.originalName}
+                                                    </span>
+                                                )}
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                {entry.isSub ? (
+                                                    <button onClick={() => undoSubstitution(entry.originalPlayerId)} title="Desfazer substituição" className="w-7 h-7 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center hover:bg-amber-200 transition-all">
+                                                        <X className="w-3.5 h-3.5" />
+                                                    </button>
+                                                ) : (
+                                                    restingPlayers.length > 0 && (
+                                                        <button onClick={() => setSubstitutingOut({ teamId: awayTeam.id, player: p })} title="Substituir jogador" className="w-7 h-7 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center hover:bg-slate-200 hover:text-slate-600 transition-all">
+                                                            <Repeat className="w-3.5 h-3.5" />
+                                                        </button>
+                                                    )
+                                                )}
                                                 <button onClick={() => removeAwayGoal(p.id)} disabled={goalsScored === 0} className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${goalsScored > 0 ? 'bg-red-100 text-red-600 hover:bg-red-200' : 'bg-slate-100 text-slate-300'}`}>
                                                     <Minus className="w-4 h-4" />
                                                 </button>
@@ -352,6 +437,28 @@ export default function MatchScreen() {
                     </section>
                 )}
             </main>
+
+            <Modal isOpen={!!substitutingOut} onClose={() => setSubstitutingOut(null)} title="Substituir Jogador">
+                <div className="p-4 space-y-3 max-h-[60vh] overflow-y-auto">
+                    <p className="text-xs font-bold text-slate-400 px-1">
+                        Escolha quem entra no lugar de <span className="text-slate-700">{substitutingOut?.player.nickname || substitutingOut?.player.name}</span> nesta rodada. A troca vale apenas para esta rodada.
+                    </p>
+                    {restingPlayers.length === 0 ? (
+                        <div className="text-center py-6 text-xs text-slate-400 font-bold">Nenhum jogador disponível no banco.</div>
+                    ) : (
+                        restingPlayers.map((p: Player) => (
+                            <button
+                                key={p.id}
+                                onClick={() => substitutingOut && addSubstitution(substitutingOut.teamId, substitutingOut.player.id, p.id)}
+                                className="w-full flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-100 hover:bg-slate-100 transition-all text-left"
+                            >
+                                <span className="font-bold text-slate-700 text-sm">{p.nickname || p.name}</span>
+                                <span className="text-[10px] font-black text-slate-400 uppercase">{p.position}</span>
+                            </button>
+                        ))
+                    )}
+                </div>
+            </Modal>
 
             <div className="fixed bottom-16 left-0 right-0 p-6 bg-linear-to-t from-slate-50 via-slate-50 to-transparent z-40 pointer-events-none">
                 <div className="pointer-events-auto">

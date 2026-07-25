@@ -173,6 +173,14 @@ exports.Prisma.RoundScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.RoundSubstitutionScalarFieldEnum = {
+  id: 'id',
+  roundId: 'roundId',
+  teamId: 'teamId',
+  outPlayerId: 'outPlayerId',
+  inPlayerId: 'inPlayerId'
+};
+
 exports.Prisma.GoalScalarFieldEnum = {
   id: 'id',
   roundId: 'roundId',
@@ -252,6 +260,7 @@ exports.Prisma.ModelName = {
   Team: 'Team',
   TeamPlayer: 'TeamPlayer',
   Round: 'Round',
+  RoundSubstitution: 'RoundSubstitution',
   Goal: 'Goal',
   Badge: 'Badge',
   SessionParticipant: 'SessionParticipant',

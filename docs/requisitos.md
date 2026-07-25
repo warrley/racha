@@ -52,9 +52,9 @@ Este documento descreve os requisitos funcionais e não-funcionais para o sistem
 ### 2.6 Substituições Temporárias por Rodada
 | ID | Descrição | Prioridade | Status |
 | :--- | :--- | :--- | :--- |
-| **RF16** | O administrador deve poder realizar uma substituição de jogador durante uma rodada ativa (`Round` de uma sessão `IN_PROGRESS`). | Alta | Pendente |
-| **RF17** | O sistema deve registrar que um jogador substituto jogou aquela rodada específica no lugar de outro jogador, aplicando os gols marcados e os resultados da rodada para as estatísticas corretas dos jogadores. | Média | Pendente |
-| **RF18** | Após o término da rodada atual, a escalação do time deve ser restaurada automaticamente para a formação original para a próxima rodada. | Alta | Pendente |
+| **RF16** | O administrador deve poder realizar uma substituição de jogador durante uma rodada ativa (`Round` de uma sessão `IN_PROGRESS`). | Alta | Concluído |
+| **RF17** | O sistema deve registrar que um jogador substituto jogou aquela rodada específica no lugar de outro jogador, aplicando os gols marcados e os resultados da rodada para as estatísticas corretas dos jogadores. | Média | Concluído |
+| **RF18** | Após o término da rodada atual, a escalação do time deve ser restaurada automaticamente para a formação original para a próxima rodada. | Alta | Concluído |
 
 ### 2.7 Cronômetro Flutuante (Match Screen)
 | ID | Descrição | Prioridade | Status |
