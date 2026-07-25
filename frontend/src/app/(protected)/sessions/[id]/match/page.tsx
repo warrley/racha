@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { api } from '@/lib/api';
 import { useRouter, useParams } from 'next/navigation';
 import { Plus, Minus, Goal, Save, Play, Pause, RotateCcw, Repeat, X } from 'lucide-react';
@@ -31,6 +31,22 @@ export default function MatchScreen() {
     const [timeLeft, setTimeLeft] = useState(7 * 60 * 1000);
     const [timerActive, setTimerActive] = useState(false);
     const [endTime, setEndTime] = useState<number | null>(null);
+
+    // Cronômetro flutuante (req 2.7): aparece quando o cronômetro principal sai da viewport
+    const mainTimerRef = useRef<HTMLDivElement>(null);
+    const [showFloatingTimer, setShowFloatingTimer] = useState(false);
+
+    useEffect(() => {
+        const target = mainTimerRef.current;
+        if (!target) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => setShowFloatingTimer(!entry.isIntersecting),
+            { threshold: 0 }
+        );
+        observer.observe(target);
+        return () => observer.disconnect();
+    }, []);
 
     // Carregar do localStorage ao iniciar
     useEffect(() => {
@@ -256,8 +272,30 @@ export default function MatchScreen() {
         <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900 pb-40">
             <Header showBack onBack={() => router.push(`/sessions/${sessionId}`)} />
 
+            <div
+                className={`fixed top-0 inset-x-0 z-50 px-4 pt-3 transition-all duration-300 ease-out ${showFloatingTimer ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-4 pointer-events-none'}`}
+            >
+                <div className="max-w-md mx-auto bg-slate-900/95 backdrop-blur-md rounded-2xl shadow-xl border border-slate-800 flex items-center justify-between gap-3 px-4 py-2.5">
+                    <span className="text-2xl font-black text-white tabular-nums tracking-tighter">{formatTime(timeLeft)}</span>
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={toggleTimer}
+                            className={`w-9 h-9 flex items-center justify-center rounded-full transition-all active:scale-95 ${timerActive ? 'bg-amber-500 text-white' : 'bg-primary text-white'}`}
+                        >
+                            {timerActive ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
+                        </button>
+                        <button
+                            onClick={resetTimer}
+                            className="w-9 h-9 flex items-center justify-center rounded-full bg-slate-800 text-slate-300 hover:text-white transition-all active:scale-95"
+                        >
+                            <RotateCcw className="w-4 h-4" />
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <main className="p-6 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                <section className="bg-slate-900 rounded-3xl p-6 text-white shadow-xl flex flex-col items-center justify-center gap-4 relative overflow-hidden">
+                <section ref={mainTimerRef} className="bg-slate-900 rounded-3xl p-6 text-white shadow-xl flex flex-col items-center justify-center gap-4 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2" />
                     <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-500/20 blur-3xl rounded-full -translate-x-1/2 translate-y-1/2" />
 

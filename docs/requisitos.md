@@ -59,8 +59,8 @@ Este documento descreve os requisitos funcionais e não-funcionais para o sistem
 ### 2.7 Cronômetro Flutuante (Match Screen)
 | ID | Descrição | Prioridade | Status |
 | :--- | :--- | :--- | :--- |
-| **RF19** | Ao rolar a tela da partida (Match Screen) para baixo e o painel do cronômetro principal do topo sumir da visão, um cronômetro flutuante/adesivo (Sticky/Floating Timer) deve aparecer de forma fluida. | Média | Pendente |
-| **RF20** | O cronômetro flutuante deve exibir o tempo restante da partida de forma legível e disponibilizar controles rápidos (Play/Pause e Reset) para que o administrador possa controlar o tempo sem precisar subir a tela. | Média | Pendente |
+| **RF19** | Ao rolar a tela da partida (Match Screen) para baixo e o painel do cronômetro principal do topo sumir da visão, um cronômetro flutuante/adesivo (Sticky/Floating Timer) deve aparecer de forma fluida. | Média | Concluído |
+| **RF20** | O cronômetro flutuante deve exibir o tempo restante da partida de forma legível e disponibilizar controles rápidos (Play/Pause e Reset) para que o administrador possa controlar o tempo sem precisar subir a tela. | Média | Concluído |
 
 ---
 
