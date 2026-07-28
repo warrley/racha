@@ -2078,6 +2078,8 @@ export namespace Prisma {
     avatarIndex: number | null
     isAdmin: boolean | null
     pixKey: string | null
+    resetToken: string | null
+    resetTokenExpiresAt: Date | null
     createdAt: Date | null
   }
 
@@ -2094,6 +2096,8 @@ export namespace Prisma {
     avatarIndex: number | null
     isAdmin: boolean | null
     pixKey: string | null
+    resetToken: string | null
+    resetTokenExpiresAt: Date | null
     createdAt: Date | null
   }
 
@@ -2110,6 +2114,8 @@ export namespace Prisma {
     avatarIndex: number
     isAdmin: number
     pixKey: number
+    resetToken: number
+    resetTokenExpiresAt: number
     createdAt: number
     _all: number
   }
@@ -2140,6 +2146,8 @@ export namespace Prisma {
     avatarIndex?: true
     isAdmin?: true
     pixKey?: true
+    resetToken?: true
+    resetTokenExpiresAt?: true
     createdAt?: true
   }
 
@@ -2156,6 +2164,8 @@ export namespace Prisma {
     avatarIndex?: true
     isAdmin?: true
     pixKey?: true
+    resetToken?: true
+    resetTokenExpiresAt?: true
     createdAt?: true
   }
 
@@ -2172,6 +2182,8 @@ export namespace Prisma {
     avatarIndex?: true
     isAdmin?: true
     pixKey?: true
+    resetToken?: true
+    resetTokenExpiresAt?: true
     createdAt?: true
     _all?: true
   }
@@ -2275,6 +2287,8 @@ export namespace Prisma {
     avatarIndex: number
     isAdmin: boolean
     pixKey: string | null
+    resetToken: string | null
+    resetTokenExpiresAt: Date | null
     createdAt: Date
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
@@ -2310,6 +2324,8 @@ export namespace Prisma {
     avatarIndex?: boolean
     isAdmin?: boolean
     pixKey?: boolean
+    resetToken?: boolean
+    resetTokenExpiresAt?: boolean
     createdAt?: boolean
     teamPlayers?: boolean | User$teamPlayersArgs<ExtArgs>
     goals?: boolean | User$goalsArgs<ExtArgs>
@@ -2338,6 +2354,8 @@ export namespace Prisma {
     avatarIndex?: boolean
     isAdmin?: boolean
     pixKey?: boolean
+    resetToken?: boolean
+    resetTokenExpiresAt?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["user"]>
 
@@ -2354,6 +2372,8 @@ export namespace Prisma {
     avatarIndex?: boolean
     isAdmin?: boolean
     pixKey?: boolean
+    resetToken?: boolean
+    resetTokenExpiresAt?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["user"]>
 
@@ -2370,10 +2390,12 @@ export namespace Prisma {
     avatarIndex?: boolean
     isAdmin?: boolean
     pixKey?: boolean
+    resetToken?: boolean
+    resetTokenExpiresAt?: boolean
     createdAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "supabaseId" | "name" | "nickname" | "position" | "rating" | "averageGrade" | "avatarIndex" | "isAdmin" | "pixKey" | "createdAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "supabaseId" | "name" | "nickname" | "position" | "rating" | "averageGrade" | "avatarIndex" | "isAdmin" | "pixKey" | "resetToken" | "resetTokenExpiresAt" | "createdAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     teamPlayers?: boolean | User$teamPlayersArgs<ExtArgs>
     goals?: boolean | User$goalsArgs<ExtArgs>
@@ -2419,6 +2441,8 @@ export namespace Prisma {
       avatarIndex: number
       isAdmin: boolean
       pixKey: string | null
+      resetToken: string | null
+      resetTokenExpiresAt: Date | null
       createdAt: Date
     }, ExtArgs["result"]["user"]>
     composites: {}
@@ -2866,6 +2890,8 @@ export namespace Prisma {
     readonly avatarIndex: FieldRef<"User", 'Int'>
     readonly isAdmin: FieldRef<"User", 'Boolean'>
     readonly pixKey: FieldRef<"User", 'String'>
+    readonly resetToken: FieldRef<"User", 'String'>
+    readonly resetTokenExpiresAt: FieldRef<"User", 'DateTime'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
   }
     
@@ -14124,6 +14150,8 @@ export namespace Prisma {
     avatarIndex: 'avatarIndex',
     isAdmin: 'isAdmin',
     pixKey: 'pixKey',
+    resetToken: 'resetToken',
+    resetTokenExpiresAt: 'resetTokenExpiresAt',
     createdAt: 'createdAt'
   };
 
@@ -14410,6 +14438,8 @@ export namespace Prisma {
     avatarIndex?: IntFilter<"User"> | number
     isAdmin?: BoolFilter<"User"> | boolean
     pixKey?: StringNullableFilter<"User"> | string | null
+    resetToken?: StringNullableFilter<"User"> | string | null
+    resetTokenExpiresAt?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     teamPlayers?: TeamPlayerListRelationFilter
     goals?: GoalListRelationFilter
@@ -14437,6 +14467,8 @@ export namespace Prisma {
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
     pixKey?: SortOrderInput | SortOrder
+    resetToken?: SortOrderInput | SortOrder
+    resetTokenExpiresAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     teamPlayers?: TeamPlayerOrderByRelationAggregateInput
     goals?: GoalOrderByRelationAggregateInput
@@ -14455,6 +14487,7 @@ export namespace Prisma {
     id?: string
     email?: string
     supabaseId?: string
+    resetToken?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
@@ -14467,6 +14500,7 @@ export namespace Prisma {
     avatarIndex?: IntFilter<"User"> | number
     isAdmin?: BoolFilter<"User"> | boolean
     pixKey?: StringNullableFilter<"User"> | string | null
+    resetTokenExpiresAt?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     teamPlayers?: TeamPlayerListRelationFilter
     goals?: GoalListRelationFilter
@@ -14479,7 +14513,7 @@ export namespace Prisma {
     receivedGrades?: SessionGradeListRelationFilter
     substitutedOut?: RoundSubstitutionListRelationFilter
     substitutedIn?: RoundSubstitutionListRelationFilter
-  }, "id" | "email" | "supabaseId">
+  }, "id" | "email" | "supabaseId" | "resetToken">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -14494,6 +14528,8 @@ export namespace Prisma {
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
     pixKey?: SortOrderInput | SortOrder
+    resetToken?: SortOrderInput | SortOrder
+    resetTokenExpiresAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
@@ -14518,6 +14554,8 @@ export namespace Prisma {
     avatarIndex?: IntWithAggregatesFilter<"User"> | number
     isAdmin?: BoolWithAggregatesFilter<"User"> | boolean
     pixKey?: StringNullableWithAggregatesFilter<"User"> | string | null
+    resetToken?: StringNullableWithAggregatesFilter<"User"> | string | null
+    resetTokenExpiresAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
@@ -15199,6 +15237,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     goals?: GoalCreateNestedManyWithoutPlayerInput
@@ -15226,6 +15266,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
@@ -15253,6 +15295,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     goals?: GoalUpdateManyWithoutPlayerNestedInput
@@ -15280,6 +15324,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
@@ -15307,6 +15353,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -15323,6 +15371,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -15339,6 +15389,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -16023,6 +16075,17 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -16122,6 +16185,8 @@ export namespace Prisma {
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
     pixKey?: SortOrder
+    resetToken?: SortOrder
+    resetTokenExpiresAt?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -16144,6 +16209,8 @@ export namespace Prisma {
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
     pixKey?: SortOrder
+    resetToken?: SortOrder
+    resetTokenExpiresAt?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -16160,6 +16227,8 @@ export namespace Prisma {
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
     pixKey?: SortOrder
+    resetToken?: SortOrder
+    resetTokenExpiresAt?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -16255,6 +16324,20 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -16274,17 +16357,6 @@ export namespace Prisma {
     in?: $Enums.SessionStatus[] | ListEnumSessionStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.SessionStatus[] | ListEnumSessionStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumSessionStatusFilter<$PrismaModel> | $Enums.SessionStatus
-  }
-
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type UserScalarRelationFilter = {
@@ -16388,20 +16460,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumSessionStatusFilter<$PrismaModel>
     _max?: NestedEnumSessionStatusFilter<$PrismaModel>
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type FloatFilter<$PrismaModel = never> = {
@@ -17001,6 +17059,10 @@ export namespace Prisma {
     set?: boolean
   }
 
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
@@ -17403,10 +17465,6 @@ export namespace Prisma {
 
   export type EnumSessionStatusFieldUpdateOperationsInput = {
     set?: $Enums.SessionStatus
-  }
-
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
   }
 
   export type UserUpdateOneRequiredWithoutCreatedSessionsNestedInput = {
@@ -18241,6 +18299,17 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -18358,6 +18427,20 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -18379,17 +18462,6 @@ export namespace Prisma {
     not?: NestedEnumSessionStatusFilter<$PrismaModel> | $Enums.SessionStatus
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type NestedEnumSessionStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.SessionStatus | EnumSessionStatusFieldRefInput<$PrismaModel>
     in?: $Enums.SessionStatus[] | ListEnumSessionStatusFieldRefInput<$PrismaModel>
@@ -18398,20 +18470,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumSessionStatusFilter<$PrismaModel>
     _max?: NestedEnumSessionStatusFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -19100,6 +19158,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     goals?: GoalCreateNestedManyWithoutPlayerInput
@@ -19126,6 +19186,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
@@ -19157,6 +19219,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     goals?: GoalCreateNestedManyWithoutPlayerInput
@@ -19183,6 +19247,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
@@ -19214,6 +19280,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     goals?: GoalCreateNestedManyWithoutPlayerInput
@@ -19240,6 +19308,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
@@ -19431,6 +19501,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     goals?: GoalUpdateManyWithoutPlayerNestedInput
@@ -19457,6 +19529,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
@@ -19494,6 +19568,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     goals?: GoalUpdateManyWithoutPlayerNestedInput
@@ -19520,6 +19596,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
@@ -19557,6 +19635,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     goals?: GoalUpdateManyWithoutPlayerNestedInput
@@ -19583,6 +19663,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
@@ -20081,6 +20163,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     goals?: GoalCreateNestedManyWithoutPlayerInput
     badges?: BadgeCreateNestedManyWithoutPlayerInput
@@ -20107,6 +20191,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
     badges?: BadgeUncheckedCreateNestedManyWithoutPlayerInput
@@ -20184,6 +20270,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     goals?: GoalUpdateManyWithoutPlayerNestedInput
     badges?: BadgeUpdateManyWithoutPlayerNestedInput
@@ -20210,6 +20298,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutPlayerNestedInput
@@ -20666,6 +20756,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     goals?: GoalCreateNestedManyWithoutPlayerInput
@@ -20692,6 +20784,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
@@ -20723,6 +20817,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     goals?: GoalCreateNestedManyWithoutPlayerInput
@@ -20749,6 +20845,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
@@ -20865,6 +20963,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     goals?: GoalUpdateManyWithoutPlayerNestedInput
@@ -20891,6 +20991,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
@@ -20928,6 +21030,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     goals?: GoalUpdateManyWithoutPlayerNestedInput
@@ -20954,6 +21058,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
@@ -21013,6 +21119,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     badges?: BadgeCreateNestedManyWithoutPlayerInput
@@ -21039,6 +21147,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     badges?: BadgeUncheckedCreateNestedManyWithoutPlayerInput
@@ -21120,6 +21230,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     badges?: BadgeUpdateManyWithoutPlayerNestedInput
@@ -21146,6 +21258,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     badges?: BadgeUncheckedUpdateManyWithoutPlayerNestedInput
@@ -21172,6 +21286,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     goals?: GoalCreateNestedManyWithoutPlayerInput
@@ -21198,6 +21314,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
@@ -21287,6 +21405,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     goals?: GoalUpdateManyWithoutPlayerNestedInput
@@ -21313,6 +21433,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
@@ -21439,6 +21561,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     goals?: GoalCreateNestedManyWithoutPlayerInput
@@ -21465,6 +21589,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
@@ -21560,6 +21686,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     goals?: GoalUpdateManyWithoutPlayerNestedInput
@@ -21586,6 +21714,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
@@ -21659,6 +21789,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     goals?: GoalCreateNestedManyWithoutPlayerInput
@@ -21685,6 +21817,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
@@ -21716,6 +21850,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerCreateNestedManyWithoutPlayerInput
     goals?: GoalCreateNestedManyWithoutPlayerInput
@@ -21742,6 +21878,8 @@ export namespace Prisma {
     avatarIndex?: number
     isAdmin?: boolean
     pixKey?: string | null
+    resetToken?: string | null
+    resetTokenExpiresAt?: Date | string | null
     createdAt?: Date | string
     teamPlayers?: TeamPlayerUncheckedCreateNestedManyWithoutPlayerInput
     goals?: GoalUncheckedCreateNestedManyWithoutPlayerInput
@@ -21837,6 +21975,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     goals?: GoalUpdateManyWithoutPlayerNestedInput
@@ -21863,6 +22003,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput
@@ -21900,6 +22042,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUpdateManyWithoutPlayerNestedInput
     goals?: GoalUpdateManyWithoutPlayerNestedInput
@@ -21926,6 +22070,8 @@ export namespace Prisma {
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    resetToken?: NullableStringFieldUpdateOperationsInput | string | null
+    resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     teamPlayers?: TeamPlayerUncheckedUpdateManyWithoutPlayerNestedInput
     goals?: GoalUncheckedUpdateManyWithoutPlayerNestedInput

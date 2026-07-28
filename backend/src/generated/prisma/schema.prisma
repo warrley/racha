@@ -39,19 +39,21 @@ enum BadgeType {
 // ──────────────────────────────────────────────
 
 model User {
-  id           String   @id @default(uuid())
-  email        String   @unique
-  password     String?
-  supabaseId   String?  @unique
-  name         String
-  nickname     String?
-  position     Position @default(MEIO)
-  rating       Int      @default(0)
-  averageGrade Float?
-  avatarIndex  Int      @default(0)
-  isAdmin      Boolean  @default(false)
-  pixKey       String?
-  createdAt    DateTime @default(now())
+  id                  String    @id @default(uuid())
+  email               String    @unique
+  password            String?
+  supabaseId          String?   @unique
+  name                String
+  nickname            String?
+  position            Position  @default(MEIO)
+  rating              Int       @default(0)
+  averageGrade        Float?
+  avatarIndex         Int       @default(0)
+  isAdmin             Boolean   @default(false)
+  pixKey              String?
+  resetToken          String?   @unique
+  resetTokenExpiresAt DateTime?
+  createdAt           DateTime  @default(now())
 
   // Relações
   teamPlayers         TeamPlayer[]

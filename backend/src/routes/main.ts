@@ -49,6 +49,52 @@ mainRouter.post("/auth/signup", authController.signup);
  */
 mainRouter.post("/auth/signin", authController.signin);
 
+/**
+ * @openapi
+ * /auth/forgot-password:
+ *   post:
+ *     summary: Solicitar redefinição de senha (envia e-mail com link/token)
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Resposta genérica (não revela se o e-mail existe)
+ */
+mainRouter.post("/auth/forgot-password", authController.forgotPassword);
+
+/**
+ * @openapi
+ * /auth/reset-password:
+ *   post:
+ *     summary: Redefinir senha usando o token recebido por e-mail
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               token:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Senha redefinida com sucesso
+ *       400:
+ *         description: Token inválido ou expirado
+ */
+mainRouter.post("/auth/reset-password", authController.resetPassword);
+
 // ──────────────────────────────────────────────
 // Players
 // ──────────────────────────────────────────────

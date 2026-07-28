@@ -39,6 +39,17 @@ JWT_SECRET_KEY="metanol_key"
 # JWT Secret do projeto Supabase (Settings > API > JWT Settings), usado para
 # validar localmente (sem chamada de rede) os tokens emitidos pelo Supabase Auth
 SUPABASE_JWT_SECRET="sua-chave-jwt-do-supabase"
+
+# SMTP para envio do e-mail de redefinição de senha (fluxo de auth legado).
+# Sem essas variáveis, o link de redefinição é apenas logado no console (dev).
+SMTP_HOST="smtp.seuservico.com"
+SMTP_PORT="587"
+SMTP_USER="usuario"
+SMTP_PASS="senha"
+MAIL_FROM="Metanol FC <no-reply@metanolfc.com>"
+
+# URL do frontend usada para montar o link de redefinição de senha
+FRONTEND_URL="http://localhost:3000"
 ```
 
 ### Passo 2.1: Configurar o Supabase Auth

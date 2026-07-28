@@ -51,6 +51,8 @@ model User {
   avatarIndex  Int      @default(0)
   isAdmin      Boolean  @default(false)
   pixKey       String?
+  resetToken           String?   @unique
+  resetTokenExpiresAt  DateTime?
   createdAt    DateTime @default(now())
 
   // Relações

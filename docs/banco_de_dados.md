@@ -107,6 +107,7 @@ Para suportar as novas regras de negócio do racha, o `schema.prisma` deve ser e
     *   `pixKey` (String?): Chave Pix padrão do administrador, usada como fallback quando a sessão não define uma própria (req 2.3).
     *   `password` (String?): Passou a ser opcional — usuários criados via Supabase Auth (Google/e-mail) não têm senha local.
     *   `supabaseId` (String?, único): Id do usuário no Supabase Auth (`sub` do JWT), usado por `syncSupabaseUser` para vincular/criar o registro local automaticamente a cada requisição autenticada (req 2.1/RF02).
+    *   `resetToken` (String?, único) / `resetTokenExpiresAt` (DateTime?): Token de uso único (1h de validade) para o fluxo de "esqueci minha senha" do login legado por e-mail/senha (`services/auth.ts`), enviado por e-mail via `utils/mailer.ts`.
 *   **Session (`sessions`)**:
     *   `maxPlayers` (Int): Limite máximo de jogadores confirmados para a sessão (padrão `15`).
     *   `pixKey` (String?): Chave Pix específica desta sessão; sobrescreve a do perfil do administrador quando definida.

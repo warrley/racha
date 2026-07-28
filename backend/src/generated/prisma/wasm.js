@@ -130,6 +130,8 @@ exports.Prisma.UserScalarFieldEnum = {
   avatarIndex: 'avatarIndex',
   isAdmin: 'isAdmin',
   pixKey: 'pixKey',
+  resetToken: 'resetToken',
+  resetTokenExpiresAt: 'resetTokenExpiresAt',
   createdAt: 'createdAt'
 };
 
