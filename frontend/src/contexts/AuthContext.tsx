@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { destroyCookie, parseCookies } from 'nookies';
 import { api } from '@/lib/api';
-import { supabase } from '@/lib/supabase';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { Player } from '@/types';
 import { useRouter } from 'next/navigation';
 
@@ -33,10 +33,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             // Sessão do Supabase Auth (login social/e-mail) ou cookie legado
             // (fluxo de auth antigo): o backend resolve qual token é válido em
             // /players/me e sincroniza o registro local automaticamente (RF02).
-            const { data } = await supabase.auth.getSession();
+            const hasSupabaseSession = isSupabaseConfigured && !!(await supabase.auth.getSession()).data.session;
             const hasLegacyToken = !!parseCookies()['metanol.token'];
 
-            if (!data.session && !hasLegacyToken) {
+            if (!hasSupabaseSession && !hasLegacyToken) {
                 setUser(null);
                 setLoading(false);
                 return;
@@ -59,6 +59,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         fetchUser();
 
+        if (!isSupabaseConfigured) return;
+
         const { data: subscription } = supabase.auth.onAuthStateChange(() => {
             fetchUser();
         });
@@ -67,7 +69,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }, []);
 
     const logout = () => {
-        supabase.auth.signOut();
+        if (isSupabaseConfigured) supabase.auth.signOut();
         destroyCookie(undefined, 'metanol.token', { path: '/' });
         setUser(null);
         router.push('/');

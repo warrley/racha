@@ -1,6 +1,6 @@
 import axios from "axios";
 import { parseCookies } from "nookies";
-import { supabase } from "./supabase";
+import { supabase, isSupabaseConfigured } from "./supabase";
 
 export const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:9876",
@@ -9,8 +9,10 @@ export const api = axios.create({
 api.interceptors.request.use(async (config) => {
     // Prioriza a sessão do Supabase Auth (login social/e-mail); mantém o
     // cookie legado como fallback para contas ainda no fluxo de auth antigo.
-    const { data } = await supabase.auth.getSession();
-    const token = data.session?.access_token || parseCookies()["metanol.token"];
+    // Só consulta o Supabase se ele estiver configurado, senão getSession()
+    // tenta resolver o domínio placeholder e atrasa toda requisição.
+    const supabaseToken = isSupabaseConfigured ? (await supabase.auth.getSession()).data.session?.access_token : undefined;
+    const token = supabaseToken || parseCookies()["metanol.token"];
 
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
