@@ -3,9 +3,11 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import Link from 'next/link';
-import { Trophy, Medal, Goal, ChevronRight, LogOut, CalendarDays, Wallet, Check } from 'lucide-react';
+import { Trophy, Medal, Goal, ChevronRight, LogOut, CalendarDays, Wallet, Check, Pencil, User, Mail, Lock, Eye, EyeOff, X } from 'lucide-react';
 import styles from './profile.module.css';
 import { getHexColor } from '@/lib/colors';
+import { Input } from '@/components/Input';
+import { Button } from '@/components/Button';
 
 import { Player, SessionHistoryItem, Badge } from '@/types';
 import { useAuth } from '@/contexts/AuthContext';
@@ -21,6 +23,16 @@ export default function ProfileScreen() {
     const [savingPixKey, setSavingPixKey] = useState(false);
     const [pixKeySaved, setPixKeySaved] = useState(false);
 
+    const [showEditProfile, setShowEditProfile] = useState(false);
+    const [editName, setEditName] = useState('');
+    const [editNickname, setEditNickname] = useState('');
+    const [editEmail, setEditEmail] = useState('');
+    const [editPosition, setEditPosition] = useState('MEIO');
+    const [editPassword, setEditPassword] = useState('');
+    const [showEditPassword, setShowEditPassword] = useState(false);
+    const [savingProfile, setSavingProfile] = useState(false);
+    const [profileError, setProfileError] = useState<string | null>(null);
+
     useEffect(() => {
         const fetchProfile = async () => {
             try {
@@ -35,6 +47,10 @@ export default function ProfileScreen() {
                 setProfile(profileRes.data.player);
                 setHistory(historyRes.data.history);
                 setPixKeyInput(profileRes.data.player.pixKey || '');
+                setEditName(profileRes.data.player.name || '');
+                setEditNickname(profileRes.data.player.nickname || '');
+                setEditEmail(profileRes.data.player.email || '');
+                setEditPosition(profileRes.data.player.position || 'MEIO');
             } catch (err: any) {
                 setError(err.message || 'Erro ao carregar o perfil');
             } finally {
@@ -62,6 +78,35 @@ export default function ProfileScreen() {
             alert(e.response?.data?.error || 'Erro ao salvar chave Pix.');
         } finally {
             setSavingPixKey(false);
+        }
+    };
+
+    const handleSaveProfile = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setProfileError(null);
+        try {
+            setSavingProfile(true);
+            const payload: Record<string, any> = {
+                name: editName.trim(),
+                nickname: editNickname.trim() || undefined,
+                email: editEmail.trim(),
+                position: editPosition
+            };
+            if (editPassword) payload.password = editPassword;
+
+            const res = await api.put('/players', payload);
+            if (res.data.error) {
+                const err = res.data.error;
+                setProfileError(typeof err === 'string' ? err : (Object.values(err)[0] as string[])?.[0] || 'Erro ao salvar perfil.');
+                return;
+            }
+            setProfile(prev => prev ? { ...prev, name: editName.trim(), nickname: editNickname.trim(), email: editEmail.trim(), position: editPosition as any } : prev);
+            setEditPassword('');
+            setShowEditProfile(false);
+        } catch (e: any) {
+            setProfileError(e.response?.data?.error || 'Erro ao salvar perfil.');
+        } finally {
+            setSavingProfile(false);
         }
     };
 
@@ -99,13 +144,22 @@ export default function ProfileScreen() {
                         <p>{profile.position} • Nota Média {profile.averageGrade?.toFixed(1) ?? '-'}</p>
                     </div>
                 </div>
-                <button 
-                    onClick={handleLogout}
-                    title="Sair"
-                    className={styles.logoutButton}
-                >
-                    <LogOut size={24} />
-                </button>
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={() => { setProfileError(null); setShowEditProfile(true); }}
+                        title="Editar Perfil"
+                        className={styles.logoutButton}
+                    >
+                        <Pencil size={20} />
+                    </button>
+                    <button
+                        onClick={handleLogout}
+                        title="Sair"
+                        className={styles.logoutButton}
+                    >
+                        <LogOut size={24} />
+                    </button>
+                </div>
             </header>
 
             <main className={styles.mainContent}>
@@ -210,6 +264,80 @@ export default function ProfileScreen() {
                     </div>
                 </section>
             </main>
+
+            {showEditProfile && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={() => setShowEditProfile(false)}>
+                    <div
+                        className="w-full max-w-md bg-white rounded-[2rem] shadow-2xl p-8 text-slate-900 max-h-[85vh] overflow-y-auto"
+                        onClick={e => e.stopPropagation()}
+                    >
+                        <div className="flex items-center justify-between mb-6">
+                            <h2 className="text-xl font-bold">Editar Perfil</h2>
+                            <button onClick={() => setShowEditProfile(false)} className="text-slate-400 hover:text-slate-600">
+                                <X size={20} />
+                            </button>
+                        </div>
+                        <form onSubmit={handleSaveProfile} className="space-y-4">
+                            <Input
+                                label="Nome"
+                                required
+                                value={editName}
+                                onChange={e => setEditName(e.target.value)}
+                                icon={User}
+                            />
+                            <Input
+                                label="Apelido"
+                                value={editNickname}
+                                onChange={e => setEditNickname(e.target.value)}
+                                icon={User}
+                            />
+                            <Input
+                                label="E-mail"
+                                type="email"
+                                required
+                                value={editEmail}
+                                onChange={e => setEditEmail(e.target.value)}
+                                icon={Mail}
+                            />
+                            <div>
+                                <label className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2 ml-1">
+                                    Posição
+                                </label>
+                                <select
+                                    value={editPosition}
+                                    onChange={e => setEditPosition(e.target.value)}
+                                    className="w-full px-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary focus:bg-white transition-all outline-none text-slate-700 font-bold"
+                                >
+                                    <option value="ZAGUEIRO">Zagueiro</option>
+                                    <option value="MEIO">Meio Campo</option>
+                                    <option value="ATACANTE">Atacante</option>
+                                </select>
+                            </div>
+                            <Input
+                                label="Nova Senha (deixe em branco para manter)"
+                                type={showEditPassword ? 'text' : 'password'}
+                                value={editPassword}
+                                onChange={e => setEditPassword(e.target.value)}
+                                placeholder="••••••••"
+                                icon={Lock}
+                                endElement={
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowEditPassword(!showEditPassword)}
+                                        className="text-slate-300 hover:text-slate-500 transition-colors focus:outline-none"
+                                    >
+                                        {showEditPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                    </button>
+                                }
+                            />
+                            {profileError && <p className="text-xs font-bold text-red-500">{profileError}</p>}
+                            <Button type="submit" fullWidth size="lg" isLoading={savingProfile}>
+                                Salvar Alterações
+                            </Button>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

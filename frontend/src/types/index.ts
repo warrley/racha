@@ -2,6 +2,7 @@ export interface Player {
     id: string;
     name: string;
     nickname: string | null;
+    email?: string;
     position: 'ZAGUEIRO' | 'MEIO' | 'ATACANTE';
     rating: number;
     averageGrade?: number | null;
