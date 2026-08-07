@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import { Prisma, Position } from "../generated/prisma";
 import { prisma } from "../utils/prisma";
 
@@ -67,8 +68,25 @@ export const syncSupabaseUser = async (params: {
     });
 };
 
-export const update = async (id: string, data: Prisma.UserUpdateInput) => {
-    return await prisma.user.update({ where: { id }, data });
+type UpdatePlayerData = {
+    name?: string;
+    nickname?: string;
+    email?: string;
+    password?: string;
+    position?: Position;
+    avatarIndex?: number;
+    pixKey?: string | null;
+};
+
+export const update = async (id: string, data: UpdatePlayerData) => {
+    const { password, ...rest } = data;
+    return await prisma.user.update({
+        where: { id },
+        data: {
+            ...rest,
+            ...(password ? { password: await bcrypt.hash(password, 10) } : {})
+        }
+    });
 };
 
 export const findAll = async () => {

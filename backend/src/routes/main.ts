@@ -235,6 +235,26 @@ mainRouter.get("/sessions/:id", privateRoute, sessionController.getSession);
 
 /**
  * @openapi
+ * /sessions/{id}:
+ *   patch:
+ *     summary: Editar título/data/limite de jogadores da sessão (admin)
+ *     tags: [Sessions]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Sessão atualizada
+ */
+mainRouter.patch("/sessions/:id", privateRoute, sessionController.update);
+
+/**
+ * @openapi
  * /sessions/{id}/draw:
  *   post:
  *     summary: Sortear 3 times (admin)

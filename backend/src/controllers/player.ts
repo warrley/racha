@@ -58,9 +58,25 @@ export const updatePlayer = async (req: AuthRequest, res: Response) => {
         return;
     };
 
-    await update(userId, safeData.data);
+    if (safeData.data.pixKey !== undefined) {
+        const requester = await findById(userId);
+        if (!requester?.isAdmin) {
+            res.status(403).json({ error: "Apenas administradores podem configurar chave Pix" });
+            return;
+        }
+    }
 
-    res.json({ error: null });
+    try {
+        await update(userId, safeData.data);
+        res.json({ error: null });
+    } catch (e: any) {
+        if (e.code === "P2002") {
+            res.status(400).json({ error: "Este e-mail já está em uso" });
+            return;
+        }
+        console.error("updatePlayer error:", e);
+        res.status(500).json({ error: e.message });
+    }
 };
 
 export const getHistory = async (req: AuthRequest, res: Response) => {

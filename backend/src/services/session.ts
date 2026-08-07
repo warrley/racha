@@ -16,6 +16,21 @@ export const createSession = async (createdById: string, title: string | undefin
     });
 };
 
+export const updateSession = async (sessionId: string, data: { title?: string; date?: string; maxPlayers?: number }) => {
+    const session = await prisma.session.findUnique({ where: { id: sessionId } });
+    if(!session) throw new Error("Sessão não encontrada");
+    if(session.status === "FINISHED") throw new Error("Não é possível editar um racha já finalizado");
+
+    return await prisma.session.update({
+        where: { id: sessionId },
+        data: {
+            ...(data.title !== undefined ? { title: data.title } : {}),
+            ...(data.date !== undefined ? { date: new Date(data.date) } : {}),
+            ...(data.maxPlayers !== undefined ? { maxPlayers: data.maxPlayers } : {})
+        }
+    });
+};
+
 export const updatePaymentInfo = async (sessionId: string, pixKey?: string | null, price?: number | null) => {
     const session = await prisma.session.findUnique({ where: { id: sessionId } });
     if(!session) throw new Error("Sessão não encontrada");

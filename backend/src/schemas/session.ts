@@ -8,6 +8,12 @@ export const createSessionSchema = z.object({
     price: z.number().min(0, "O valor não pode ser negativo").optional()
 });
 
+export const updateSessionSchema = z.object({
+    title: z.string().optional(),
+    date: z.string().optional(),
+    maxPlayers: z.number().int().min(2).max(100).optional()
+});
+
 export const drawTeamsSchema = z.object({
     playerIds: z.array(z.string()).optional()
 });

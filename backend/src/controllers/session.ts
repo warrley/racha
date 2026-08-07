@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { AuthRequest } from "../middleware/privateRoute";
-import { createSessionSchema, drawTeamsSchema, updatePaymentInfoSchema } from "../schemas/session";
-import { createSession, executeDraw, findSessionById, findAllSessions, closeSession, startSession, joinSession, leaveSession, updatePaymentInfo, setParticipantPaymentStatus } from "../services/session";
+import { createSessionSchema, drawTeamsSchema, updatePaymentInfoSchema, updateSessionSchema } from "../schemas/session";
+import { createSession, executeDraw, findSessionById, findAllSessions, closeSession, startSession, joinSession, leaveSession, updatePaymentInfo, updateSession, setParticipantPaymentStatus } from "../services/session";
 import { findById } from "../services/player";
 import { generatePixPayload } from "../utils/pix";
 
@@ -27,6 +27,29 @@ export const create = async (req: AuthRequest, res: Response) => {
         safeData.data.price
     );
     res.status(201).json({ error: null, session });
+};
+
+export const update = async (req: AuthRequest, res: Response) => {
+    const { id } = req.params;
+
+    const safeData = updateSessionSchema.safeParse(req.body);
+    if(!safeData.success) {
+        res.status(400).json({ error: safeData.error.flatten().fieldErrors });
+        return;
+    };
+
+    const user = await findById(req.userId as string);
+    if(!user?.isAdmin) {
+        res.status(403).json({ error: "Apenas administradores podem editar sessões" });
+        return;
+    };
+
+    try {
+        const session = await updateSession(id as string, safeData.data);
+        res.json({ error: null, session });
+    } catch(err: any) {
+        res.status(400).json({ error: err.message });
+    };
 };
 
 export const getSession = async (req: AuthRequest, res: Response) => {
