@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/api';
 import { useRouter, useParams } from 'next/navigation';
-import { ChevronDown, CheckCircle2, Circle, Trophy, Goal, Play, Shuffle, CalendarDays, History, MapPin, Trash2, StopCircle, UserPlus, Users, Clock, Plus, X, Star, Send, Lock, Repeat, Wallet, Copy, Check, Settings2 } from 'lucide-react';
+import { ChevronDown, CheckCircle2, Circle, Trophy, Goal, Play, Shuffle, CalendarDays, History, MapPin, Trash2, StopCircle, UserPlus, Users, Clock, Plus, X, Star, Send, Lock, Repeat, Wallet, Copy, Check, Settings2, Pencil, CheckSquare, Square } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { Button } from '@/components/Button';
 import { UserAvatar } from '@/components/UserAvatar';
@@ -12,6 +12,12 @@ import { getHexColor } from '@/lib/colors';
 
 import { Session, Team, Round, TeamPlayer, Player, Goal as GoalType, RatingPlayer, RatingsStatus } from '@/types';
 import { useAuth } from '@/contexts/AuthContext';
+
+const toDatetimeLocalValue = (isoDate: string) => {
+    const d = new Date(isoDate);
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+};
 
 export default function SessionDetailsScreen() {
     const router = useRouter();
@@ -25,8 +31,16 @@ export default function SessionDetailsScreen() {
     const [expandedTeams, setExpandedTeams] = useState<Record<string, boolean>>({});
 
     const [allPlayers, setAllPlayers] = useState<Player[]>([]);
-    const [selectedAdminAddUserId, setSelectedAdminAddUserId] = useState('');
+    const [selectedBulkAddIds, setSelectedBulkAddIds] = useState<string[]>([]);
+    const [bulkAdding, setBulkAdding] = useState(false);
     const [isDrawing, setIsDrawing] = useState(false);
+
+    // Edição da sessão (título/data/limite de jogadores)
+    const [showEditSession, setShowEditSession] = useState(false);
+    const [editTitle, setEditTitle] = useState('');
+    const [editDate, setEditDate] = useState('');
+    const [editMaxPlayers, setEditMaxPlayers] = useState('');
+    const [savingSession, setSavingSession] = useState(false);
 
     // Post-game rating state
     const [ratingsStatus, setRatingsStatus] = useState<RatingsStatus | null>(null);
@@ -50,6 +64,9 @@ export default function SessionDetailsScreen() {
             setSession(sess);
             setPixKeyInput(sess.pixKey || '');
             setPriceInput(sess.price != null ? String(sess.price) : '');
+            setEditTitle(sess.title || '');
+            setEditDate(toDatetimeLocalValue(sess.date));
+            setEditMaxPlayers(String(sess.maxPlayers ?? 15));
 
             if (sess.status === 'OPEN') {
                 const pRes = await api.get('/players');
@@ -126,19 +143,48 @@ export default function SessionDetailsScreen() {
         }
     };
 
-    const handleAddPlayerManual = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!selectedAdminAddUserId) return;
+    const toggleBulkAddSelection = (userId: string) => {
+        setSelectedBulkAddIds(prev =>
+            prev.includes(userId) ? prev.filter(id => id !== userId) : [...prev, userId]
+        );
+    };
+
+    const handleBulkAddPlayers = async () => {
+        if (selectedBulkAddIds.length === 0) return;
         try {
-            setActionLoading(true);
-            await api.post(`/sessions/${sessionId}/participants/manual`, { userId: selectedAdminAddUserId });
-            setSelectedAdminAddUserId('');
+            setBulkAdding(true);
+            const results = await Promise.allSettled(
+                selectedBulkAddIds.map(userId =>
+                    api.post(`/sessions/${sessionId}/participants/manual`, { userId })
+                )
+            );
+            const failures = results.filter(r => r.status === 'rejected').length;
+            setSelectedBulkAddIds([]);
+            await fetchSessionData();
+            if (failures > 0) {
+                alert(`${failures} jogador(es) não puderam ser adicionados.`);
+            }
+        } finally {
+            setBulkAdding(false);
+        }
+    };
+
+    const handleSaveSession = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            setSavingSession(true);
+            await api.patch(`/sessions/${sessionId}`, {
+                title: editTitle.trim() || undefined,
+                date: editDate ? new Date(editDate).toISOString() : undefined,
+                maxPlayers: editMaxPlayers ? Number(editMaxPlayers) : undefined
+            });
+            setShowEditSession(false);
             await fetchSessionData();
         } catch (e: any) {
             console.error(e);
-            alert(e.response?.data?.error || "Erro ao adicionar jogador.");
+            alert(e.response?.data?.error || "Erro ao salvar sessão.");
         } finally {
-            setActionLoading(false);
+            setSavingSession(false);
         }
     };
 
@@ -304,12 +350,23 @@ export default function SessionDetailsScreen() {
                                 Quadra Principal
                             </div>
                         </div>
-                        <div className={`px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-wider border flex items-center gap-2
-                            ${isOpen ? 'bg-amber-50 text-amber-600 border-amber-200' :
-                                isInProgress ? 'bg-primary/10 text-primary border-primary/20' :
-                                    'bg-slate-200 text-slate-600 border-slate-300'}`}>
-                            {isInProgress && <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />}
-                            {isOpen ? 'Aberto' : isInProgress ? 'Rodando' : 'Finalizado'}
+                        <div className="flex flex-col items-end gap-2">
+                            <div className={`px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-wider border flex items-center gap-2
+                                ${isOpen ? 'bg-amber-50 text-amber-600 border-amber-200' :
+                                    isInProgress ? 'bg-primary/10 text-primary border-primary/20' :
+                                        'bg-slate-200 text-slate-600 border-slate-300'}`}>
+                                {isInProgress && <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />}
+                                {isOpen ? 'Aberto' : isInProgress ? 'Rodando' : 'Finalizado'}
+                            </div>
+                            {isAdmin && !isFinished && (
+                                <button
+                                    onClick={() => setShowEditSession(true)}
+                                    className="p-2 rounded-xl bg-slate-100 text-slate-500 hover:bg-slate-200 transition-all active:scale-95"
+                                    title="Editar Racha"
+                                >
+                                    <Pencil className="w-4 h-4" />
+                                </button>
+                            )}
                         </div>
                     </div>
 
@@ -559,36 +616,65 @@ export default function SessionDetailsScreen() {
                             )}
                         </div>
 
-                        {isAdmin && (
-                            <form onSubmit={handleAddPlayerManual} className="bg-slate-900 p-5 rounded-3xl shadow-xl text-white flex flex-col gap-3">
-                                <div>
-                                    <h4 className="font-black text-sm flex items-center gap-2"><UserPlus className="w-4 h-4 text-primary" /> Adicionar Jogador (Admin)</h4>
-                                    <p className="text-[10px] text-slate-400 font-bold">Inscreva qualquer jogador cadastrado neste racha.</p>
-                                </div>
-                                <div className="flex gap-2">
-                                    <select
-                                        value={selectedAdminAddUserId}
-                                        onChange={e => setSelectedAdminAddUserId(e.target.value)}
-                                        className="flex-1 bg-slate-800 border border-slate-700 rounded-xl p-3 font-bold text-white text-sm outline-none focus:border-primary"
-                                    >
-                                        <option value="">Selecione um jogador...</option>
-                                        {allPlayers
-                                            .filter(p => !session.participants?.some(part => part.userId === p.id))
-                                            .map(p => (
-                                                <option key={p.id} value={p.id}>{p.nickname || p.name}</option>
-                                            ))
-                                        }
-                                    </select>
+                        {isAdmin && (() => {
+                            const addablePlayers = allPlayers.filter(p => !session.participants?.some(part => part.userId === p.id));
+                            const allSelected = addablePlayers.length > 0 && selectedBulkAddIds.length === addablePlayers.length;
+                            return (
+                                <div className="bg-slate-900 p-5 rounded-3xl shadow-xl text-white flex flex-col gap-3">
+                                    <div className="flex items-center justify-between">
+                                        <div>
+                                            <h4 className="font-black text-sm flex items-center gap-2"><UserPlus className="w-4 h-4 text-primary" /> Adicionar Jogadores (Admin)</h4>
+                                            <p className="text-[10px] text-slate-400 font-bold">Selecione vários de uma vez e adicione todos juntos.</p>
+                                        </div>
+                                        {addablePlayers.length > 0 && (
+                                            <button
+                                                type="button"
+                                                onClick={() => setSelectedBulkAddIds(allSelected ? [] : addablePlayers.map(p => p.id))}
+                                                className="flex items-center gap-1.5 text-[10px] font-black text-primary uppercase tracking-wider shrink-0"
+                                            >
+                                                {allSelected ? <CheckSquare className="w-4 h-4" /> : <Square className="w-4 h-4" />}
+                                                Todos
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    {addablePlayers.length === 0 ? (
+                                        <p className="text-xs text-slate-400 font-bold text-center py-3">Todos os jogadores já estão neste racha.</p>
+                                    ) : (
+                                        <div className="max-h-56 overflow-y-auto space-y-1.5 pr-1">
+                                            {addablePlayers.map(p => {
+                                                const checked = selectedBulkAddIds.includes(p.id);
+                                                return (
+                                                    <button
+                                                        key={p.id}
+                                                        type="button"
+                                                        onClick={() => toggleBulkAddSelection(p.id)}
+                                                        className={`w-full flex items-center gap-2.5 p-2.5 rounded-xl border text-left transition-all active:scale-[0.98] ${checked ? 'bg-primary/20 border-primary' : 'bg-slate-800 border-slate-700 hover:bg-slate-700'}`}
+                                                    >
+                                                        {checked ? <CheckSquare className="w-4 h-4 text-primary shrink-0" /> : <Square className="w-4 h-4 text-slate-500 shrink-0" />}
+                                                        <span className="font-bold text-sm truncate">{p.nickname || p.name}</span>
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
+
                                     <button
-                                        type="submit"
-                                        disabled={!selectedAdminAddUserId || actionLoading}
-                                        className="bg-primary text-white font-black text-xs px-4 rounded-xl hover:bg-primary-hover active:scale-95 transition-all disabled:opacity-50 h-[46px]"
+                                        type="button"
+                                        onClick={handleBulkAddPlayers}
+                                        disabled={selectedBulkAddIds.length === 0 || bulkAdding}
+                                        className="bg-primary text-white font-black text-xs px-4 rounded-xl hover:bg-primary-hover active:scale-95 transition-all disabled:opacity-50 h-[46px] flex items-center justify-center gap-2"
                                     >
-                                        Adicionar
+                                        {bulkAdding ? (
+                                            <div className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                                        ) : (
+                                            <UserPlus className="w-4 h-4" />
+                                        )}
+                                        Adicionar {selectedBulkAddIds.length > 0 ? `(${selectedBulkAddIds.length})` : ''}
                                     </button>
                                 </div>
-                            </form>
-                        )}
+                            );
+                        })()}
 
                         <div className="space-y-6">
                             <div className="space-y-3">
@@ -610,10 +696,11 @@ export default function SessionDetailsScreen() {
                                         session.participants?.filter(p => p.status === 'CONFIRMED').map(p => {
                                             const player = p.user;
                                             if (!player) return null;
+                                            const isPaidTracked = isAdmin && !!session.price;
                                             return (
                                                 <div
                                                     key={p.id}
-                                                    className="flex items-center justify-between p-4 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-all"
+                                                    className={`flex items-center justify-between p-4 border rounded-2xl transition-all ${isPaidTracked && p.isPaid ? 'bg-green-50/60 border-green-200' : 'bg-white border-slate-100 hover:bg-slate-50'}`}
                                                 >
                                                     <div className="flex items-center gap-3">
                                                         <div className="w-10 h-10 rounded-full border-2 border-slate-100 shrink-0 relative overflow-hidden bg-slate-100">
@@ -625,13 +712,20 @@ export default function SessionDetailsScreen() {
                                                         </div>
                                                     </div>
                                                     <div className="flex items-center gap-2">
-                                                        {isAdmin && session.price ? (
+                                                        {isPaidTracked ? (
                                                             <button
                                                                 onClick={() => handleTogglePaid(player.id, p.isPaid)}
                                                                 disabled={payingUserId === player.id}
-                                                                className={`px-3 py-1.5 rounded-lg border font-black text-[10px] uppercase tracking-wider transition-all active:scale-95 ${p.isPaid ? 'bg-green-50 text-green-600 border-green-200' : 'bg-amber-50 text-amber-600 border-amber-200'}`}
+                                                                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border font-black text-[11px] uppercase tracking-wider transition-all active:scale-95 disabled:opacity-60 ${p.isPaid ? 'bg-green-500 text-white border-green-500 shadow-sm shadow-green-500/30' : 'bg-amber-50 text-amber-600 border-amber-200'}`}
                                                             >
-                                                                {p.isPaid ? 'Pago' : 'Pendente'}
+                                                                {payingUserId === player.id ? (
+                                                                    <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                                                                ) : p.isPaid ? (
+                                                                    <CheckCircle2 className="w-3.5 h-3.5" />
+                                                                ) : (
+                                                                    <Circle className="w-3.5 h-3.5" />
+                                                                )}
+                                                                {p.isPaid ? 'Pago' : 'Confirmar'}
                                                             </button>
                                                         ) : (
                                                             <div className="bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100 font-black text-slate-500 text-[10px]">
@@ -897,6 +991,59 @@ export default function SessionDetailsScreen() {
                     )}
                 </div>
             </div>
+
+            {showEditSession && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50" onClick={() => setShowEditSession(false)}>
+                    <div
+                        className="w-full max-w-md bg-white rounded-[2rem] shadow-2xl p-8 text-slate-900"
+                        onClick={e => e.stopPropagation()}
+                    >
+                        <div className="flex items-center justify-between mb-6">
+                            <h2 className="text-xl font-bold">Editar Racha</h2>
+                            <button onClick={() => setShowEditSession(false)} className="text-slate-400 hover:text-slate-600">
+                                <X size={20} />
+                            </button>
+                        </div>
+                        <form onSubmit={handleSaveSession} className="space-y-4">
+                            <div>
+                                <label className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2 ml-1">Título</label>
+                                <input
+                                    type="text"
+                                    value={editTitle}
+                                    onChange={e => setEditTitle(e.target.value)}
+                                    placeholder="Ex: Racha de Sexta"
+                                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 font-bold text-slate-800 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary/10"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2 ml-1">Data e Horário</label>
+                                <input
+                                    type="datetime-local"
+                                    required
+                                    value={editDate}
+                                    onChange={e => setEditDate(e.target.value)}
+                                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 font-bold text-slate-800 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary/10"
+                                />
+                            </div>
+                            <div>
+                                <label className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2 ml-1">Limite de Jogadores</label>
+                                <input
+                                    type="number"
+                                    min={2}
+                                    max={100}
+                                    required
+                                    value={editMaxPlayers}
+                                    onChange={e => setEditMaxPlayers(e.target.value)}
+                                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl p-4 font-bold text-slate-800 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary/10"
+                                />
+                            </div>
+                            <Button type="submit" fullWidth size="lg" isLoading={savingSession}>
+                                Salvar Alterações
+                            </Button>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
