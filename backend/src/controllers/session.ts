@@ -113,7 +113,7 @@ export const getSessions = async (req: AuthRequest, res: Response) => {
 export const draw = async (req: AuthRequest, res: Response) => {
     const { id } = req.params;
 
-    const safeData = drawTeamsSchema.safeParse(req.body);
+    const safeData = drawTeamsSchema.safeParse(req.body ?? {});
     if(!safeData.success) {
         res.status(400).json({ error: safeData.error.flatten().fieldErrors });
         return;
