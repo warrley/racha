@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/api';
 import { useRouter, useParams } from 'next/navigation';
-import { ChevronDown, CheckCircle2, Circle, Trophy, Goal, Play, Shuffle, CalendarDays, History, MapPin, Trash2, StopCircle, UserPlus, Users, Clock, Plus, X, Star, Send, Lock, Repeat, Wallet, Copy, Check, Settings2, Pencil, CheckSquare, Square } from 'lucide-react';
+import { ChevronDown, CheckCircle2, Circle, Trophy, Goal, Play, Shuffle, CalendarDays, History, MapPin, Trash2, StopCircle, UserPlus, Users, Clock, Plus, X, Star, Send, Lock, Repeat, Wallet, Copy, Check, Settings2, Pencil, CheckSquare, Square, TrendingDown, TrendingUp, Minus } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { Button } from '@/components/Button';
 import { UserAvatar } from '@/components/UserAvatar';
@@ -17,6 +17,25 @@ const toDatetimeLocalValue = (isoDate: string) => {
     const d = new Date(isoDate);
     const pad = (n: number) => String(n).padStart(2, '0');
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+};
+
+type RatingChoice = 'WORSE' | 'SAME' | 'BETTER';
+const RATING_DELTA = 2;
+const RATING_BASELINE_DEFAULT = 5;
+
+const getRatingBaseline = (averageGrade: number | null) => averageGrade ?? RATING_BASELINE_DEFAULT;
+
+const computeRatingScore = (averageGrade: number | null, choice: RatingChoice) => {
+    const baseline = Math.round(getRatingBaseline(averageGrade));
+    const raw = choice === 'WORSE' ? baseline - RATING_DELTA : choice === 'BETTER' ? baseline + RATING_DELTA : baseline;
+    return Math.min(10, Math.max(1, raw));
+};
+
+const inferRatingChoice = (currentGrade: number, averageGrade: number | null): RatingChoice => {
+    const baseline = Math.round(getRatingBaseline(averageGrade));
+    if (currentGrade > baseline) return 'BETTER';
+    if (currentGrade < baseline) return 'WORSE';
+    return 'SAME';
 };
 
 export default function SessionDetailsScreen() {
@@ -46,6 +65,7 @@ export default function SessionDetailsScreen() {
     const [ratingsStatus, setRatingsStatus] = useState<RatingsStatus | null>(null);
     const [showRatingModal, setShowRatingModal] = useState(false);
     const [ratingScores, setRatingScores] = useState<Record<string, number>>({});
+    const [ratingChoices, setRatingChoices] = useState<Record<string, RatingChoice>>({});
     const [submittingRatings, setSubmittingRatings] = useState(false);
     const [ratingsSubmitted, setRatingsSubmitted] = useState(false);
 
@@ -85,13 +105,18 @@ export default function SessionDetailsScreen() {
                     if (ratingsRes.data.hasVoted) {
                         setRatingsSubmitted(true);
                     }
-                    // Preencher scores existentes
+                    // Preencher scores/escolhas existentes
                     if (ratingsRes.data.players) {
-                        const existing: Record<string, number> = {};
+                        const existingScores: Record<string, number> = {};
+                        const existingChoices: Record<string, RatingChoice> = {};
                         ratingsRes.data.players.forEach((p: RatingPlayer) => {
-                            if (p.currentGrade !== null) existing[p.id] = p.currentGrade;
+                            if (p.currentGrade !== null) {
+                                existingScores[p.id] = p.currentGrade;
+                                existingChoices[p.id] = inferRatingChoice(p.currentGrade, p.averageGrade);
+                            }
                         });
-                        setRatingScores(existing);
+                        setRatingScores(existingScores);
+                        setRatingChoices(existingChoices);
                     }
                 } catch { /* Jogador não participou */ }
             }
@@ -281,6 +306,11 @@ export default function SessionDetailsScreen() {
                 alert("Erro ao excluir a partida.");
             }
         }
+    };
+
+    const handleRatingChoice = (p: RatingPlayer, choice: RatingChoice) => {
+        setRatingChoices(prev => ({ ...prev, [p.id]: choice }));
+        setRatingScores(prev => ({ ...prev, [p.id]: computeRatingScore(p.averageGrade, choice) }));
     };
 
     const handleSubmitRatings = async () => {
@@ -489,7 +519,7 @@ export default function SessionDetailsScreen() {
                                             <p className="text-sm font-medium opacity-80">
                                                 {ratingsSubmitted
                                                     ? `Você avaliou ${ratingsStatus.totalVotes} de ${ratingsStatus.totalPlayers} jogadores. Toque para editar.`
-                                                    : `Dê notas de 1 a 10 para ${ratingsStatus.totalPlayers} jogadores.`
+                                                    : `Diga como cada um dos ${ratingsStatus.totalPlayers} jogadores jogou hoje.`
                                                 }
                                             </p>
                                         </div>
@@ -500,7 +530,7 @@ export default function SessionDetailsScreen() {
                                             <div className="flex justify-between items-center">
                                                 <div>
                                                     <h3 className="font-black text-lg">Avaliação Pós-Jogo</h3>
-                                                    <p className="text-xs opacity-80 font-bold mt-1">Notas de 1 a 10 para cada jogador</p>
+                                                    <p className="text-xs opacity-80 font-bold mt-1">Como cada jogador se saiu hoje?</p>
                                                 </div>
                                                 <button
                                                     onClick={() => setShowRatingModal(false)}
@@ -511,35 +541,46 @@ export default function SessionDetailsScreen() {
                                             </div>
                                         </div>
 
-                                        <div className="p-4 space-y-3 max-h-[50vh] overflow-y-auto">
-                                            {ratingsStatus.players.map((p) => (
-                                                <div key={p.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-100">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="w-9 h-9 rounded-full border-2 border-slate-100 overflow-hidden bg-slate-100">
-                                                            <UserAvatar nickname={p.nickname || p.name} className="w-full h-full text-xs" />
+                                        <div className="p-4 space-y-3 max-h-[60vh] overflow-y-auto">
+                                            {ratingsStatus.players.map((p) => {
+                                                const choice = ratingChoices[p.id];
+                                                const options: { key: RatingChoice; label: string; icon: typeof TrendingDown; activeClass: string }[] = [
+                                                    { key: 'WORSE', label: 'Pior', icon: TrendingDown, activeClass: 'bg-red-500 border-red-500 text-white shadow-sm shadow-red-500/30' },
+                                                    { key: 'SAME', label: 'Igual', icon: Minus, activeClass: 'bg-slate-600 border-slate-600 text-white shadow-sm' },
+                                                    { key: 'BETTER', label: 'Melhor', icon: TrendingUp, activeClass: 'bg-green-500 border-green-500 text-white shadow-sm shadow-green-500/30' },
+                                                ];
+                                                return (
+                                                    <div key={p.id} className="p-3 bg-slate-50 rounded-2xl border border-slate-100 space-y-3">
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="w-9 h-9 rounded-full border-2 border-slate-100 overflow-hidden bg-slate-100 shrink-0">
+                                                                <UserAvatar nickname={p.nickname || p.name} className="w-full h-full text-xs" />
+                                                            </div>
+                                                            <div>
+                                                                <p className="font-black text-slate-800 text-sm">{p.nickname || p.name}</p>
+                                                                <p className="text-[10px] font-bold text-slate-400 uppercase">{p.position}</p>
+                                                            </div>
                                                         </div>
-                                                        <div>
-                                                            <p className="font-black text-slate-800 text-sm">{p.nickname || p.name}</p>
-                                                            <p className="text-[10px] font-bold text-slate-400 uppercase">{p.position}</p>
+                                                        <div className="grid grid-cols-3 gap-2">
+                                                            {options.map(opt => {
+                                                                const Icon = opt.icon;
+                                                                const active = choice === opt.key;
+                                                                return (
+                                                                    <button
+                                                                        key={opt.key}
+                                                                        onClick={() => handleRatingChoice(p, opt.key)}
+                                                                        className={`flex flex-col items-center justify-center gap-1 py-3 rounded-xl border font-black text-[11px] uppercase tracking-wide transition-all active:scale-95 ${
+                                                                            active ? opt.activeClass : 'bg-white border-slate-200 text-slate-400 hover:bg-slate-100'
+                                                                        }`}
+                                                                    >
+                                                                        <Icon className="w-5 h-5" />
+                                                                        {opt.label}
+                                                                    </button>
+                                                                );
+                                                            })}
                                                         </div>
                                                     </div>
-                                                    <div className="flex items-center gap-1">
-                                                        {[1,2,3,4,5,6,7,8,9,10].map(score => (
-                                                            <button
-                                                                key={score}
-                                                                onClick={() => setRatingScores(prev => ({ ...prev, [p.id]: score }))}
-                                                                className={`w-7 h-7 rounded-lg text-[10px] font-black transition-all ${
-                                                                    (ratingScores[p.id] || 0) >= score
-                                                                        ? 'bg-violet-500 text-white shadow-sm scale-105'
-                                                                        : 'bg-slate-200 text-slate-400 hover:bg-slate-300'
-                                                                }`}
-                                                            >
-                                                                {score}
-                                                            </button>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            ))}
+                                                );
+                                            })}
                                         </div>
 
                                         <div className="p-4 border-t border-slate-100">

@@ -66,7 +66,7 @@ export const getSessionRatingsStatus = async (sessionId: string, userId: string)
         include: {
             players: {
                 include: {
-                    player: { select: { id: true, name: true, nickname: true, position: true, avatarIndex: true } }
+                    player: { select: { id: true, name: true, nickname: true, position: true, avatarIndex: true, averageGrade: true } }
                 }
             }
         }

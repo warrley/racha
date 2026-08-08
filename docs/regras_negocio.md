@@ -12,7 +12,16 @@ O sistema adota uma nota média baseada nas avaliações pós-jogo enviadas pelo
 1.  **Abertura da Janela:** Quando o administrador encerra a sessão (`status: FINISHED`), a janela de votação é aberta automaticamente por um período padrão de **24 horas**.
 2.  **Quem pode votar:** Apenas jogadores que foram vinculados a algum time (`TeamPlayer`) na sessão finalizada.
 3.  **Quem pode ser votado:** Todos os outros jogadores participantes da sessão, exceto o próprio avaliador.
-4.  **Escala de Nota:** Valores inteiros de **1 a 10**.
+4.  **Escala de Nota:** Valores inteiros de **1 a 10** (armazenados em `SessionGrade.grade`).
+
+### 1.1.1 Entrada Simplificada (Pior / Igual / Melhor)
+Para otimizar a experiência em celular, o avaliador não digita/seleciona diretamente um número de 1 a 10. Em vez disso, para cada jogador avaliado, escolhe uma de três opções comparando o desempenho dele na partida com sua própria média histórica (`averageGrade`, ou **5** como ponto neutro caso o jogador ainda não tenha média):
+
+*   **Pior:** `nota = média − 2` (mínimo 1)
+*   **Igual:** `nota = média` (arredondada)
+*   **Melhor:** `nota = média + 2` (máximo 10)
+
+A nota numérica resultante é o que é enviado e armazenado em `SessionGrade.grade`; o restante do fluxo (cálculo de `sessionGrade` e `averageGrade`) é idêntico ao de uma nota 1-10 tradicional.
 
 ### 1.2 Cálculo da Média de Nota
 *   **Nota da Sessão ($N_s$):** Média aritmética simples de todas as notas recebidas pelo jogador de outros jogadores para aquela sessão específica:
