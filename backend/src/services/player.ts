@@ -19,7 +19,7 @@ export const findByEmail = async (email: string) => {
 export const createGuestPlayer = async (name: string) => {
     const email = `convidado-${crypto.randomUUID()}@guest.racha.local`;
     return await prisma.user.create({
-        data: { name, nickname: name, email, position: Position.MEIO }
+        data: { name, nickname: name, email, position: Position.MEIO, isGuest: true }
     });
 };
 

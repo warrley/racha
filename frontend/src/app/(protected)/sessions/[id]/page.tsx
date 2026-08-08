@@ -433,8 +433,8 @@ export default function SessionDetailsScreen() {
                     )}
                 </section>
 
-                {/* Pagamento via Pix (req 2.3) */}
-                {!isFinished && (
+                {/* Pagamento via Pix (req 2.3) — só antes do racha começar; durante a partida, ninguém está pagando */}
+                {isOpen && (
                     <section className="space-y-3">
                         {session.pix ? (
                             <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-5 space-y-4">

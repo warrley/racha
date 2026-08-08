@@ -128,6 +128,7 @@ exports.Prisma.UserScalarFieldEnum = {
   averageGrade: 'averageGrade',
   avatarIndex: 'avatarIndex',
   isAdmin: 'isAdmin',
+  isGuest: 'isGuest',
   pixKey: 'pixKey',
   resetToken: 'resetToken',
   resetTokenExpiresAt: 'resetTokenExpiresAt',

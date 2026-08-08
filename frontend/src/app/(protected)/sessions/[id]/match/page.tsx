@@ -275,20 +275,20 @@ export default function MatchScreen() {
             <div
                 className={`fixed top-0 inset-x-0 z-50 px-4 pt-3 transition-all duration-300 ease-out ${showFloatingTimer ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-4 pointer-events-none'}`}
             >
-                <div className="max-w-md mx-auto bg-slate-900/95 backdrop-blur-md rounded-2xl shadow-xl border border-slate-800 flex items-center justify-between gap-3 px-4 py-2.5">
-                    <span className="text-2xl font-black text-white tabular-nums tracking-tighter">{formatTime(timeLeft)}</span>
-                    <div className="flex items-center gap-2">
+                <div className="max-w-md mx-auto bg-slate-900/95 backdrop-blur-md rounded-3xl shadow-xl border border-slate-800 flex items-center justify-between gap-3 px-5 py-3.5">
+                    <span className="text-4xl font-black text-white tabular-nums tracking-tighter">{formatTime(timeLeft)}</span>
+                    <div className="flex items-center gap-3">
                         <button
                             onClick={toggleTimer}
-                            className={`w-9 h-9 flex items-center justify-center rounded-full transition-all active:scale-95 ${timerActive ? 'bg-amber-500 text-white' : 'bg-primary text-white'}`}
+                            className={`w-14 h-14 flex items-center justify-center rounded-full transition-all active:scale-95 shadow-lg ${timerActive ? 'bg-amber-500 text-white shadow-amber-500/30' : 'bg-primary text-white shadow-primary/30'}`}
                         >
-                            {timerActive ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
+                            {timerActive ? <Pause className="w-6 h-6 fill-current" /> : <Play className="w-6 h-6 fill-current ml-0.5" />}
                         </button>
                         <button
                             onClick={resetTimer}
-                            className="w-9 h-9 flex items-center justify-center rounded-full bg-slate-800 text-slate-300 hover:text-white transition-all active:scale-95"
+                            className="w-14 h-14 flex items-center justify-center rounded-full bg-slate-800 text-slate-300 hover:text-white transition-all active:scale-95"
                         >
-                            <RotateCcw className="w-4 h-4" />
+                            <RotateCcw className="w-5 h-5" />
                         </button>
                     </div>
                 </div>

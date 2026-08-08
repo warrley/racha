@@ -6,6 +6,7 @@ export const getRanking = async () => {
     await consolidateExpiredSessions();
 
     const players = await prisma.user.findMany({
+        where: { isGuest: false },
         select: {
             id: true,
             name: true,
@@ -44,6 +45,7 @@ export const getRanking = async () => {
 export const getTopScorers = async (limit: number = 10) => {
     const scorers = await prisma.goal.groupBy({
         by: ["playerId"],
+        where: { player: { isGuest: false } },
         _count: { id: true },
         orderBy: { _count: { id: "desc" } },
         take: limit

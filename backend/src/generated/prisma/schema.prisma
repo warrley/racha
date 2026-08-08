@@ -49,6 +49,7 @@ model User {
   averageGrade        Float?
   avatarIndex         Int       @default(0)
   isAdmin             Boolean   @default(false)
+  isGuest             Boolean   @default(false)
   pixKey              String?
   resetToken          String?   @unique
   resetTokenExpiresAt DateTime?
