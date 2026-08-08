@@ -11,23 +11,25 @@ O sistema adota uma nota média baseada nas avaliações pós-jogo enviadas pelo
 ### 1.1 Fluxo de Avaliação
 1.  **Abertura da Janela:** Quando o administrador encerra a sessão (`status: FINISHED`), a janela de votação é aberta automaticamente por um período padrão de **24 horas**.
 2.  **Quem pode votar:** Apenas jogadores que foram vinculados a algum time (`TeamPlayer`) na sessão finalizada.
-3.  **Quem pode ser votado:** Todos os outros jogadores participantes da sessão, exceto o próprio avaliador.
-4.  **Escala de Nota:** Valores inteiros de **1 a 10** (armazenados em `SessionGrade.grade`).
+3.  **Quem pode ser votado:** Todos os outros jogadores participantes da sessão, exceto o próprio avaliador. O envio só é aceito quando o avaliador votou em **todos** os demais participantes (não é permitido enviar avaliação parcial).
+4.  **Entrada do voto (Pior / Igual / Melhor):** para cada jogador avaliado, o avaliador escolhe uma de três opções comparando o desempenho dele na partida com o restante do grupo — sem digitar nota nenhuma. Isso é enviado e armazenado como um voto inteiro em `SessionGrade.grade`:
+    *   **Pior:** `-1`
+    *   **Igual:** `0`
+    *   **Melhor:** `+1`
+5.  **Escala da nota final (`averageGrade`):** **1 a 5**.
 
-### 1.1.1 Entrada Simplificada (Pior / Igual / Melhor)
-Para otimizar a experiência em celular, o avaliador não digita/seleciona diretamente um número de 1 a 10. Em vez disso, para cada jogador avaliado, escolhe uma de três opções comparando o desempenho dele na partida com sua própria média histórica (`averageGrade`, ou **5** como ponto neutro caso o jogador ainda não tenha média):
+### 1.2 Cálculo da Nota (ajuste incremental suave)
+Ao encerrar a janela de votação (`consolidateSessionRatings`), para cada jogador que recebeu ao menos um voto nesta sessão:
 
-*   **Pior:** `nota = média − 2` (mínimo 1)
-*   **Igual:** `nota = média` (arredondada)
-*   **Melhor:** `nota = média + 2` (máximo 10)
+1.  **Voto médio da sessão ($\Delta_{voto}$):** média aritmética simples dos votos (-1/0/+1) recebidos nesta sessão.
+2.  **Bônus de aproveitamento ($B_{vitorias}$):** baseado nas rodadas que o jogador **efetivamente jogou** nesta sessão — não no total de rodadas da sessão. Substituições temporárias (§3) são respeitadas: uma rodada em que o jogador foi substituído não conta para ele (conta para quem entrou no lugar).
+    $$B_{vitorias} = \left(\frac{\text{vitórias nas rodadas jogadas}}{\text{rodadas jogadas}} - 0.5\right) \times 0.2$$
+    Se o jogador não jogou nenhuma rodada na sessão (ex.: só ficou na fila/banco), $B_{vitorias} = 0$.
+3.  **Nova média histórica:** ajusta a média atual com um incremento pequeno — nunca substitui/recalcula do zero, para não mudar a nota bruscamente numa única sessão:
+    $$N_{geral}' = \text{clamp}\left(N_{geral} + 0{,}15 \times \Delta_{voto} + B_{vitorias},\ 1,\ 5\right)$$
+    Jogadores sem `averageGrade` ainda (nunca avaliados) partem de **3** (ponto neutro da escala 1-5) como valor inicial.
 
-A nota numérica resultante é o que é enviado e armazenado em `SessionGrade.grade`; o restante do fluxo (cálculo de `sessionGrade` e `averageGrade`) é idêntico ao de uma nota 1-10 tradicional.
-
-### 1.2 Cálculo da Média de Nota
-*   **Nota da Sessão ($N_s$):** Média aritmética simples de todas as notas recebidas pelo jogador de outros jogadores para aquela sessão específica:
-    $$N_s = \frac{\sum \text{Notas Recebidas na Sessão } s}{\text{Total de Avaliações Recebidas na Sessão } s}$$
-*   **Média Geral Histórica ($N_{geral}$):** É a média geral de todas as sessões que o jogador já participou. Ela é atualizada no perfil do usuário (`averageGrade`) assim que a janela de votações de uma sessão é fechada:
-    $$N_{geral} = \frac{\sum N_s}{\text{Quantidade de Sessões Participadas}}$$
+Esse desenho é intencional: um jogo ruim isolado move a nota poucos décimos, não pontos inteiros; uma sequência sustentada de avaliações negativas/positivas move a nota de forma gradual e crescente ao longo de várias sessões.
 
 ---
 

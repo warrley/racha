@@ -142,14 +142,14 @@ enum ParticipantStatus {
 ```
 
 #### SessionGrade (`session_grades`)
-Armazena a nota que um jogador dá para o outro em uma sessão específica.
+Armazena o voto Pior/Igual/Melhor que um jogador dá para o outro em uma sessão específica (ver `regras_negocio.md` §1.2 para como isso vira a nota final 1-5).
 ```prisma
 model SessionGrade {
   id          String   @id @default(uuid())
   sessionId   String
   evaluatorId String
   evaluatedId String
-  grade       Int      // Valor de 1 a 10
+  grade       Int      // -1 (Pior), 0 (Igual) ou +1 (Melhor)
   createdAt   DateTime @default(now())
 
   session     Session  @relation(fields: [sessionId], references: [id])

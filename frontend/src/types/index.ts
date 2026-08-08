@@ -137,7 +137,6 @@ export interface RatingPlayer {
     nickname: string | null;
     position: string;
     avatarIndex: number;
-    averageGrade: number | null;
     currentGrade: number | null;
 }
 

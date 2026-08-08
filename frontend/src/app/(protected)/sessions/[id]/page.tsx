@@ -21,21 +21,11 @@ const toDatetimeLocalValue = (isoDate: string) => {
 };
 
 type RatingChoice = 'WORSE' | 'SAME' | 'BETTER';
-const RATING_DELTA = 2;
-const RATING_BASELINE_DEFAULT = 5;
+const RATING_CHOICE_VALUE: Record<RatingChoice, number> = { WORSE: -1, SAME: 0, BETTER: 1 };
 
-const getRatingBaseline = (averageGrade: number | null) => averageGrade ?? RATING_BASELINE_DEFAULT;
-
-const computeRatingScore = (averageGrade: number | null, choice: RatingChoice) => {
-    const baseline = Math.round(getRatingBaseline(averageGrade));
-    const raw = choice === 'WORSE' ? baseline - RATING_DELTA : choice === 'BETTER' ? baseline + RATING_DELTA : baseline;
-    return Math.min(10, Math.max(1, raw));
-};
-
-const inferRatingChoice = (currentGrade: number, averageGrade: number | null): RatingChoice => {
-    const baseline = Math.round(getRatingBaseline(averageGrade));
-    if (currentGrade > baseline) return 'BETTER';
-    if (currentGrade < baseline) return 'WORSE';
+const inferRatingChoice = (currentGrade: number): RatingChoice => {
+    if (currentGrade > 0) return 'BETTER';
+    if (currentGrade < 0) return 'WORSE';
     return 'SAME';
 };
 
@@ -113,7 +103,7 @@ export default function SessionDetailsScreen() {
                         ratingsRes.data.players.forEach((p: RatingPlayer) => {
                             if (p.currentGrade !== null) {
                                 existingScores[p.id] = p.currentGrade;
-                                existingChoices[p.id] = inferRatingChoice(p.currentGrade, p.averageGrade);
+                                existingChoices[p.id] = inferRatingChoice(p.currentGrade);
                             }
                         });
                         setRatingScores(existingScores);
@@ -311,14 +301,13 @@ export default function SessionDetailsScreen() {
 
     const handleRatingChoice = (p: RatingPlayer, choice: RatingChoice) => {
         setRatingChoices(prev => ({ ...prev, [p.id]: choice }));
-        setRatingScores(prev => ({ ...prev, [p.id]: computeRatingScore(p.averageGrade, choice) }));
+        setRatingScores(prev => ({ ...prev, [p.id]: RATING_CHOICE_VALUE[choice] }));
     };
 
     const handleSubmitRatings = async () => {
         if (!ratingsStatus) return;
-        const ratings = Object.entries(ratingScores)
-            .filter(([, score]) => score > 0)
-            .map(([evaluatedId, score]) => ({ evaluatedId, score }));
+        const ratings = Object.entries(ratingChoices)
+            .map(([evaluatedId]) => ({ evaluatedId, score: ratingScores[evaluatedId] }));
 
         if (ratings.length < ratingsStatus.totalPlayers) {
             alert(`Avalie todos os jogadores antes de enviar (${ratings.length}/${ratingsStatus.totalPlayers}).`);
@@ -640,7 +629,7 @@ export default function SessionDetailsScreen() {
 
                                         <div className="p-4 border-t border-slate-100 space-y-2">
                                             {(() => {
-                                                const votedCount = ratingsStatus.players.filter(p => (ratingScores[p.id] || 0) > 0).length;
+                                                const votedCount = ratingsStatus.players.filter(p => ratingChoices[p.id] !== undefined).length;
                                                 const allVoted = votedCount === ratingsStatus.totalPlayers;
                                                 return (
                                                     <>
