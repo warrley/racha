@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import { Prisma, Position } from "../generated/prisma";
 import { prisma } from "../utils/prisma";
 
@@ -8,6 +9,18 @@ const toValidPosition = (value?: string): Position =>
 
 export const findByEmail = async (email: string) => {
     return await prisma.user.findUnique({ where: { email } });
+};
+
+/**
+ * Cria um jogador convidado (sem login): apenas nome, sem senha, com um
+ * e-mail-placeholder único para satisfazer a constraint do schema. Usado
+ * para quem vai completar o racha uma única vez e não quer criar conta.
+ */
+export const createGuestPlayer = async (name: string) => {
+    const email = `convidado-${crypto.randomUUID()}@guest.racha.local`;
+    return await prisma.user.create({
+        data: { name, nickname: name, email, position: Position.MEIO }
+    });
 };
 
 export const verifyPassword = async (id: string, plainPassword: string) => {

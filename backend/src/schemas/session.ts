@@ -14,6 +14,10 @@ export const updateSessionSchema = z.object({
     maxPlayers: z.number().int().min(2).max(100).optional()
 });
 
+export const addGuestSchema = z.object({
+    name: z.string().min(2, "Nome deve ter pelo menos 2 caracteres")
+});
+
 export const drawTeamsSchema = z.object({
     playerIds: z.array(z.string()).optional()
 });

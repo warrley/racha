@@ -1,8 +1,8 @@
 import { Response } from "express";
 import { AuthRequest } from "../middleware/privateRoute";
-import { createSessionSchema, drawTeamsSchema, updatePaymentInfoSchema, updateSessionSchema } from "../schemas/session";
+import { createSessionSchema, drawTeamsSchema, updatePaymentInfoSchema, updateSessionSchema, addGuestSchema } from "../schemas/session";
 import { createSession, executeDraw, findSessionById, findAllSessions, closeSession, startSession, joinSession, leaveSession, updatePaymentInfo, updateSession, setParticipantPaymentStatus } from "../services/session";
-import { findById } from "../services/player";
+import { findById, createGuestPlayer } from "../services/player";
 import { generatePixPayload } from "../utils/pix";
 
 export const create = async (req: AuthRequest, res: Response) => {
@@ -232,6 +232,30 @@ export const addManual = async (req: AuthRequest, res: Response) => {
 
     try {
         const participant = await joinSession(id, userId);
+        res.json({ error: null, participant });
+    } catch (err: any) {
+        res.status(400).json({ error: err.message });
+    }
+};
+
+export const addGuest = async (req: AuthRequest, res: Response) => {
+    const id = req.params.id as string;
+
+    const safeData = addGuestSchema.safeParse(req.body);
+    if (!safeData.success) {
+        res.status(400).json({ error: safeData.error.flatten().fieldErrors });
+        return;
+    }
+
+    const requester = await findById(req.userId as string);
+    if (!requester?.isAdmin) {
+        res.status(403).json({ error: "Apenas administradores podem adicionar convidados" });
+        return;
+    }
+
+    try {
+        const guest = await createGuestPlayer(safeData.data.name);
+        const participant = await joinSession(id, guest.id);
         res.json({ error: null, participant });
     } catch (err: any) {
         res.status(400).json({ error: err.message });

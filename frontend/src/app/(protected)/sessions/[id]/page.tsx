@@ -43,6 +43,8 @@ export default function SessionDetailsScreen() {
     const [allPlayers, setAllPlayers] = useState<Player[]>([]);
     const [selectedBulkAddIds, setSelectedBulkAddIds] = useState<string[]>([]);
     const [bulkAdding, setBulkAdding] = useState(false);
+    const [guestName, setGuestName] = useState('');
+    const [addingGuest, setAddingGuest] = useState(false);
     const [isDrawing, setIsDrawing] = useState(false);
 
     // Edição da sessão (título/data/limite de jogadores)
@@ -156,6 +158,22 @@ export default function SessionDetailsScreen() {
             alert(e.response?.data?.error || "Erro ao cancelar presença.");
         } finally {
             setActionLoading(false);
+        }
+    };
+
+    const handleAddGuest = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!guestName.trim()) return;
+        try {
+            setAddingGuest(true);
+            await api.post(`/sessions/${sessionId}/participants/guest`, { name: guestName.trim() });
+            setGuestName('');
+            await fetchSessionData();
+        } catch (e: any) {
+            console.error(e);
+            alert(e.response?.data?.error || "Erro ao adicionar convidado.");
+        } finally {
+            setAddingGuest(false);
         }
     };
 
@@ -775,6 +793,35 @@ export default function SessionDetailsScreen() {
                                 </div>
                             );
                         })()}
+
+                        {isAdmin && (
+                            <form onSubmit={handleAddGuest} className="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 flex flex-col gap-3">
+                                <div>
+                                    <h4 className="font-black text-sm flex items-center gap-2 text-slate-800"><UserPlus className="w-4 h-4 text-primary" /> Adicionar Convidado</h4>
+                                    <p className="text-[10px] text-slate-400 font-bold">Para quem vai completar o racha uma vez só, sem precisar criar conta.</p>
+                                </div>
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        value={guestName}
+                                        onChange={e => setGuestName(e.target.value)}
+                                        placeholder="Nome do convidado"
+                                        className="flex-1 bg-slate-50 border border-slate-200 rounded-xl p-3 font-bold text-slate-800 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary"
+                                    />
+                                    <button
+                                        type="submit"
+                                        disabled={!guestName.trim() || addingGuest}
+                                        className="bg-primary text-white font-black text-xs px-4 rounded-xl hover:bg-primary-hover active:scale-95 transition-all disabled:opacity-50 h-[46px]"
+                                    >
+                                        {addingGuest ? (
+                                            <div className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                                        ) : (
+                                            'Adicionar'
+                                        )}
+                                    </button>
+                                </div>
+                            </form>
+                        )}
 
                         <div className="space-y-6">
                             <div className="space-y-3">

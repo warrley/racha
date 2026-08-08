@@ -385,6 +385,36 @@ mainRouter.post("/sessions/:id/participants/manual", privateRoute, sessionContro
 
 /**
  * @openapi
+ * /sessions/{id}/participants/guest:
+ *   post:
+ *     summary: Adicionar jogador convidado sem login (admin)
+ *     tags: [Sessions]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [name]
+ *             properties:
+ *               name:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Convidado criado e adicionado à sessão
+ */
+mainRouter.post("/sessions/:id/participants/guest", privateRoute, sessionController.addGuest);
+
+/**
+ * @openapi
  * /sessions/{id}/participants/manual/{userId}:
  *   delete:
  *     summary: Remover qualquer participante manualmente (admin)
