@@ -129,6 +129,18 @@ const buildHighlights = (stats: Player | null, lastSession: Session | null, user
         });
     }
 
+    // Marco de rachas jogados (a cada 5)
+    const totalSessions = stats.totalSessions || 0;
+    if (totalSessions > 0 && totalSessions % 5 === 0) {
+        highlights.push({
+            id: 'sessions-milestone',
+            icon: CalendarDays,
+            gradient: 'from-rose-500 to-pink-600',
+            title: `${totalSessions} rachas jogados! 🎉`,
+            subtitle: 'Presença é a base de todo grande jogador.'
+        });
+    }
+
     // Total de gols na temporada (fallback sempre disponível se já marcou algum)
     if ((stats.totalGoals || 0) > 0) {
         highlights.push({
@@ -137,6 +149,17 @@ const buildHighlights = (stats: Player | null, lastSession: Session | null, user
             gradient: 'from-cyan-500 to-blue-600',
             title: `${stats.totalGoals} gols na temporada`,
             subtitle: 'Bora aumentar esse número no próximo racha?'
+        });
+    }
+
+    // Veterano: já jogou bastante mas ainda não caiu em nenhuma outra categoria
+    if (totalSessions >= 3 && highlights.length === 0) {
+        highlights.push({
+            id: 'veteran',
+            icon: Flame,
+            gradient: 'from-orange-500 to-red-600',
+            title: `${totalSessions} rachas no currículo`,
+            subtitle: 'Presença constante — a rotina te fortalece.'
         });
     }
 
@@ -250,7 +273,7 @@ export default function HomeScreen() {
     }
 
     const isOnFire = stats?.badges?.some(b => b.type === 'ON_FIRE');
-    const highlights = buildHighlights(stats, lastSessionDetail, user?.id).slice(0, 2);
+    const highlights = buildHighlights(stats, lastSessionDetail, user?.id).slice(0, 4);
 
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900 pb-32">
@@ -312,14 +335,19 @@ export default function HomeScreen() {
 
                 {highlights.length > 0 && (
                     <section className="space-y-4">
-                        <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">Destaques</h3>
-                        <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                            <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">Destaques</h3>
+                            {highlights.length > 1 && (
+                                <span className="text-[10px] font-bold text-slate-300">Arraste para ver mais →</span>
+                            )}
+                        </div>
+                        <div className="flex gap-3 overflow-x-auto pb-2 -mx-6 px-6 snap-x snap-mandatory">
                             {highlights.map(h => {
                                 const Icon = h.icon;
                                 return (
                                     <div
                                         key={h.id}
-                                        className={`bg-linear-to-br ${h.gradient} rounded-3xl p-5 text-white shadow-lg relative overflow-hidden flex items-center gap-4`}
+                                        className={`bg-linear-to-br ${h.gradient} rounded-3xl p-5 text-white shadow-lg relative overflow-hidden flex items-center gap-4 w-[80%] max-w-xs shrink-0 snap-start`}
                                     >
                                         <div className="absolute -right-8 -top-8 w-28 h-28 bg-white/10 rounded-full blur-2xl" />
                                         <div className="relative z-10 bg-white/15 rounded-2xl p-3 shrink-0">
