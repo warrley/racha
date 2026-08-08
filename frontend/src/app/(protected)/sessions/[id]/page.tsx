@@ -519,11 +519,11 @@ export default function SessionDetailsScreen() {
                                                 <p className="text-[10px] font-bold text-slate-400 uppercase">{player.position}</p>
                                             </div>
                                         </div>
-                                        {isAdmin ? (
+                                        {(isAdmin || player.id === user?.id) ? (
                                             <button
                                                 onClick={() => handleTogglePaid(player.id, p.isPaid)}
                                                 disabled={payingUserId === player.id}
-                                                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border font-black text-[11px] uppercase tracking-wider transition-all active:scale-95 disabled:opacity-60 ${p.isPaid ? 'bg-green-500 text-white border-green-500 shadow-sm shadow-green-500/30' : 'bg-amber-50 text-amber-600 border-amber-200'}`}
+                                                className={`flex items-center justify-center gap-1.5 w-[118px] py-2 rounded-xl border font-black text-[11px] uppercase tracking-wider transition-all active:scale-95 disabled:opacity-60 ${p.isPaid ? 'bg-green-500 text-white border-green-500 shadow-sm shadow-green-500/30' : 'bg-amber-50 text-amber-600 border-amber-200'}`}
                                             >
                                                 {payingUserId === player.id ? (
                                                     <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" />
@@ -535,7 +535,7 @@ export default function SessionDetailsScreen() {
                                                 {p.isPaid ? 'Pago' : 'Marcar Pago'}
                                             </button>
                                         ) : (
-                                            <span className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border font-black text-[11px] uppercase tracking-wider ${p.isPaid ? 'bg-green-500 text-white border-green-500' : 'bg-amber-50 text-amber-600 border-amber-200'}`}>
+                                            <span className={`flex items-center justify-center gap-1.5 w-[118px] py-2 rounded-xl border font-black text-[11px] uppercase tracking-wider ${p.isPaid ? 'bg-green-500 text-white border-green-500' : 'bg-amber-50 text-amber-600 border-amber-200'}`}>
                                                 {p.isPaid ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Circle className="w-3.5 h-3.5" />}
                                                 {p.isPaid ? 'Pago' : 'Pendente'}
                                             </span>
@@ -806,7 +806,7 @@ export default function SessionDetailsScreen() {
                                         session.participants?.filter(p => p.status === 'CONFIRMED').map(p => {
                                             const player = p.user;
                                             if (!player) return null;
-                                            const isPaidTracked = isAdmin && !!session.price;
+                                            const isPaidTracked = (isAdmin || player.id === user?.id) && !!session.price;
                                             return (
                                                 <div
                                                     key={p.id}
@@ -826,7 +826,7 @@ export default function SessionDetailsScreen() {
                                                             <button
                                                                 onClick={() => handleTogglePaid(player.id, p.isPaid)}
                                                                 disabled={payingUserId === player.id}
-                                                                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border font-black text-[11px] uppercase tracking-wider transition-all active:scale-95 disabled:opacity-60 ${p.isPaid ? 'bg-green-500 text-white border-green-500 shadow-sm shadow-green-500/30' : 'bg-amber-50 text-amber-600 border-amber-200'}`}
+                                                                className={`flex items-center justify-center gap-1.5 w-[118px] py-2 rounded-xl border font-black text-[11px] uppercase tracking-wider transition-all active:scale-95 disabled:opacity-60 ${p.isPaid ? 'bg-green-500 text-white border-green-500 shadow-sm shadow-green-500/30' : 'bg-amber-50 text-amber-600 border-amber-200'}`}
                                                             >
                                                                 {payingUserId === player.id ? (
                                                                     <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" />

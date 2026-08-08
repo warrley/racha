@@ -112,8 +112,9 @@ export const setPaymentStatus = async (req: AuthRequest, res: Response) => {
     };
 
     const user = await findById(req.userId as string);
-    if(!user?.isAdmin) {
-        res.status(403).json({ error: "Apenas administradores podem marcar pagamentos" });
+    const isSelf = req.userId === userId;
+    if(!user?.isAdmin && !isSelf) {
+        res.status(403).json({ error: "Você só pode marcar seu próprio pagamento" });
         return;
     };
 
