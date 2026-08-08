@@ -2074,7 +2074,6 @@ export namespace Prisma {
     averageGrade: number | null
     avatarIndex: number | null
     isAdmin: boolean | null
-    isGuest: boolean | null
     pixKey: string | null
     resetToken: string | null
     resetTokenExpiresAt: Date | null
@@ -2092,7 +2091,6 @@ export namespace Prisma {
     averageGrade: number | null
     avatarIndex: number | null
     isAdmin: boolean | null
-    isGuest: boolean | null
     pixKey: string | null
     resetToken: string | null
     resetTokenExpiresAt: Date | null
@@ -2110,7 +2108,6 @@ export namespace Prisma {
     averageGrade: number
     avatarIndex: number
     isAdmin: number
-    isGuest: number
     pixKey: number
     resetToken: number
     resetTokenExpiresAt: number
@@ -2140,7 +2137,6 @@ export namespace Prisma {
     averageGrade?: true
     avatarIndex?: true
     isAdmin?: true
-    isGuest?: true
     pixKey?: true
     resetToken?: true
     resetTokenExpiresAt?: true
@@ -2158,7 +2154,6 @@ export namespace Prisma {
     averageGrade?: true
     avatarIndex?: true
     isAdmin?: true
-    isGuest?: true
     pixKey?: true
     resetToken?: true
     resetTokenExpiresAt?: true
@@ -2176,7 +2171,6 @@ export namespace Prisma {
     averageGrade?: true
     avatarIndex?: true
     isAdmin?: true
-    isGuest?: true
     pixKey?: true
     resetToken?: true
     resetTokenExpiresAt?: true
@@ -2281,7 +2275,6 @@ export namespace Prisma {
     averageGrade: number | null
     avatarIndex: number
     isAdmin: boolean
-    isGuest: boolean
     pixKey: string | null
     resetToken: string | null
     resetTokenExpiresAt: Date | null
@@ -2318,7 +2311,6 @@ export namespace Prisma {
     averageGrade?: boolean
     avatarIndex?: boolean
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: boolean
     resetToken?: boolean
     resetTokenExpiresAt?: boolean
@@ -2348,7 +2340,6 @@ export namespace Prisma {
     averageGrade?: boolean
     avatarIndex?: boolean
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: boolean
     resetToken?: boolean
     resetTokenExpiresAt?: boolean
@@ -2366,7 +2357,6 @@ export namespace Prisma {
     averageGrade?: boolean
     avatarIndex?: boolean
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: boolean
     resetToken?: boolean
     resetTokenExpiresAt?: boolean
@@ -2384,14 +2374,13 @@ export namespace Prisma {
     averageGrade?: boolean
     avatarIndex?: boolean
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: boolean
     resetToken?: boolean
     resetTokenExpiresAt?: boolean
     createdAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "supabaseId" | "name" | "nickname" | "position" | "averageGrade" | "avatarIndex" | "isAdmin" | "isGuest" | "pixKey" | "resetToken" | "resetTokenExpiresAt" | "createdAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "supabaseId" | "name" | "nickname" | "position" | "averageGrade" | "avatarIndex" | "isAdmin" | "pixKey" | "resetToken" | "resetTokenExpiresAt" | "createdAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     teamPlayers?: boolean | User$teamPlayersArgs<ExtArgs>
     goals?: boolean | User$goalsArgs<ExtArgs>
@@ -2435,7 +2424,6 @@ export namespace Prisma {
       averageGrade: number | null
       avatarIndex: number
       isAdmin: boolean
-      isGuest: boolean
       pixKey: string | null
       resetToken: string | null
       resetTokenExpiresAt: Date | null
@@ -2884,7 +2872,6 @@ export namespace Prisma {
     readonly averageGrade: FieldRef<"User", 'Float'>
     readonly avatarIndex: FieldRef<"User", 'Int'>
     readonly isAdmin: FieldRef<"User", 'Boolean'>
-    readonly isGuest: FieldRef<"User", 'Boolean'>
     readonly pixKey: FieldRef<"User", 'String'>
     readonly resetToken: FieldRef<"User", 'String'>
     readonly resetTokenExpiresAt: FieldRef<"User", 'DateTime'>
@@ -14144,7 +14131,6 @@ export namespace Prisma {
     averageGrade: 'averageGrade',
     avatarIndex: 'avatarIndex',
     isAdmin: 'isAdmin',
-    isGuest: 'isGuest',
     pixKey: 'pixKey',
     resetToken: 'resetToken',
     resetTokenExpiresAt: 'resetTokenExpiresAt',
@@ -14432,7 +14418,6 @@ export namespace Prisma {
     averageGrade?: FloatNullableFilter<"User"> | number | null
     avatarIndex?: IntFilter<"User"> | number
     isAdmin?: BoolFilter<"User"> | boolean
-    isGuest?: BoolFilter<"User"> | boolean
     pixKey?: StringNullableFilter<"User"> | string | null
     resetToken?: StringNullableFilter<"User"> | string | null
     resetTokenExpiresAt?: DateTimeNullableFilter<"User"> | Date | string | null
@@ -14461,7 +14446,6 @@ export namespace Prisma {
     averageGrade?: SortOrderInput | SortOrder
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
-    isGuest?: SortOrder
     pixKey?: SortOrderInput | SortOrder
     resetToken?: SortOrderInput | SortOrder
     resetTokenExpiresAt?: SortOrderInput | SortOrder
@@ -14494,7 +14478,6 @@ export namespace Prisma {
     averageGrade?: FloatNullableFilter<"User"> | number | null
     avatarIndex?: IntFilter<"User"> | number
     isAdmin?: BoolFilter<"User"> | boolean
-    isGuest?: BoolFilter<"User"> | boolean
     pixKey?: StringNullableFilter<"User"> | string | null
     resetTokenExpiresAt?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -14522,7 +14505,6 @@ export namespace Prisma {
     averageGrade?: SortOrderInput | SortOrder
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
-    isGuest?: SortOrder
     pixKey?: SortOrderInput | SortOrder
     resetToken?: SortOrderInput | SortOrder
     resetTokenExpiresAt?: SortOrderInput | SortOrder
@@ -14548,7 +14530,6 @@ export namespace Prisma {
     averageGrade?: FloatNullableWithAggregatesFilter<"User"> | number | null
     avatarIndex?: IntWithAggregatesFilter<"User"> | number
     isAdmin?: BoolWithAggregatesFilter<"User"> | boolean
-    isGuest?: BoolWithAggregatesFilter<"User"> | boolean
     pixKey?: StringNullableWithAggregatesFilter<"User"> | string | null
     resetToken?: StringNullableWithAggregatesFilter<"User"> | string | null
     resetTokenExpiresAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
@@ -15231,7 +15212,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -15260,7 +15240,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -15289,7 +15268,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -15318,7 +15296,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -15347,7 +15324,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -15365,7 +15341,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -15383,7 +15358,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -16179,7 +16153,6 @@ export namespace Prisma {
     averageGrade?: SortOrder
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
-    isGuest?: SortOrder
     pixKey?: SortOrder
     resetToken?: SortOrder
     resetTokenExpiresAt?: SortOrder
@@ -16202,7 +16175,6 @@ export namespace Prisma {
     averageGrade?: SortOrder
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
-    isGuest?: SortOrder
     pixKey?: SortOrder
     resetToken?: SortOrder
     resetTokenExpiresAt?: SortOrder
@@ -16220,7 +16192,6 @@ export namespace Prisma {
     averageGrade?: SortOrder
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
-    isGuest?: SortOrder
     pixKey?: SortOrder
     resetToken?: SortOrder
     resetTokenExpiresAt?: SortOrder
@@ -19150,7 +19121,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -19178,7 +19148,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -19211,7 +19180,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -19239,7 +19207,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -19272,7 +19239,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -19300,7 +19266,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -19493,7 +19458,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19521,7 +19485,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19560,7 +19523,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19588,7 +19550,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19627,7 +19588,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19655,7 +19615,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -20155,7 +20114,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -20183,7 +20141,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -20262,7 +20219,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -20290,7 +20246,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -20748,7 +20703,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -20776,7 +20730,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -20809,7 +20762,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -20837,7 +20789,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -20955,7 +20906,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -20983,7 +20933,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -21022,7 +20971,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -21050,7 +20998,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -21111,7 +21058,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -21139,7 +21085,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -21222,7 +21167,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -21250,7 +21194,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -21278,7 +21221,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -21306,7 +21248,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -21397,7 +21338,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -21425,7 +21365,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -21553,7 +21492,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -21581,7 +21519,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -21678,7 +21615,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -21706,7 +21642,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -21781,7 +21716,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -21809,7 +21743,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -21842,7 +21775,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -21870,7 +21802,6 @@ export namespace Prisma {
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
-    isGuest?: boolean
     pixKey?: string | null
     resetToken?: string | null
     resetTokenExpiresAt?: Date | string | null
@@ -21967,7 +21898,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -21995,7 +21925,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -22034,7 +21963,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -22062,7 +21990,6 @@ export namespace Prisma {
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
-    isGuest?: BoolFieldUpdateOperationsInput | boolean
     pixKey?: NullableStringFieldUpdateOperationsInput | string | null
     resetToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetTokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

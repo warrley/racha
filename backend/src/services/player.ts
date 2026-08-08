@@ -7,6 +7,12 @@ const VALID_POSITIONS = Object.values(Position);
 const toValidPosition = (value?: string): Position =>
     VALID_POSITIONS.includes(value as Position) ? (value as Position) : Position.MEIO;
 
+// Domínio-placeholder usado nos e-mails de jogadores convidados (sem login).
+// Não há flag isGuest no schema para não adicionar uma coluna a todos os
+// usuários por causa de um punhado de convidados — a identificação é feita
+// pelo padrão do e-mail.
+export const GUEST_EMAIL_DOMAIN = "@guest.racha.local";
+
 export const findByEmail = async (email: string) => {
     return await prisma.user.findUnique({ where: { email } });
 };
@@ -17,9 +23,9 @@ export const findByEmail = async (email: string) => {
  * para quem vai completar o racha uma única vez e não quer criar conta.
  */
 export const createGuestPlayer = async (name: string) => {
-    const email = `convidado-${crypto.randomUUID()}@guest.racha.local`;
+    const email = `convidado-${crypto.randomUUID()}${GUEST_EMAIL_DOMAIN}`;
     return await prisma.user.create({
-        data: { name, nickname: name, email, position: Position.MEIO, isGuest: true }
+        data: { name, nickname: name, email, position: Position.MEIO }
     });
 };
 

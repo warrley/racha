@@ -1,12 +1,13 @@
 import { prisma } from "../utils/prisma";
 import { consolidateExpiredSessions } from "./rating";
+import { GUEST_EMAIL_DOMAIN } from "./player";
 
 export const getRanking = async () => {
     // Self-healing: consolidar sessões expiradas antes de exibir ranking
     await consolidateExpiredSessions();
 
     const players = await prisma.user.findMany({
-        where: { isGuest: false },
+        where: { NOT: { email: { endsWith: GUEST_EMAIL_DOMAIN } } },
         select: {
             id: true,
             name: true,
@@ -45,7 +46,7 @@ export const getRanking = async () => {
 export const getTopScorers = async (limit: number = 10) => {
     const scorers = await prisma.goal.groupBy({
         by: ["playerId"],
-        where: { player: { isGuest: false } },
+        where: { player: { NOT: { email: { endsWith: GUEST_EMAIL_DOMAIN } } } },
         _count: { id: true },
         orderBy: { _count: { id: "desc" } },
         take: limit
