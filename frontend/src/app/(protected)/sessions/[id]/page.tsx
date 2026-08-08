@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/api';
+import Link from 'next/link';
 import { useRouter, useParams } from 'next/navigation';
 import { ChevronDown, CheckCircle2, Circle, Trophy, Goal, Play, Shuffle, CalendarDays, History, MapPin, Trash2, StopCircle, UserPlus, Users, Clock, Plus, X, Star, Send, Lock, Repeat, Wallet, Copy, Check, Settings2, Pencil, CheckSquare, Square, TrendingDown, TrendingUp, Minus } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
@@ -518,7 +519,7 @@ export default function SessionDetailsScreen() {
                                         key={p.id}
                                         className={`flex items-center justify-between p-4 border rounded-2xl transition-all ${p.isPaid ? 'bg-green-50/60 border-green-200' : 'bg-white border-slate-100'}`}
                                     >
-                                        <div className="flex items-center gap-3">
+                                        <Link href={`/players/${player.id}`} className="flex items-center gap-3">
                                             <div className="w-10 h-10 rounded-full border-2 border-slate-100 shrink-0 relative overflow-hidden bg-slate-100">
                                                 <UserAvatar nickname={player.nickname || player.name} className="w-full h-full text-base" />
                                             </div>
@@ -526,7 +527,7 @@ export default function SessionDetailsScreen() {
                                                 <p className="font-black text-slate-800 text-sm">{player.nickname || player.name}</p>
                                                 <p className="text-[10px] font-bold text-slate-400 uppercase">{player.position}</p>
                                             </div>
-                                        </div>
+                                        </Link>
                                         {(isAdmin || player.id === user?.id) ? (
                                             <button
                                                 onClick={() => handleTogglePaid(player.id, p.isPaid)}
@@ -849,7 +850,7 @@ export default function SessionDetailsScreen() {
                                                     key={p.id}
                                                     className={`flex items-center justify-between p-4 border rounded-2xl transition-all ${isPaidTracked && p.isPaid ? 'bg-green-50/60 border-green-200' : 'bg-white border-slate-100 hover:bg-slate-50'}`}
                                                 >
-                                                    <div className="flex items-center gap-3">
+                                                    <Link href={`/players/${player.id}`} className="flex items-center gap-3">
                                                         <div className="w-10 h-10 rounded-full border-2 border-slate-100 shrink-0 relative overflow-hidden bg-slate-100">
                                                             <UserAvatar nickname={player.nickname || player.name} className="w-full h-full text-base" />
                                                         </div>
@@ -857,7 +858,7 @@ export default function SessionDetailsScreen() {
                                                             <p className="font-black text-slate-800 text-sm">{player.nickname || player.name}</p>
                                                             <p className="text-[10px] font-bold text-slate-400 uppercase">{player.position}</p>
                                                         </div>
-                                                    </div>
+                                                    </Link>
                                                     <div className="flex items-center gap-2">
                                                         {isPaidTracked ? (
                                                             <button
@@ -920,7 +921,7 @@ export default function SessionDetailsScreen() {
                                                     key={p.id}
                                                     className="flex items-center justify-between p-4 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-all border-l-4 border-l-amber-400"
                                                 >
-                                                    <div className="flex items-center gap-3">
+                                                    <Link href={`/players/${player.id}`} className="flex items-center gap-3">
                                                         <span className="text-xs font-black text-amber-500 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-100">#{index + 1}</span>
                                                         <div className="w-10 h-10 rounded-full border-2 border-slate-100 shrink-0 relative overflow-hidden bg-slate-100">
                                                             <UserAvatar nickname={player.nickname || player.name} className="w-full h-full text-base" />
@@ -929,7 +930,7 @@ export default function SessionDetailsScreen() {
                                                             <p className="font-black text-slate-800 text-sm">{player.nickname || player.name}</p>
                                                             <p className="text-[10px] font-bold text-slate-400 uppercase">{player.position}</p>
                                                         </div>
-                                                    </div>
+                                                    </Link>
                                                     <div className="flex items-center gap-2">
                                                         <div className="bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100 font-black text-slate-500 text-[10px]">
                                                             {player.rating} Pts
@@ -979,7 +980,7 @@ export default function SessionDetailsScreen() {
                                             const p = tp.player;
                                             return (
                                                 <div key={idx} className="flex justify-between items-center group">
-                                                    <div className="flex items-center gap-3">
+                                                    <Link href={`/players/${p.id}`} className="flex items-center gap-3">
                                                         <div className="w-8 h-8 rounded-full border-2 border-slate-100 overflow-hidden bg-slate-100 relative shadow-sm">
                                                             <UserAvatar nickname={p.nickname} className="w-full h-full text-xs" />
                                                         </div>
@@ -987,7 +988,7 @@ export default function SessionDetailsScreen() {
                                                             <p className="font-black text-slate-800 text-sm tracking-tight">{p.nickname}</p>
                                                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{p.position}</p>
                                                         </div>
-                                                    </div>
+                                                    </Link>
                                                     <div className="bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100 font-black text-slate-500 text-[10px]">
                                                         {p.rating}
                                                     </div>

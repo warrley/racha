@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { User, Star, Goal, Flame } from 'lucide-react';
 import { UserAvatar } from '@/components/UserAvatar';
 import { api } from '@/lib/api';
@@ -79,7 +80,7 @@ export default function RankingScreen() {
         borderColor: string
     ) => {
         return (
-            <div className={`flex flex-col items-center w-1/3 ${crown ? 'z-10 scale-105' : ''}`}>
+            <Link href={player ? `/players/${player.id}` : '#'} className={`flex flex-col items-center w-1/3 ${crown ? 'z-10 scale-105' : ''} ${!player ? 'pointer-events-none' : ''}`}>
                 <div className="relative mb-2">
                     <div className={`${avatarSize} rounded-full border-4 ${borderColor} overflow-hidden shadow-lg bg-slate-50 flex items-center justify-center`}>
                         <UserAvatar nickname={player?.nickname || ''} className="w-full h-full text-lg" />
@@ -95,7 +96,7 @@ export default function RankingScreen() {
                     </p>
                 </div>
                 <div className={`w-full ${podiumColor} ${podiumHeight} mt-3 rounded-t-3xl shadow-sm border-x border-t ${crown ? 'border-amber-400/30' : 'border-slate-100'}`} />
-            </div>
+            </Link>
         );
     };
 
@@ -150,7 +151,7 @@ export default function RankingScreen() {
 
                 <div className="w-full space-y-3 mb-10">
                     {rest.length > 0 ? rest.map((player) => (
-                        <div key={player.rank} className="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 flex items-center justify-between group active:scale-95 transition-all">
+                        <Link key={player.rank} href={`/players/${player.id}`} className="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 flex items-center justify-between group active:scale-95 transition-all">
                             <div className="flex items-center gap-4">
                                 <span className="w-6 text-sm font-black text-slate-400">#{player.rank}</span>
                                 <div className="w-10 h-10 rounded-full border-2 border-slate-100 overflow-hidden bg-slate-100 shrink-0 relative">
@@ -168,7 +169,7 @@ export default function RankingScreen() {
                                 <span className="text-sm font-black text-slate-700">{activeTab === 'rating' ? (player.averageGrade?.toFixed(1) ?? '-') : player.rating} {activeTab === 'goals' && <span className="text-[10px] text-slate-400 ml-1">GOLS</span>}</span>
                                 {player.isOnFire && <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />}
                             </div>
-                        </div>
+                        </Link>
                     )) : (
                         <EmptyState 
                             icon={User}
