@@ -13,6 +13,7 @@ export interface Player {
     totalSessions?: number;
     totalGoals?: number;
     totalWins?: number;
+    totalLosses?: number;
     winRate?: number | string;
     badges?: Badge[];
     rank?: number;
