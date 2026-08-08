@@ -413,6 +413,12 @@ export const joinSession = async (sessionId: string, userId: string) => {
     if (existing) throw new Error("Jogador já está inscrito neste racha");
 
     return await prisma.$transaction(async (tx) => {
+        // Trava a linha da sessão para serializar joins concorrentes (ex: admin
+        // adicionando vários jogadores de uma vez) — sem isso, requisições em
+        // paralelo podem ler a mesma contagem antes de qualquer uma comitar e
+        // todas concluírem (erradamente) que ainda há vaga.
+        await tx.$queryRaw`SELECT id FROM sessions WHERE id = ${sessionId} FOR UPDATE`;
+
         const confirmedCount = await tx.sessionParticipant.count({
             where: {
                 sessionId,
