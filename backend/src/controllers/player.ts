@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { AuthRequest } from "../middleware/privateRoute";
 import { updatePlayerSchema } from "../schemas/player";
-import { findById, findAll, update, getPlayerStats, getPlayerHistory } from "../services/player";
+import { findById, findAll, update, verifyPassword, getPlayerStats, getPlayerHistory } from "../services/player";
 
 export const getPlayers = async (req: AuthRequest, res: Response) => {
     const players = await findAll();
@@ -66,8 +66,17 @@ export const updatePlayer = async (req: AuthRequest, res: Response) => {
         }
     }
 
+    if (safeData.data.password) {
+        const isValid = await verifyPassword(userId, safeData.data.currentPassword as string);
+        if (!isValid) {
+            res.status(400).json({ error: "Senha atual incorreta" });
+            return;
+        }
+    }
+
     try {
-        await update(userId, safeData.data);
+        const { currentPassword, ...updateData } = safeData.data;
+        await update(userId, updateData);
         res.json({ error: null });
     } catch (e: any) {
         if (e.code === "P2002") {

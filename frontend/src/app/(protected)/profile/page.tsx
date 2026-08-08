@@ -29,6 +29,7 @@ export default function ProfileScreen() {
     const [editEmail, setEditEmail] = useState('');
     const [editPosition, setEditPosition] = useState('MEIO');
     const [editPassword, setEditPassword] = useState('');
+    const [editCurrentPassword, setEditCurrentPassword] = useState('');
     const [showEditPassword, setShowEditPassword] = useState(false);
     const [savingProfile, setSavingProfile] = useState(false);
     const [profileError, setProfileError] = useState<string | null>(null);
@@ -92,7 +93,10 @@ export default function ProfileScreen() {
                 email: editEmail.trim(),
                 position: editPosition
             };
-            if (editPassword) payload.password = editPassword;
+            if (editPassword) {
+                payload.password = editPassword;
+                payload.currentPassword = editCurrentPassword;
+            }
 
             const res = await api.put('/players', payload);
             if (res.data.error) {
@@ -102,6 +106,7 @@ export default function ProfileScreen() {
             }
             setProfile(prev => prev ? { ...prev, name: editName.trim(), nickname: editNickname.trim(), email: editEmail.trim(), position: editPosition as any } : prev);
             setEditPassword('');
+            setEditCurrentPassword('');
             setShowEditProfile(false);
         } catch (e: any) {
             setProfileError(e.response?.data?.error || 'Erro ao salvar perfil.');
@@ -330,6 +335,17 @@ export default function ProfileScreen() {
                                     </button>
                                 }
                             />
+                            {editPassword && (
+                                <Input
+                                    label="Senha Atual (confirme para trocar)"
+                                    type="password"
+                                    required
+                                    value={editCurrentPassword}
+                                    onChange={e => setEditCurrentPassword(e.target.value)}
+                                    placeholder="••••••••"
+                                    icon={Lock}
+                                />
+                            )}
                             {profileError && <p className="text-xs font-bold text-red-500">{profileError}</p>}
                             <Button type="submit" fullWidth size="lg" isLoading={savingProfile}>
                                 Salvar Alterações

@@ -10,6 +10,12 @@ export const findByEmail = async (email: string) => {
     return await prisma.user.findUnique({ where: { email } });
 };
 
+export const verifyPassword = async (id: string, plainPassword: string) => {
+    const user = await prisma.user.findUnique({ where: { id }, select: { password: true } });
+    if (!user?.password) return false;
+    return await bcrypt.compare(plainPassword, user.password);
+};
+
 export const findById = async (id: string) => {
     return await prisma.user.findUnique({ 
         where: { id },

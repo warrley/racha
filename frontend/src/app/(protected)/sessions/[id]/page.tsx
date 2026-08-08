@@ -725,7 +725,7 @@ export default function SessionDetailsScreen() {
                                                                 ) : (
                                                                     <Circle className="w-3.5 h-3.5" />
                                                                 )}
-                                                                {p.isPaid ? 'Pago' : 'Confirmar'}
+                                                                {p.isPaid ? 'Pago' : 'Marcar Pago'}
                                                             </button>
                                                         ) : (
                                                             <div className="bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100 font-black text-slate-500 text-[10px]">
