@@ -46,7 +46,7 @@ export default function MatchScreen() {
         );
         observer.observe(target);
         return () => observer.disconnect();
-    }, []);
+    }, [session]);
 
     // Carregar do localStorage ao iniciar
     useEffect(() => {

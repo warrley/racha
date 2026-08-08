@@ -70,7 +70,7 @@ Simplificação do pagamento sem intermediários financeiros de forma 100% gratu
 
 1.  **Configuração da Chave:** O administrador preenche sua chave Pix (E-mail, CPF, Telefone ou Chave Aleatória) em seu perfil ou na sessão.
 2.  **Exibição:** Ao confirmar presença, o sistema gera dinamicamente a string **Pix Copia e Cola** padronizada com o valor da cota e a chave Pix.
-3.  **Confirmação:** O jogador faz a transferência no banco de preferência. O fluxo de baixa de pagamento é **manual**: tanto o administrador (conferindo seu extrato bancário) quanto o próprio jogador (autodeclarando) podem marcar/desmarcar "Pago" ao lado do nome — o administrador pode alterar o status de qualquer participante, o jogador só o próprio. O status de pagamento continua visível e editável após o encerramento do racha (`status: FINISHED`).
+3.  **Confirmação:** O jogador faz a transferência no banco de preferência. O fluxo de baixa de pagamento é **manual**: tanto o administrador (conferindo seu extrato bancário) quanto o próprio jogador (autodeclarando) podem marcar/desmarcar "Pago" ao lado do nome — o administrador pode alterar o status de qualquer participante, o jogador só o próprio. O status de pagamento continua visível e editável após o encerramento do racha (`status: FINISHED`), mas apenas por até **24 horas** após `finishedAt` — depois disso a lista de pagamentos deixa de ser exibida na tela da sessão.
 
 ---
 

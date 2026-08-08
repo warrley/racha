@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { setCookie } from 'nookies';
 import { api } from '@/lib/api';
@@ -14,7 +14,7 @@ import { useAuth } from '@/contexts/AuthContext';
 
 const LoginScreen = () => {
     const router = useRouter();
-    const { refreshUser } = useAuth();
+    const { user, loading: authLoading, refreshUser } = useAuth();
     const [activeTab, setActiveTab] = useState<'entrar' | 'criar'>('entrar');
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -27,6 +27,12 @@ const LoginScreen = () => {
     const [name, setName] = useState('');
     const [nickname, setNickname] = useState('');
     const [position, setPosition] = useState('MEIO');
+
+    useEffect(() => {
+        if (!authLoading && user) {
+            router.push('/home');
+        }
+    }, [authLoading, user, router]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -42,7 +48,7 @@ const LoginScreen = () => {
                         toast.error(res.data.error);
                     } else {
                         toast.success('Login realizado com sucesso!');
-                        setCookie(undefined, 'metanol.token', res.data.token, { maxAge: 60 * 60 * 24 * 7, path: '/' });
+                        setCookie(undefined, 'metanol.token', res.data.token, { maxAge: 60 * 60 * 24 * 14, path: '/' });
                         await refreshUser();
                         router.push('/home');
                     }
@@ -57,7 +63,7 @@ const LoginScreen = () => {
                         }
                     } else {
                         toast.success('Conta criada com sucesso!');
-                        setCookie(undefined, 'metanol.token', res.data.token, { maxAge: 60 * 60 * 24 * 7, path: '/' });
+                        setCookie(undefined, 'metanol.token', res.data.token, { maxAge: 60 * 60 * 24 * 14, path: '/' });
                         await refreshUser();
                         router.push('/home');
                     }
@@ -125,6 +131,14 @@ const LoginScreen = () => {
         }
     };
 
+    if (authLoading || user) {
+        return (
+            <div className="min-h-screen bg-primary flex items-center justify-center">
+                <div className="w-8 h-8 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+            </div>
+        );
+    }
+
     return (
         <div className="min-h-screen bg-primary flex flex-col items-center justify-center p-4 font-sans text-white">
 
@@ -160,7 +174,7 @@ const LoginScreen = () => {
                                     required
                                     value={name}
                                     onChange={e => setName(e.target.value)}
-                                    placeholder="Seu nome completo"
+                                    placeholder="Seu nome"
                                     icon={User}
                                 />
                                 <Input

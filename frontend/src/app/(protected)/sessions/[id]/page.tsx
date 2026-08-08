@@ -353,6 +353,7 @@ export default function SessionDetailsScreen() {
     const isInProgress = session.status === 'IN_PROGRESS';
     const isOpen = session.status === 'OPEN';
     const confirmedCount = session.participants?.filter(p => p.status === 'CONFIRMED').length || 0;
+    const paymentWindowOpen = !session.finishedAt || (Date.now() - new Date(session.finishedAt).getTime()) < 24 * 60 * 60 * 1000;
 
     return (
         <div className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-900 pb-40">
@@ -484,8 +485,8 @@ export default function SessionDetailsScreen() {
                     </section>
                 )}
 
-                {/* Pagamentos após o encerramento do racha */}
-                {isFinished && session.price != null && (
+                {/* Pagamentos após o encerramento do racha (visível por até 24h) */}
+                {isFinished && session.price != null && paymentWindowOpen && (
                     <section className="space-y-3">
                         <h3 className="font-black text-slate-800 text-sm flex items-center gap-2 px-1">
                             <Wallet className="w-4 h-4 text-green-600" /> Pagamentos

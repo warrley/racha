@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 import Link from 'next/link';
-import { Trophy, Medal, Goal, ChevronRight, LogOut, CalendarDays, Wallet, Check, Pencil, User, Mail, Lock, Eye, EyeOff, X } from 'lucide-react';
+import { Trophy, Medal, Goal, ChevronRight, LogOut, CalendarDays, Wallet, Check, Pencil, User, Mail, Lock, Eye, EyeOff, X, TrendingUp } from 'lucide-react';
 import styles from './profile.module.css';
 import { getHexColor } from '@/lib/colors';
 import { Input } from '@/components/Input';
@@ -139,43 +139,43 @@ export default function ProfileScreen() {
 
     return (
         <div className={styles.container}>
-            <header className={styles.header}>
-                <div className={styles.headerLeft}>
-                    <div className={styles.avatar}>
-                        {profile.nickname ? profile.nickname.charAt(0).toUpperCase() : '?'}
-                    </div>
-                    <div className={styles.userInfo}>
-                        <h1>{profile.nickname}</h1>
-                        <p>{profile.position} • Nota Média {profile.averageGrade?.toFixed(1) ?? '-'}</p>
-                    </div>
-                </div>
-                <div className="flex items-center gap-2">
+            <div className={styles.hero}>
+                <div className={styles.heroGlow} />
+                <div className={styles.heroTop}>
                     <button
                         onClick={() => { setProfileError(null); setShowEditProfile(true); }}
                         title="Editar Perfil"
-                        className={styles.logoutButton}
+                        className={styles.heroIconBtn}
                     >
-                        <Pencil size={20} />
+                        <Pencil size={18} />
                     </button>
                     <button
                         onClick={handleLogout}
                         title="Sair"
-                        className={styles.logoutButton}
+                        className={styles.heroIconBtn}
                     >
-                        <LogOut size={24} />
+                        <LogOut size={18} />
                     </button>
                 </div>
-            </header>
+                <div className={styles.heroAvatar}>
+                    {profile.nickname ? profile.nickname.charAt(0).toUpperCase() : '?'}
+                </div>
+                <h1 className={styles.heroName}>{profile.nickname}</h1>
+                <p className={styles.heroSub}>{profile.position} • Nota Média {profile.averageGrade?.toFixed(1) ?? '-'}</p>
+            </div>
 
             <main className={styles.mainContent}>
                 <div className={styles.statsGrid}>
                     {[
-                        { label: 'Rachas', value: profile.totalSessions || 0 },
-                        { label: 'Gols', value: profile.totalGoals || 0 },
-                        { label: 'Vitórias', value: profile.totalWins || 0 },
-                        { label: 'Aproveitamento', value: `${profile.winRate}%` },
+                        { label: 'Rachas', value: profile.totalSessions || 0, icon: CalendarDays, bg: '#eff6ff', color: '#2563eb' },
+                        { label: 'Gols', value: profile.totalGoals || 0, icon: Goal, bg: '#ecfdf5', color: '#059669' },
+                        { label: 'Vitórias', value: profile.totalWins || 0, icon: Trophy, bg: '#fffbeb', color: '#d97706' },
+                        { label: 'Aproveitamento', value: `${profile.winRate}%`, icon: TrendingUp, bg: '#f5f3ff', color: '#7c3aed' },
                     ].map(stat => (
                         <div key={stat.label} className={styles.statCard}>
+                            <div className={styles.statIcon} style={{ backgroundColor: stat.bg }}>
+                                <stat.icon size={16} color={stat.color} />
+                            </div>
                             <span className={styles.statValue}>{stat.value}</span>
                             <span className={styles.statLabel}>{stat.label}</span>
                         </div>
