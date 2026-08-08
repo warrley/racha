@@ -27,7 +27,7 @@ Ao encerrar a janela de votação (`consolidateSessionRatings`), para cada jogad
     Se o jogador não jogou nenhuma rodada na sessão (ex.: só ficou na fila/banco), $B_{vitorias} = 0$.
 3.  **Nova média histórica:** ajusta a média atual com um incremento pequeno — nunca substitui/recalcula do zero, para não mudar a nota bruscamente numa única sessão:
     $$N_{geral}' = \text{clamp}\left(N_{geral} + 0{,}15 \times \Delta_{voto} + B_{vitorias},\ 1,\ 5\right)$$
-    Jogadores sem `averageGrade` ainda (nunca avaliados) partem de **3** (ponto neutro da escala 1-5) como valor inicial.
+    Jogadores sem `averageGrade` ainda (nunca avaliados) partem de **2.5** (ponto neutro da escala 1-5) como valor inicial.
 
 Esse desenho é intencional: um jogo ruim isolado move a nota poucos décimos, não pontos inteiros; uma sequência sustentada de avaliações negativas/positivas move a nota de forma gradual e crescente ao longo de várias sessões.
 
@@ -38,7 +38,7 @@ Esse desenho é intencional: um jogo ruim isolado move a nota poucos décimos, n
 O sorteio (`executeDraw`) distribui os jogadores participantes em 3 times (normalmente denominados Vermelho, Azul e Verde, ou Time A, B e C), buscando equilibrar a soma de habilidades.
 
 ### 2.1 Passos do Balanceamento por Nota Média
-1.  **Ordenação:** Coleta-se a lista de IDs de jogadores confirmados para a sessão e busca-se suas respectivas Notas Médias (`averageGrade`). A lista é ordenada do maior para o menor.
+1.  **Ordenação:** Coleta-se a lista de IDs de jogadores confirmados para a sessão e busca-se suas respectivas Notas Médias (`averageGrade`). Jogador que ainda não tem nota (nunca avaliado) entra com **2.5** (ponto neutro da escala 1-5, mesmo valor usado como partida no cálculo incremental de nota — ver §1.2). A lista é ordenada do maior para o menor, com uma pequena aleatoriedade somada a cada nota apenas para fins de ordenação (± 0,2, não persistida) — isso evita que o mesmo grupo de confirmados sempre gere exatamente os mesmos times enquanto as notas não mudam, sem comprometer o equilíbrio geral por nível.
 2.  **Distribuição em Potes (Snake Draft):**
     Para garantir times equilibrados, os jogadores são distribuídos ciclicamente (estilo serpentina):
     *   **Pote 1 (Melhores):** Jogadores de rank 1, 2, 3

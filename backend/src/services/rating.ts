@@ -192,7 +192,7 @@ const RATING_ALPHA = 0.15; // peso do voto desta sessão sobre a média históri
 const WIN_BONUS_FACTOR = 0.2; // peso do aproveitamento de rodadas desta sessão
 const GRADE_MIN = 1;
 const GRADE_MAX = 5;
-const GRADE_NEUTRAL = 3; // ponto de partida para jogador sem média ainda
+const GRADE_NEUTRAL = 2.5; // ponto de partida para jogador sem média ainda
 
 /**
  * Calcula, para cada jogador que efetivamente jogou pelo menos uma rodada da

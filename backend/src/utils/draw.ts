@@ -19,12 +19,19 @@ export const drawTeams = (players: PlayerForDraw[]): DrawnTeam[] => {
 
     const numTeams = players.length / 5;
 
-    // Ordenar por averageGrade (maior primeiro); null vai para o final
-    const sorted = [...players].sort((a, b) => {
-        const gradeA = a.averageGrade ?? -1;
-        const gradeB = b.averageGrade ?? -1;
-        return gradeB - gradeA;
-    });
+    // Jogador sem nota ainda começa com 2.5 (ponto neutro da escala 1-5),
+    // mesmo valor usado como ponto de partida no cálculo de averageGrade
+    const NEUTRAL_GRADE = 2.5;
+
+    // Ordenar por averageGrade (maior primeiro), com um pequeno embaralhamento
+    // aleatório para não gerar sempre os mesmos times quando as notas não
+    // mudam entre sorteios — jogadores com notas próximas podem trocar de
+    // posição, mas o equilíbrio geral por nível continua respeitado.
+    const JITTER = 0.4;
+    const sorted = [...players]
+        .map(p => ({ player: p, sortGrade: (p.averageGrade ?? NEUTRAL_GRADE) + (Math.random() - 0.5) * JITTER }))
+        .sort((a, b) => b.sortGrade - a.sortGrade)
+        .map(({ player }) => player);
 
     const teamDefs = [
         { name: "Time A", color: "RED" },
@@ -47,7 +54,7 @@ export const drawTeams = (players: PlayerForDraw[]): DrawnTeam[] => {
             : numTeams - 1 - posInRound;
 
         teams[teamIndex].players.push(sorted[i]);
-        teams[teamIndex].totalRating += sorted[i].averageGrade ?? 0;
+        teams[teamIndex].totalRating += sorted[i].averageGrade ?? NEUTRAL_GRADE;
     };
 
     // Arredondar totalRating para 1 casa decimal
