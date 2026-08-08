@@ -499,7 +499,7 @@ export default function SessionDetailsScreen() {
                             <>
                                 {!showRatingModal ? (
                                     <div
-                                        onClick={() => !ratingsSubmitted && setShowRatingModal(true)}
+                                        onClick={() => setShowRatingModal(true)}
                                         className={`bg-gradient-to-br ${ratingsSubmitted ? 'from-green-500 to-emerald-600' : 'from-violet-500 to-purple-600'} rounded-3xl p-6 text-white shadow-lg relative overflow-hidden cursor-pointer active:scale-[0.98] transition-all`}
                                     >
                                         <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
