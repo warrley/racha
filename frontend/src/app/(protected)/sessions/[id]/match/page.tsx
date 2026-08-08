@@ -260,6 +260,7 @@ export default function MatchScreen() {
                 goals,
                 substitutions
             });
+            resetTimer();
             alert("Partida salva com sucesso!");
             router.push(`/sessions/${sessionId}`);
         } catch (e) {
