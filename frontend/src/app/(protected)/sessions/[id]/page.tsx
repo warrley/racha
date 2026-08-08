@@ -5,6 +5,7 @@ import { api } from '@/lib/api';
 import { useRouter, useParams } from 'next/navigation';
 import { ChevronDown, CheckCircle2, Circle, Trophy, Goal, Play, Shuffle, CalendarDays, History, MapPin, Trash2, StopCircle, UserPlus, Users, Clock, Plus, X, Star, Send, Lock, Repeat, Wallet, Copy, Check, Settings2, Pencil, CheckSquare, Square, TrendingDown, TrendingUp, Minus } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
+import toast from 'react-hot-toast';
 import { Button } from '@/components/Button';
 import { UserAvatar } from '@/components/UserAvatar';
 import { Header } from '@/components/Header';
@@ -319,8 +320,8 @@ export default function SessionDetailsScreen() {
             .filter(([, score]) => score > 0)
             .map(([evaluatedId, score]) => ({ evaluatedId, score }));
 
-        if (ratings.length === 0) {
-            alert("Avalie pelo menos um jogador.");
+        if (ratings.length < ratingsStatus.totalPlayers) {
+            alert(`Avalie todos os jogadores antes de enviar (${ratings.length}/${ratingsStatus.totalPlayers}).`);
             return;
         }
 
@@ -328,6 +329,8 @@ export default function SessionDetailsScreen() {
             setSubmittingRatings(true);
             await api.post(`/sessions/${sessionId}/ratings`, { ratings });
             setRatingsSubmitted(true);
+            setShowRatingModal(false);
+            toast.success('Avaliações enviadas com sucesso!');
             await fetchSessionData();
         } catch (e: any) {
             console.error(e);
@@ -492,6 +495,58 @@ export default function SessionDetailsScreen() {
                     </section>
                 )}
 
+                {/* Pagamentos após o encerramento do racha */}
+                {isFinished && session.price != null && (
+                    <section className="space-y-3">
+                        <h3 className="font-black text-slate-800 text-sm flex items-center gap-2 px-1">
+                            <Wallet className="w-4 h-4 text-green-600" /> Pagamentos
+                        </h3>
+                        <div className="space-y-2">
+                            {session.participants?.filter(p => p.status === 'CONFIRMED').map(p => {
+                                const player = p.user;
+                                if (!player) return null;
+                                return (
+                                    <div
+                                        key={p.id}
+                                        className={`flex items-center justify-between p-4 border rounded-2xl transition-all ${p.isPaid ? 'bg-green-50/60 border-green-200' : 'bg-white border-slate-100'}`}
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 rounded-full border-2 border-slate-100 shrink-0 relative overflow-hidden bg-slate-100">
+                                                <UserAvatar nickname={player.nickname || player.name} className="w-full h-full text-base" />
+                                            </div>
+                                            <div>
+                                                <p className="font-black text-slate-800 text-sm">{player.nickname || player.name}</p>
+                                                <p className="text-[10px] font-bold text-slate-400 uppercase">{player.position}</p>
+                                            </div>
+                                        </div>
+                                        {isAdmin ? (
+                                            <button
+                                                onClick={() => handleTogglePaid(player.id, p.isPaid)}
+                                                disabled={payingUserId === player.id}
+                                                className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border font-black text-[11px] uppercase tracking-wider transition-all active:scale-95 disabled:opacity-60 ${p.isPaid ? 'bg-green-500 text-white border-green-500 shadow-sm shadow-green-500/30' : 'bg-amber-50 text-amber-600 border-amber-200'}`}
+                                            >
+                                                {payingUserId === player.id ? (
+                                                    <div className="w-3.5 h-3.5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                                                ) : p.isPaid ? (
+                                                    <CheckCircle2 className="w-3.5 h-3.5" />
+                                                ) : (
+                                                    <Circle className="w-3.5 h-3.5" />
+                                                )}
+                                                {p.isPaid ? 'Pago' : 'Marcar Pago'}
+                                            </button>
+                                        ) : (
+                                            <span className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border font-black text-[11px] uppercase tracking-wider ${p.isPaid ? 'bg-green-500 text-white border-green-500' : 'bg-amber-50 text-amber-600 border-amber-200'}`}>
+                                                {p.isPaid ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Circle className="w-3.5 h-3.5" />}
+                                                {p.isPaid ? 'Pago' : 'Pendente'}
+                                            </span>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </section>
+                )}
+
                 {/* Seção de Avaliação Pós-Jogo */}
                 {isFinished && ratingsStatus && (
                     <section className="space-y-4">
@@ -583,15 +638,29 @@ export default function SessionDetailsScreen() {
                                             })}
                                         </div>
 
-                                        <div className="p-4 border-t border-slate-100">
-                                            <Button
-                                                onClick={handleSubmitRatings}
-                                                isLoading={submittingRatings}
-                                                fullWidth
-                                                icon={Send}
-                                            >
-                                                Enviar Avaliações ({Object.values(ratingScores).filter(s => s > 0).length}/{ratingsStatus.totalPlayers})
-                                            </Button>
+                                        <div className="p-4 border-t border-slate-100 space-y-2">
+                                            {(() => {
+                                                const votedCount = ratingsStatus.players.filter(p => (ratingScores[p.id] || 0) > 0).length;
+                                                const allVoted = votedCount === ratingsStatus.totalPlayers;
+                                                return (
+                                                    <>
+                                                        {!allVoted && (
+                                                            <p className="text-center text-[11px] font-bold text-amber-600">
+                                                                Avalie todos os jogadores para poder enviar.
+                                                            </p>
+                                                        )}
+                                                        <Button
+                                                            onClick={handleSubmitRatings}
+                                                            isLoading={submittingRatings}
+                                                            disabled={!allVoted}
+                                                            fullWidth
+                                                            icon={Send}
+                                                        >
+                                                            Enviar Avaliações ({votedCount}/{ratingsStatus.totalPlayers})
+                                                        </Button>
+                                                    </>
+                                                );
+                                            })()}
                                         </div>
                                     </div>
                                 )}
