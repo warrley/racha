@@ -164,18 +164,18 @@ model SessionGrade {
 Controla quem substituiu temporariamente quem em uma rodada específica do racha. A troca vale exclusivamente para o `Round` em que foi registrada (req 2.6); a escalação original é restaurada automaticamente na rodada seguinte por não haver persistência além do registro do `Round`.
 ```prisma
 model RoundSubstitution {
-  id          Int    @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   roundId     String
   teamId      String  // time afetado pela troca (necessário pois um Round tem dois times)
-  outPlayerId String  // jogador original que saiu (deve pertencer à escalação permanente do time)
-  inPlayerId  String  // jogador substituto que entrou (não pode já estar escalado nesta partida)
+  outPlayerId String? // jogador original que saiu (deve pertencer à escalação permanente do time); nulo = reforço, preenchendo uma vaga vazia de um time sorteado com menos de 5 jogadores (ver regras_negocio.md §2.2/§3.1.5), sem substituir ninguém
+  inPlayerId  String  // jogador substituto/reforço que entrou (não pode já estar escalado nesta partida)
 
   round     Round @relation(fields: [roundId], references: [id], onDelete: Cascade)
   team      Team  @relation(fields: [teamId], references: [id])
-  outPlayer User  @relation("SubstitutionOut", fields: [outPlayerId], references: [id])
+  outPlayer User? @relation("SubstitutionOut", fields: [outPlayerId], references: [id])
   inPlayer  User  @relation("SubstitutionIn", fields: [inPlayerId], references: [id])
 
-  @@unique([roundId, outPlayerId]) // Um jogador só pode ser substituído uma vez por rodada
+  @@unique([roundId, outPlayerId]) // Um jogador só pode ser substituído uma vez por rodada; múltiplos reforços (outPlayerId nulo) no mesmo round/team são permitidos, pois o Postgres trata cada NULL como distinto na constraint de unicidade
   @@map("round_substitutions")
 }
 ```

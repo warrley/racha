@@ -7,7 +7,7 @@ type GoalInput = {
 
 type SubstitutionInput = {
     teamId: string;
-    outPlayerId: string;
+    outPlayerId: string | null;
     inPlayerId: string;
 };
 
@@ -72,20 +72,31 @@ export const registerRound = async (
         if(sub.outPlayerId === sub.inPlayerId) {
             throw new Error("O jogador substituto não pode ser o mesmo que o substituído");
         }
-        if(!permanentRoster[sub.teamId].has(sub.outPlayerId)) {
-            throw new Error("O jogador substituído não pertence a este time");
-        }
         if(permanentRoster[homeTeamId].has(sub.inPlayerId) || permanentRoster[awayTeamId].has(sub.inPlayerId)) {
             throw new Error("O jogador substituto já está escalado em um dos times desta rodada");
-        }
-        if(usedOutPlayers.has(sub.outPlayerId)) {
-            throw new Error("Cada jogador só pode ser substituído uma vez por rodada");
         }
         if(usedInPlayers.has(sub.inPlayerId)) {
             throw new Error("Cada jogador substituto só pode entrar uma vez por rodada");
         }
-        usedOutPlayers.add(sub.outPlayerId);
         usedInPlayers.add(sub.inPlayerId);
+
+        if(sub.outPlayerId === null) {
+            // Reforço: preenche uma vaga vazia de um time incompleto (menos de 5
+            // jogadores na escalação permanente), sem substituir ninguém.
+            if(effectiveRoster[sub.teamId].size >= 5) {
+                throw new Error("Time já está completo nesta rodada");
+            }
+            effectiveRoster[sub.teamId].add(sub.inPlayerId);
+            continue;
+        }
+
+        if(!permanentRoster[sub.teamId].has(sub.outPlayerId)) {
+            throw new Error("O jogador substituído não pertence a este time");
+        }
+        if(usedOutPlayers.has(sub.outPlayerId)) {
+            throw new Error("Cada jogador só pode ser substituído uma vez por rodada");
+        }
+        usedOutPlayers.add(sub.outPlayerId);
 
         effectiveRoster[sub.teamId].delete(sub.outPlayerId);
         effectiveRoster[sub.teamId].add(sub.inPlayerId);

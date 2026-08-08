@@ -50,6 +50,12 @@ O sorteio (`executeDraw`) distribui os jogadores participantes em 3 times (norma
     *   **Time 3:** Jogador 3, Jogador 4, Jogador 9, ...
 3.  **Validação de Goleiros:** Caso existam goleiros fixos no banco, eles devem ser previamente fixados em cada um dos times antes de rodar a distribuição dos jogadores de linha.
 
+### 2.2 Quantidade de Confirmados Não Múltipla de 5
+
+O sorteio aceita entre **10 e 20** jogadores confirmados. Quando o total não é múltiplo de 5, formam-se o máximo de times cheios (5 jogadores) e **um time remanescente menor** com o restante (ex.: 12 jogadores → dois times de 5 e um time de 2; 13 → dois times de 5 e um time de 3). A distribuição serpentina (§2.1.2) continua valendo para todos os times, inclusive o remanescente — ele só sai da rotação de distribuição quando atinge seu tamanho final. Não é permitido formar mais de 4 times.
+
+O time remanescente joga suas rodadas incompleto: as vagas que faltam para chegar a 5 são preenchidas a cada rodada por jogadores emprestados do time que folga naquela rodada, usando o mesmo mecanismo de substituição temporária do §3 — não é permitido convocar jogadores fora da sessão.
+
 ---
 
 ## 3. Substituições Temporárias em Rodadas (Rounds)
@@ -61,6 +67,7 @@ Permite que o administrador do racha substitua um jogador lesionado ou ausente p
 2.  **Gols:** Se o jogador substituto marcar um gol na rodada, o gol é computado na tabela `goals` com o ID do jogador substituto, mas a soma de gols da rodada é computada para o time em que ele estava atuando.
 3.  **Resultados da Rodada:** Para fins de vitórias e derrotas (usados para a contagem de estatísticas), o jogador substituto acumula a vitória/empate/derrota referente a essa rodada em sua ficha pessoal. O jogador original substituído não ganha nem perde pontos nessa rodada específica.
 4.  **Restauração:** Ao iniciar a próxima rodada do racha, a escalação padrão do time é reestabelecida automaticamente com base na tabela `TeamPlayer`.
+5.  **Reforço (time incompleto):** Quando o time sorteado tem menos de 5 jogadores (§2.2), suas vagas vazias são preenchidas por jogadores emprestados do time que folga na rodada, usando o mesmo registro `RoundSubstitution`, porém com `outPlayerId` nulo — não há jogador "substituído", apenas um reforço adicionado à escalação efetiva daquela rodada. Um time não pode ultrapassar 5 jogadores efetivos em uma rodada. Fora essa diferença, as regras 3.1 a 3.4 acima se aplicam normalmente ao reforço (gols, vitória/derrota da rodada, e a escalação permanente — que continua sendo o time incompleto — é restaurada automaticamente na rodada seguinte).
 
 ---
 

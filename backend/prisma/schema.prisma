@@ -158,16 +158,18 @@ model Round {
 // ──────────────────────────────────────────────
 
 model RoundSubstitution {
-  id          Int    @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   roundId     String
   teamId      String
-  outPlayerId String
+  outPlayerId String?
   inPlayerId  String
 
-  // Relações: a troca vale exclusivamente para o Round em que foi registrada
+  // Relações: a troca vale exclusivamente para o Round em que foi registrada.
+  // outPlayerId nulo = reforço emprestado do time que folga, preenchendo uma
+  // vaga vazia de um time incompleto, sem substituir ninguém.
   round     Round @relation(fields: [roundId], references: [id], onDelete: Cascade)
   team      Team  @relation(fields: [teamId], references: [id])
-  outPlayer User  @relation("SubstitutionOut", fields: [outPlayerId], references: [id])
+  outPlayer User? @relation("SubstitutionOut", fields: [outPlayerId], references: [id])
   inPlayer  User  @relation("SubstitutionIn", fields: [inPlayerId], references: [id])
 
   @@unique([roundId, outPlayerId])

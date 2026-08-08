@@ -55,7 +55,7 @@ export interface RoundSubstitution {
     id: number;
     roundId: string;
     teamId: string;
-    outPlayerId: string;
+    outPlayerId: string | null;
     inPlayerId: string;
     outPlayer?: Player;
     inPlayer?: Player;

@@ -24,9 +24,12 @@ export default function MatchScreen() {
     const [homeGoals, setHomeGoals] = useState<string[]>([]);
     const [awayGoals, setAwayGoals] = useState<string[]>([]);
 
-    type Substitution = { teamId: string; outPlayerId: string; inPlayerId: string };
+    type Substitution = { teamId: string; outPlayerId: string | null; inPlayerId: string };
     const [substitutions, setSubstitutions] = useState<Substitution[]>([]);
     const [substitutingOut, setSubstitutingOut] = useState<{ teamId: string; player: Player } | null>(null);
+    // Reforço emprestado do time que folga, preenchendo uma vaga vazia de um
+    // time incompleto (sorteio com jogadores não múltiplo de 5)
+    const [addingToTeam, setAddingToTeam] = useState<string | null>(null);
 
     const [timeLeft, setTimeLeft] = useState(7 * 60 * 1000);
     const [timerActive, setTimerActive] = useState(false);
@@ -176,16 +179,17 @@ export default function MatchScreen() {
         .flatMap((t: Team) => (t.players || []).map((tp: TeamPlayer) => tp.player))
         .filter((p: Player) => !substitutions.some(s => s.inPlayerId === p.id));
 
-    type EffectiveEntry = { originalPlayerId: string; displayPlayer: Player; isSub: boolean; originalName?: string };
+    type EffectiveEntry = { originalPlayerId: string; displayPlayer: Player; isSub: boolean; isSlotFill?: boolean; originalName?: string };
 
     const getEffectiveEntries = (team: Team | undefined): EffectiveEntry[] => {
         if (!team) return [];
         const subsForTeam = substitutions.filter(s => s.teamId === team.id);
-        return (team.players || []).map((tp: TeamPlayer) => {
+        const allTeamPlayers = teams.flatMap((t: Team) => (t.players || []).map((p: TeamPlayer) => p.player));
+
+        const rosterEntries = (team.players || []).map((tp: TeamPlayer) => {
             const sub = subsForTeam.find(s => s.outPlayerId === tp.playerId);
             if (!sub) return { originalPlayerId: tp.playerId, displayPlayer: tp.player, isSub: false };
 
-            const allTeamPlayers = teams.flatMap((t: Team) => (t.players || []).map((p: TeamPlayer) => p.player));
             const inPlayer = allTeamPlayers.find((p: Player) => p.id === sub.inPlayerId);
             return {
                 originalPlayerId: tp.playerId,
@@ -194,13 +198,27 @@ export default function MatchScreen() {
                 originalName: tp.player.nickname || tp.player.name
             };
         });
+
+        // Reforços: preenchem vagas vazias de um time incompleto, sem substituir ninguém
+        const slotFillEntries = subsForTeam
+            .filter(s => s.outPlayerId === null)
+            .map(s => {
+                const inPlayer = allTeamPlayers.find((p: Player) => p.id === s.inPlayerId);
+                return inPlayer ? { originalPlayerId: `slot:${s.inPlayerId}`, displayPlayer: inPlayer, isSub: true, isSlotFill: true } : null;
+            })
+            .filter((e): e is NonNullable<typeof e> => e !== null);
+
+        return [...rosterEntries, ...slotFillEntries];
     };
 
-    const addSubstitution = (teamId: string, outPlayerId: string, inPlayerId: string) => {
-        setSubstitutions(prev => [...prev.filter(s => s.outPlayerId !== outPlayerId), { teamId, outPlayerId, inPlayerId }]);
-        setHomeGoals(prev => prev.filter(id => id !== outPlayerId));
-        setAwayGoals(prev => prev.filter(id => id !== outPlayerId));
+    const addSubstitution = (teamId: string, outPlayerId: string | null, inPlayerId: string) => {
+        setSubstitutions(prev => [...prev.filter(s => outPlayerId === null || s.outPlayerId !== outPlayerId), { teamId, outPlayerId, inPlayerId }]);
+        if (outPlayerId !== null) {
+            setHomeGoals(prev => prev.filter(id => id !== outPlayerId));
+            setAwayGoals(prev => prev.filter(id => id !== outPlayerId));
+        }
         setSubstitutingOut(null);
+        setAddingToTeam(null);
     };
 
     const undoSubstitution = (outPlayerId: string) => {
@@ -210,6 +228,12 @@ export default function MatchScreen() {
             setAwayGoals(prev => prev.filter(id => id !== sub.inPlayerId));
         }
         setSubstitutions(prev => prev.filter(s => s.outPlayerId !== outPlayerId));
+    };
+
+    const undoSlotFill = (inPlayerId: string) => {
+        setHomeGoals(prev => prev.filter(id => id !== inPlayerId));
+        setAwayGoals(prev => prev.filter(id => id !== inPlayerId));
+        setSubstitutions(prev => prev.filter(s => !(s.outPlayerId === null && s.inPlayerId === inPlayerId)));
     };
 
     const addHomeGoal = (playerId: string) => setHomeGoals([...homeGoals, playerId]);
@@ -399,12 +423,16 @@ export default function MatchScreen() {
                                                 <span className="font-bold text-slate-700 text-sm truncate max-w-30">{p.nickname || p.name}</span>
                                                 {entry.isSub && (
                                                     <span className="text-[9px] font-black uppercase text-amber-600 flex items-center gap-1">
-                                                        <Repeat className="w-2.5 h-2.5" /> Entrou por {entry.originalName}
+                                                        <Repeat className="w-2.5 h-2.5" /> {entry.isSlotFill ? 'Reforço do banco' : `Entrou por ${entry.originalName}`}
                                                     </span>
                                                 )}
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                {entry.isSub ? (
+                                                {entry.isSlotFill ? (
+                                                    <button onClick={() => undoSlotFill(p.id)} title="Remover reforço" className="w-7 h-7 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center hover:bg-amber-200 transition-all">
+                                                        <X className="w-3.5 h-3.5" />
+                                                    </button>
+                                                ) : entry.isSub ? (
                                                     <button onClick={() => undoSubstitution(entry.originalPlayerId)} title="Desfazer substituição" className="w-7 h-7 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center hover:bg-amber-200 transition-all">
                                                         <X className="w-3.5 h-3.5" />
                                                     </button>
@@ -426,6 +454,11 @@ export default function MatchScreen() {
                                         </div>
                                     );
                                 })}
+                                {getEffectiveEntries(homeTeam).length < 5 && restingPlayers.length > 0 && (
+                                    <button onClick={() => setAddingToTeam(homeTeam.id)} className="w-full flex items-center justify-center gap-2 p-2.5 rounded-2xl border-2 border-dashed border-slate-200 text-slate-400 hover:border-primary hover:text-primary transition-all text-xs font-black uppercase tracking-wide">
+                                        <Plus className="w-3.5 h-3.5" /> Adicionar jogador do banco
+                                    </button>
+                                )}
                             </div>
                         </div>
 
@@ -444,12 +477,16 @@ export default function MatchScreen() {
                                                 <span className="font-bold text-slate-700 text-sm truncate max-w-30">{p.nickname || p.name}</span>
                                                 {entry.isSub && (
                                                     <span className="text-[9px] font-black uppercase text-amber-600 flex items-center gap-1">
-                                                        <Repeat className="w-2.5 h-2.5" /> Entrou por {entry.originalName}
+                                                        <Repeat className="w-2.5 h-2.5" /> {entry.isSlotFill ? 'Reforço do banco' : `Entrou por ${entry.originalName}`}
                                                     </span>
                                                 )}
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                {entry.isSub ? (
+                                                {entry.isSlotFill ? (
+                                                    <button onClick={() => undoSlotFill(p.id)} title="Remover reforço" className="w-7 h-7 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center hover:bg-amber-200 transition-all">
+                                                        <X className="w-3.5 h-3.5" />
+                                                    </button>
+                                                ) : entry.isSub ? (
                                                     <button onClick={() => undoSubstitution(entry.originalPlayerId)} title="Desfazer substituição" className="w-7 h-7 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center hover:bg-amber-200 transition-all">
                                                         <X className="w-3.5 h-3.5" />
                                                     </button>
@@ -471,6 +508,11 @@ export default function MatchScreen() {
                                         </div>
                                     );
                                 })}
+                                {getEffectiveEntries(awayTeam).length < 5 && restingPlayers.length > 0 && (
+                                    <button onClick={() => setAddingToTeam(awayTeam.id)} className="w-full flex items-center justify-center gap-2 p-2.5 rounded-2xl border-2 border-dashed border-slate-200 text-slate-400 hover:border-primary hover:text-primary transition-all text-xs font-black uppercase tracking-wide">
+                                        <Plus className="w-3.5 h-3.5" /> Adicionar jogador do banco
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </section>
@@ -489,6 +531,28 @@ export default function MatchScreen() {
                             <button
                                 key={p.id}
                                 onClick={() => substitutingOut && addSubstitution(substitutingOut.teamId, substitutingOut.player.id, p.id)}
+                                className="w-full flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-100 hover:bg-slate-100 transition-all text-left"
+                            >
+                                <span className="font-bold text-slate-700 text-sm">{p.nickname || p.name}</span>
+                                <span className="text-[10px] font-black text-slate-400 uppercase">{p.position}</span>
+                            </button>
+                        ))
+                    )}
+                </div>
+            </Modal>
+
+            <Modal isOpen={!!addingToTeam} onClose={() => setAddingToTeam(null)} title="Adicionar Reforço">
+                <div className="p-4 space-y-3 max-h-[60vh] overflow-y-auto">
+                    <p className="text-xs font-bold text-slate-400 px-1">
+                        Escolha quem entra como reforço nesta rodada, emprestado do time que folga. Vale apenas para esta rodada.
+                    </p>
+                    {restingPlayers.length === 0 ? (
+                        <div className="text-center py-6 text-xs text-slate-400 font-bold">Nenhum jogador disponível no banco.</div>
+                    ) : (
+                        restingPlayers.map((p: Player) => (
+                            <button
+                                key={p.id}
+                                onClick={() => addingToTeam && addSubstitution(addingToTeam, null, p.id)}
                                 className="w-full flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-100 hover:bg-slate-100 transition-all text-left"
                             >
                                 <span className="font-bold text-slate-700 text-sm">{p.nickname || p.name}</span>

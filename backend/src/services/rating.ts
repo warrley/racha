@@ -235,7 +235,7 @@ const getSessionRoundStats = async (sessionId: string) => {
             const effective = new Set(rosterByTeam.get(teamId) ?? []);
             for (const sub of round.substitutions) {
                 if (sub.teamId !== teamId) continue;
-                effective.delete(sub.outPlayerId);
+                if (sub.outPlayerId) effective.delete(sub.outPlayerId);
                 effective.add(sub.inPlayerId);
             }
             const won = round.winnerTeamId === teamId;

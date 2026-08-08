@@ -30,6 +30,16 @@ const inferRatingChoice = (currentGrade: number): RatingChoice => {
     return 'SAME';
 };
 
+// Mesma regra do sorteio no backend (drawTeams): times de 5, mais um time
+// menor com o restante quando o total não é múltiplo de 5, no máximo 4 times.
+const isValidDrawCount = (n: number) => {
+    if (n < 10 || n > 20) return false;
+    const numFullTeams = Math.floor(n / 5);
+    const remainder = n % 5;
+    const numTeams = remainder > 0 ? numFullTeams + 1 : numFullTeams;
+    return numTeams <= 4;
+};
+
 export default function SessionDetailsScreen() {
     const router = useRouter();
     const params = useParams();
@@ -278,8 +288,8 @@ export default function SessionDetailsScreen() {
 
     const handleDrawTeams = async () => {
         const confirmedCount = session?.participants?.filter(p => p.status === 'CONFIRMED').length || 0;
-        if (confirmedCount !== 15 && confirmedCount !== 20) {
-            alert(`O sorteio exige exatamente 15 ou 20 confirmados. Atualmente existem ${confirmedCount} confirmados.`);
+        if (!isValidDrawCount(confirmedCount)) {
+            alert(`O sorteio exige entre 10 e 20 confirmados (formando times de 5 e, se sobrar, um time menor). Atualmente existem ${confirmedCount} confirmados.`);
             return;
         }
         try {
@@ -1083,7 +1093,9 @@ export default function SessionDetailsScreen() {
                                             <div className="flex flex-col gap-0.5 text-[10px] text-amber-600 font-bold px-2 pt-2 border-t border-slate-50 mt-1">
                                                 {round.substitutions.map((sub, i) => (
                                                     <span key={i} className="flex items-center gap-1">
-                                                        <Repeat className="w-3 h-3" /> {sub.inPlayer?.nickname || sub.inPlayer?.name} entrou no lugar de {sub.outPlayer?.nickname || sub.outPlayer?.name}
+                                                        <Repeat className="w-3 h-3" /> {sub.outPlayerId
+                                                            ? `${sub.inPlayer?.nickname || sub.inPlayer?.name} entrou no lugar de ${sub.outPlayer?.nickname || sub.outPlayer?.name}`
+                                                            : `${sub.inPlayer?.nickname || sub.inPlayer?.name} entrou como reforço`}
                                                     </span>
                                                 ))}
                                             </div>
@@ -1101,7 +1113,7 @@ export default function SessionDetailsScreen() {
                     {isOpen && isAdmin && (
                         <Button
                             onClick={handleDrawTeams}
-                            disabled={(confirmedCount !== 15 && confirmedCount !== 20) || isDrawing}
+                            disabled={!isValidDrawCount(confirmedCount) || isDrawing}
                             isLoading={isDrawing}
                             fullWidth
                             size="lg"

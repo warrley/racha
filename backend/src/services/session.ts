@@ -133,10 +133,6 @@ export const executeDraw = async (sessionId: string, playerIds?: string[]) => {
     // Garantir IDs únicos (prevenir tentativas de fraude/duplicações no balanceamento)
     finalPlayerIds = Array.from(new Set(finalPlayerIds));
 
-    if (finalPlayerIds.length !== 15 && finalPlayerIds.length !== 20) {
-        throw new Error("O sorteio exige exatamente 15 (3 times) ou 20 (4 times) jogadores confirmados");
-    }
-
     // Consolidar sessões expiradas antes de sortear (self-healing)
     await consolidateExpiredSessions();
 
@@ -235,7 +231,7 @@ export const closeSession = async (sessionId: string) => {
 
         for(const sub of round.substitutions) {
             const target = sub.teamId === round.homeTeamId ? homePlayerIds : awayPlayerIds;
-            target.delete(sub.outPlayerId);
+            if (sub.outPlayerId) target.delete(sub.outPlayerId);
             target.add(sub.inPlayerId);
         }
 

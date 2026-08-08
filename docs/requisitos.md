@@ -47,13 +47,13 @@ Este documento descreve os requisitos funcionais e não-funcionais para o sistem
 | ID | Descrição | Prioridade | Status |
 | :--- | :--- | :--- | :--- |
 | **RF14** | O sistema deve disponibilizar um **Ranking de Notas**, ordenado pela média acumulada histórica de todas as avaliações de cada jogador. | Alta | Concluído |
-| **RF15** | O algoritmo de sorteio e balanceamento de times (`executeDraw`) deve passar a usar a **Nota Média** das avaliações do jogador em vez do rating Elo clássico. | Alta | Concluído |
+| **RF15** | O algoritmo de sorteio e balanceamento de times (`executeDraw`) deve passar a usar a **Nota Média** das avaliações do jogador em vez do rating Elo clássico. Aceita entre 10 e 20 confirmados; quando o total não é múltiplo de 5, forma o máximo de times cheios (5) mais um time remanescente menor com o restante. | Alta | Concluído |
 
 ### 2.6 Substituições Temporárias por Rodada
 | ID | Descrição | Prioridade | Status |
 | :--- | :--- | :--- | :--- |
 | **RF16** | O administrador deve poder realizar uma substituição de jogador durante uma rodada ativa (`Round` de uma sessão `IN_PROGRESS`). | Alta | Concluído |
-| **RF17** | O sistema deve registrar que um jogador substituto jogou aquela rodada específica no lugar de outro jogador, aplicando os gols marcados e os resultados da rodada para as estatísticas corretas dos jogadores. | Média | Concluído |
+| **RF17** | O sistema deve registrar que um jogador substituto jogou aquela rodada específica no lugar de outro jogador, aplicando os gols marcados e os resultados da rodada para as estatísticas corretas dos jogadores. Também permite registrar um reforço (sem jogador substituído) para completar times sorteados com menos de 5 jogadores, emprestando jogadores do time que folga na rodada. | Média | Concluído |
 | **RF18** | Após o término da rodada atual, a escalação do time deve ser restaurada automaticamente para a formação original para a próxima rodada. | Alta | Concluído |
 
 ### 2.7 Cronômetro Flutuante (Match Screen)

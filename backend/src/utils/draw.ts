@@ -10,13 +10,27 @@ type DrawnTeam = {
     totalRating: number;
 };
 
+// Times sempre têm 5 jogadores, exceto quando o total de confirmados não é
+// múltiplo de 5: nesse caso forma-se o máximo de times cheios (5) e um time
+// remanescente menor com o restante, que é completado a cada rodada por
+// reforços emprestados do time que folga (ver RoundSubstitution/registerRound).
+const MIN_PLAYERS = 10;
+const MAX_PLAYERS = 20;
+const MAX_TEAMS = 4;
+
 export const drawTeams = (players: PlayerForDraw[]): DrawnTeam[] => {
-    const validCounts = [15, 20];
-    if (!validCounts.includes(players.length)) {
-        throw new Error("O sorteio exige 15 (3 times) ou 20 (4 times) jogadores");
+    const n = players.length;
+    if (n < MIN_PLAYERS || n > MAX_PLAYERS) {
+        throw new Error(`O sorteio exige entre ${MIN_PLAYERS} e ${MAX_PLAYERS} jogadores confirmados`);
     };
 
-    const numTeams = players.length / 5;
+    const numFullTeams = Math.floor(n / 5);
+    const remainder = n % 5;
+    const numTeams = remainder > 0 ? numFullTeams + 1 : numFullTeams;
+    if (numTeams > MAX_TEAMS) {
+        throw new Error(`Não é possível formar mais de ${MAX_TEAMS} times com ${n} jogadores confirmados`);
+    };
+    const targetSizes = [...Array(numFullTeams).fill(5), ...(remainder > 0 ? [remainder] : [])];
 
     // Jogador sem nota ainda começa com 2.5 (ponto neutro da escala 1-5),
     // mesmo valor usado como ponto de partida no cálculo de averageGrade
@@ -45,15 +59,24 @@ export const drawTeams = (players: PlayerForDraw[]): DrawnTeam[] => {
         totalRating: 0
     }));
 
-    for (let i = 0; i < sorted.length; i++) {
-        const round = Math.floor(i / numTeams);
-        const posInRound = i % numTeams;
-        const teamIndex = round % 2 === 0
-            ? posInRound
-            : numTeams - 1 - posInRound;
-
-        teams[teamIndex].players.push(sorted[i]);
-        teams[teamIndex].totalRating += sorted[i].averageGrade ?? NEUTRAL_GRADE;
+    // Serpentina que respeita a capacidade de cada time: quando um time atinge
+    // seu targetSize ele sai da rotação, então o time remanescente (menor)
+    // para de receber jogadores assim que se completa, sem afetar o
+    // equilíbrio dos times cheios (equivalente à serpentina simples quando
+    // todos os times têm o mesmo tamanho).
+    let sortedIndex = 0;
+    let remainingTeamIndexes = teams.map((_, idx) => idx);
+    let forward = true;
+    while (sortedIndex < sorted.length) {
+        const order = forward ? remainingTeamIndexes : [...remainingTeamIndexes].reverse();
+        for (const teamIndex of order) {
+            if (sortedIndex >= sorted.length) break;
+            teams[teamIndex].players.push(sorted[sortedIndex]);
+            teams[teamIndex].totalRating += sorted[sortedIndex].averageGrade ?? NEUTRAL_GRADE;
+            sortedIndex++;
+        };
+        remainingTeamIndexes = remainingTeamIndexes.filter(idx => teams[idx].players.length < targetSizes[idx]);
+        forward = !forward;
     };
 
     // Arredondar totalRating para 1 casa decimal

@@ -7,7 +7,7 @@ const goalSchema = z.object({
 
 const substitutionSchema = z.object({
     teamId: z.string({ message: "ID do time é obrigatório" }),
-    outPlayerId: z.string({ message: "ID do jogador substituído é obrigatório" }),
+    outPlayerId: z.string({ message: "ID do jogador substituído é obrigatório" }).nullable(),
     inPlayerId: z.string({ message: "ID do jogador substituto é obrigatório" })
 });
 
