@@ -1037,7 +1037,7 @@ export default function SessionDetailsScreen() {
                                         {isAdmin && isInProgress && (
                                             <button
                                                 onClick={() => handleDeleteRound(round.id)}
-                                                className="absolute -top-2 -right-2 bg-red-50 text-red-500 p-3 rounded-full border border-red-100 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-100 active:scale-95"
+                                                className="absolute -top-2 -right-2 bg-red-50 text-red-500 p-3 rounded-full border border-red-100 shadow-sm hover:bg-red-100 active:scale-95 transition-all"
                                                 title="Excluir partida"
                                             >
                                                 <Trash2 className="w-4 h-4" />
