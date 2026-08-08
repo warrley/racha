@@ -46,23 +46,20 @@ async function main() {
     // Transforma o nome em um email (ex: Nego Veríssimo -> nego_verissimo@racha.com)
     const normalizedName = p.name.toLowerCase().replace(/[^a-z0-9]/g, '');
     const email = `${normalizedName}@racha.com`;
-    
-    // Calcula o rating baseado na nota (Grade 5 = 1000, 3 = 600, etc)
-    const rating = Math.round(p.grade * 200);
 
     await prisma.user.upsert({
       where: { email },
       update: {
         nickname: p.name,
         name: p.name,
-        rating: rating,
+        averageGrade: p.grade,
       },
       create: {
         email,
         password: passwordHash,
         name: p.name,
         nickname: p.name,
-        rating: rating,
+        averageGrade: p.grade,
         position: (p.grade >= 4.0 ? "ATACANTE" : p.grade >= 3.0 ? "MEIO" : "ZAGUEIRO") as any
       }
     });

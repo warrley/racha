@@ -2054,13 +2054,11 @@ export namespace Prisma {
   }
 
   export type UserAvgAggregateOutputType = {
-    rating: number | null
     averageGrade: number | null
     avatarIndex: number | null
   }
 
   export type UserSumAggregateOutputType = {
-    rating: number | null
     averageGrade: number | null
     avatarIndex: number | null
   }
@@ -2073,7 +2071,6 @@ export namespace Prisma {
     name: string | null
     nickname: string | null
     position: $Enums.Position | null
-    rating: number | null
     averageGrade: number | null
     avatarIndex: number | null
     isAdmin: boolean | null
@@ -2091,7 +2088,6 @@ export namespace Prisma {
     name: string | null
     nickname: string | null
     position: $Enums.Position | null
-    rating: number | null
     averageGrade: number | null
     avatarIndex: number | null
     isAdmin: boolean | null
@@ -2109,7 +2105,6 @@ export namespace Prisma {
     name: number
     nickname: number
     position: number
-    rating: number
     averageGrade: number
     avatarIndex: number
     isAdmin: number
@@ -2122,13 +2117,11 @@ export namespace Prisma {
 
 
   export type UserAvgAggregateInputType = {
-    rating?: true
     averageGrade?: true
     avatarIndex?: true
   }
 
   export type UserSumAggregateInputType = {
-    rating?: true
     averageGrade?: true
     avatarIndex?: true
   }
@@ -2141,7 +2134,6 @@ export namespace Prisma {
     name?: true
     nickname?: true
     position?: true
-    rating?: true
     averageGrade?: true
     avatarIndex?: true
     isAdmin?: true
@@ -2159,7 +2151,6 @@ export namespace Prisma {
     name?: true
     nickname?: true
     position?: true
-    rating?: true
     averageGrade?: true
     avatarIndex?: true
     isAdmin?: true
@@ -2177,7 +2168,6 @@ export namespace Prisma {
     name?: true
     nickname?: true
     position?: true
-    rating?: true
     averageGrade?: true
     avatarIndex?: true
     isAdmin?: true
@@ -2282,7 +2272,6 @@ export namespace Prisma {
     name: string
     nickname: string | null
     position: $Enums.Position
-    rating: number
     averageGrade: number | null
     avatarIndex: number
     isAdmin: boolean
@@ -2319,7 +2308,6 @@ export namespace Prisma {
     name?: boolean
     nickname?: boolean
     position?: boolean
-    rating?: boolean
     averageGrade?: boolean
     avatarIndex?: boolean
     isAdmin?: boolean
@@ -2349,7 +2337,6 @@ export namespace Prisma {
     name?: boolean
     nickname?: boolean
     position?: boolean
-    rating?: boolean
     averageGrade?: boolean
     avatarIndex?: boolean
     isAdmin?: boolean
@@ -2367,7 +2354,6 @@ export namespace Prisma {
     name?: boolean
     nickname?: boolean
     position?: boolean
-    rating?: boolean
     averageGrade?: boolean
     avatarIndex?: boolean
     isAdmin?: boolean
@@ -2385,7 +2371,6 @@ export namespace Prisma {
     name?: boolean
     nickname?: boolean
     position?: boolean
-    rating?: boolean
     averageGrade?: boolean
     avatarIndex?: boolean
     isAdmin?: boolean
@@ -2395,7 +2380,7 @@ export namespace Prisma {
     createdAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "supabaseId" | "name" | "nickname" | "position" | "rating" | "averageGrade" | "avatarIndex" | "isAdmin" | "pixKey" | "resetToken" | "resetTokenExpiresAt" | "createdAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "supabaseId" | "name" | "nickname" | "position" | "averageGrade" | "avatarIndex" | "isAdmin" | "pixKey" | "resetToken" | "resetTokenExpiresAt" | "createdAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     teamPlayers?: boolean | User$teamPlayersArgs<ExtArgs>
     goals?: boolean | User$goalsArgs<ExtArgs>
@@ -2436,7 +2421,6 @@ export namespace Prisma {
       name: string
       nickname: string | null
       position: $Enums.Position
-      rating: number
       averageGrade: number | null
       avatarIndex: number
       isAdmin: boolean
@@ -2885,7 +2869,6 @@ export namespace Prisma {
     readonly name: FieldRef<"User", 'String'>
     readonly nickname: FieldRef<"User", 'String'>
     readonly position: FieldRef<"User", 'Position'>
-    readonly rating: FieldRef<"User", 'Int'>
     readonly averageGrade: FieldRef<"User", 'Float'>
     readonly avatarIndex: FieldRef<"User", 'Int'>
     readonly isAdmin: FieldRef<"User", 'Boolean'>
@@ -14145,7 +14128,6 @@ export namespace Prisma {
     name: 'name',
     nickname: 'nickname',
     position: 'position',
-    rating: 'rating',
     averageGrade: 'averageGrade',
     avatarIndex: 'avatarIndex',
     isAdmin: 'isAdmin',
@@ -14329,20 +14311,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int[]'
-   */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -14353,6 +14321,20 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -14433,7 +14415,6 @@ export namespace Prisma {
     name?: StringFilter<"User"> | string
     nickname?: StringNullableFilter<"User"> | string | null
     position?: EnumPositionFilter<"User"> | $Enums.Position
-    rating?: IntFilter<"User"> | number
     averageGrade?: FloatNullableFilter<"User"> | number | null
     avatarIndex?: IntFilter<"User"> | number
     isAdmin?: BoolFilter<"User"> | boolean
@@ -14462,7 +14443,6 @@ export namespace Prisma {
     name?: SortOrder
     nickname?: SortOrderInput | SortOrder
     position?: SortOrder
-    rating?: SortOrder
     averageGrade?: SortOrderInput | SortOrder
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
@@ -14495,7 +14475,6 @@ export namespace Prisma {
     name?: StringFilter<"User"> | string
     nickname?: StringNullableFilter<"User"> | string | null
     position?: EnumPositionFilter<"User"> | $Enums.Position
-    rating?: IntFilter<"User"> | number
     averageGrade?: FloatNullableFilter<"User"> | number | null
     avatarIndex?: IntFilter<"User"> | number
     isAdmin?: BoolFilter<"User"> | boolean
@@ -14523,7 +14502,6 @@ export namespace Prisma {
     name?: SortOrder
     nickname?: SortOrderInput | SortOrder
     position?: SortOrder
-    rating?: SortOrder
     averageGrade?: SortOrderInput | SortOrder
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
@@ -14549,7 +14527,6 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"User"> | string
     nickname?: StringNullableWithAggregatesFilter<"User"> | string | null
     position?: EnumPositionWithAggregatesFilter<"User"> | $Enums.Position
-    rating?: IntWithAggregatesFilter<"User"> | number
     averageGrade?: FloatNullableWithAggregatesFilter<"User"> | number | null
     avatarIndex?: IntWithAggregatesFilter<"User"> | number
     isAdmin?: BoolWithAggregatesFilter<"User"> | boolean
@@ -15232,7 +15209,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -15261,7 +15237,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -15290,7 +15265,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -15319,7 +15293,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -15348,7 +15321,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -15366,7 +15338,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -15384,7 +15355,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -16048,17 +16018,6 @@ export namespace Prisma {
     not?: NestedEnumPositionFilter<$PrismaModel> | $Enums.Position
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type FloatNullableFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
@@ -16068,6 +16027,17 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type BoolFilter<$PrismaModel = never> = {
@@ -16180,7 +16150,6 @@ export namespace Prisma {
     name?: SortOrder
     nickname?: SortOrder
     position?: SortOrder
-    rating?: SortOrder
     averageGrade?: SortOrder
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
@@ -16191,7 +16160,6 @@ export namespace Prisma {
   }
 
   export type UserAvgOrderByAggregateInput = {
-    rating?: SortOrder
     averageGrade?: SortOrder
     avatarIndex?: SortOrder
   }
@@ -16204,7 +16172,6 @@ export namespace Prisma {
     name?: SortOrder
     nickname?: SortOrder
     position?: SortOrder
-    rating?: SortOrder
     averageGrade?: SortOrder
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
@@ -16222,7 +16189,6 @@ export namespace Prisma {
     name?: SortOrder
     nickname?: SortOrder
     position?: SortOrder
-    rating?: SortOrder
     averageGrade?: SortOrder
     avatarIndex?: SortOrder
     isAdmin?: SortOrder
@@ -16233,7 +16199,6 @@ export namespace Prisma {
   }
 
   export type UserSumOrderByAggregateInput = {
-    rating?: SortOrder
     averageGrade?: SortOrder
     avatarIndex?: SortOrder
   }
@@ -16284,22 +16249,6 @@ export namespace Prisma {
     _max?: NestedEnumPositionFilter<$PrismaModel>
   }
 
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
   export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
@@ -16314,6 +16263,22 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -17039,16 +17004,16 @@ export namespace Prisma {
     set?: $Enums.Position
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
     increment?: number
     decrement?: number
     multiply?: number
     divide?: number
   }
 
-  export type NullableFloatFieldUpdateOperationsInput = {
-    set?: number | null
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
     increment?: number
     decrement?: number
     multiply?: number
@@ -18272,17 +18237,6 @@ export namespace Prisma {
     not?: NestedEnumPositionFilter<$PrismaModel> | $Enums.Position
   }
 
-  export type NestedIntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type NestedFloatNullableFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
@@ -18292,6 +18246,17 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedIntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type NestedBoolFilter<$PrismaModel = never> = {
@@ -18376,6 +18341,22 @@ export namespace Prisma {
     _max?: NestedEnumPositionFilter<$PrismaModel>
   }
 
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -18401,22 +18382,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -19153,7 +19118,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -19181,7 +19145,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -19214,7 +19177,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -19242,7 +19204,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -19275,7 +19236,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -19303,7 +19263,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -19496,7 +19455,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -19524,7 +19482,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -19563,7 +19520,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -19591,7 +19547,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -19630,7 +19585,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -19658,7 +19612,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -20158,7 +20111,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -20186,7 +20138,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -20265,7 +20216,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -20293,7 +20243,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -20751,7 +20700,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -20779,7 +20727,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -20812,7 +20759,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -20840,7 +20786,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -20958,7 +20903,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -20986,7 +20930,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -21025,7 +20968,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -21053,7 +20995,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -21114,7 +21055,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -21142,7 +21082,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -21225,7 +21164,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -21253,7 +21191,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -21281,7 +21218,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -21309,7 +21245,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -21400,7 +21335,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -21428,7 +21362,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -21556,7 +21489,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -21584,7 +21516,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -21681,7 +21612,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -21709,7 +21639,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -21784,7 +21713,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -21812,7 +21740,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -21845,7 +21772,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -21873,7 +21799,6 @@ export namespace Prisma {
     name: string
     nickname?: string | null
     position?: $Enums.Position
-    rating?: number
     averageGrade?: number | null
     avatarIndex?: number
     isAdmin?: boolean
@@ -21970,7 +21895,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -21998,7 +21922,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -22037,7 +21960,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
@@ -22065,7 +21987,6 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     nickname?: NullableStringFieldUpdateOperationsInput | string | null
     position?: EnumPositionFieldUpdateOperationsInput | $Enums.Position
-    rating?: IntFieldUpdateOperationsInput | number
     averageGrade?: NullableFloatFieldUpdateOperationsInput | number | null
     avatarIndex?: IntFieldUpdateOperationsInput | number
     isAdmin?: BoolFieldUpdateOperationsInput | boolean

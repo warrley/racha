@@ -40,11 +40,10 @@ async function main() {
 
     for (const p of newPlayers) {
         const email = `${p.name.toLowerCase().replace(/[^a-z0-9]/g, '')}@racha.com`;
-        const rating = Math.round(p.grade * 200);
         await prisma.user.upsert({
             where: { email },
-            update: { name: p.name, nickname: p.name, rating },
-            create: { email, password: passwordHash, name: p.name, nickname: p.name, rating, position: "MEIO" }
+            update: { name: p.name, nickname: p.name, averageGrade: p.grade },
+            create: { email, password: passwordHash, name: p.name, nickname: p.name, averageGrade: p.grade, position: "MEIO" }
         });
         console.log(`✅ Jogador ${p.name} cadastrado (${email})`);
     }
@@ -106,7 +105,7 @@ async function main() {
 
         const totalRating = await prisma.user.aggregate({
             where: { id: { in: playerIds } },
-            _sum: { rating: true }
+            _sum: { averageGrade: true }
         });
 
         await prisma.team.create({
@@ -114,7 +113,7 @@ async function main() {
                 sessionId: session.id,
                 name: teamDef.name,
                 color: teamDef.color,
-                totalRating: totalRating._sum.rating ?? 0,
+                totalRating: totalRating._sum.averageGrade ?? 0,
                 players: {
                     create: playerIds.map(id => ({ playerId: id }))
                 }

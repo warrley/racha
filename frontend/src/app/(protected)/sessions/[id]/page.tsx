@@ -576,7 +576,7 @@ export default function SessionDetailsScreen() {
                                             </div>
                                             <h3 className="text-xl font-black leading-tight mb-2">
                                                 {ratingsSubmitted
-                                                    ? 'Suas notas foram registradas! ✅'
+                                                    ? 'Suas notas foram registradas!'
                                                     : 'Avalie os jogadores deste racha!'
                                                 }
                                             </h3>
@@ -877,7 +877,7 @@ export default function SessionDetailsScreen() {
                                                             </button>
                                                         ) : (
                                                             <div className="bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100 font-black text-slate-500 text-[10px]">
-                                                                {player.rating} Pts
+                                                                {player.averageGrade?.toFixed(1) ?? '-'} Nota
                                                             </div>
                                                         )}
                                                         {isAdmin && (
@@ -933,7 +933,7 @@ export default function SessionDetailsScreen() {
                                                     </Link>
                                                     <div className="flex items-center gap-2">
                                                         <div className="bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100 font-black text-slate-500 text-[10px]">
-                                                            {player.rating} Pts
+                                                            {player.averageGrade?.toFixed(1) ?? '-'} Nota
                                                         </div>
                                                         {isAdmin && (
                                                             <button
@@ -990,7 +990,7 @@ export default function SessionDetailsScreen() {
                                                         </div>
                                                     </Link>
                                                     <div className="bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100 font-black text-slate-500 text-[10px]">
-                                                        {p.rating}
+                                                        {p.averageGrade?.toFixed(1) ?? '-'}
                                                     </div>
                                                 </div>
                                             );

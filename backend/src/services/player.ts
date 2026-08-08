@@ -38,7 +38,6 @@ export const findById = async (id: string) => {
             nickname: true,
             email: true,
             position: true,
-            rating: true,
             averageGrade: true,
             avatarIndex: true,
             isAdmin: true,
@@ -115,12 +114,14 @@ export const findAll = async () => {
             name: true,
             nickname: true,
             position: true,
-            rating: true,
             averageGrade: true,
             avatarIndex: true,
             isAdmin: true
         },
-        orderBy: { rating: "desc" }
+        orderBy: [
+            { averageGrade: { sort: "desc", nulls: "last" } },
+            { name: "asc" }
+        ]
     });
 };
 

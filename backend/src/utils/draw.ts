@@ -1,6 +1,5 @@
 type PlayerForDraw = {
     id: string;
-    rating: number;
     averageGrade: number | null;
 };
 

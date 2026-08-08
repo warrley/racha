@@ -46,7 +46,6 @@ model User {
   name         String
   nickname     String?
   position     Position @default(MEIO)
-  rating       Int      @default(0)
   averageGrade Float?
   avatarIndex  Int      @default(0)
   isAdmin      Boolean  @default(false)

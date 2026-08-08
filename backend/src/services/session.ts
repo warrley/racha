@@ -1,6 +1,5 @@
 import { prisma } from "../utils/prisma";
 import { drawTeams } from "../utils/draw";
-import { calculateNewRating } from "../utils/elo";
 import { consolidateExpiredSessions } from "./rating";
 
 export const createSession = async (createdById: string, title: string | undefined, date: string, maxPlayers?: number, pixKey?: string, price?: number) => {
@@ -62,7 +61,7 @@ export const findSessionById = async (id: string) => {
             topScorerPlayer: { select: { id: true, name: true, nickname: true } },
             participants: {
                 include: {
-                    user: { select: { id: true, name: true, nickname: true, position: true, rating: true, averageGrade: true, avatarIndex: true } }
+                    user: { select: { id: true, name: true, nickname: true, position: true, averageGrade: true, avatarIndex: true } }
                 },
                 orderBy: { createdAt: "asc" }
             },
@@ -70,7 +69,7 @@ export const findSessionById = async (id: string) => {
                 include: {
                     players: {
                         include: {
-                            player: { select: { id: true, name: true, nickname: true, position: true, rating: true, averageGrade: true } }
+                            player: { select: { id: true, name: true, nickname: true, position: true, averageGrade: true } }
                         }
                     }
                 }
@@ -143,7 +142,7 @@ export const executeDraw = async (sessionId: string, playerIds?: string[]) => {
 
     const players = await prisma.user.findMany({
         where: { id: { in: finalPlayerIds } },
-        select: { id: true, rating: true, averageGrade: true }
+        select: { id: true, averageGrade: true }
     });
 
     if(players.length !== finalPlayerIds.length) throw new Error("Alguns jogadores não foram encontrados");
@@ -168,7 +167,7 @@ export const executeDraw = async (sessionId: string, playerIds?: string[]) => {
                 include: {
                     players: {
                         include: {
-                            player: { select: { id: true, name: true, nickname: true, position: true, rating: true } }
+                            player: { select: { id: true, name: true, nickname: true, position: true } }
                         }
                     }
                 }
@@ -282,33 +281,11 @@ export const closeSession = async (sessionId: string) => {
         };
     };
 
-    // Transaction: atualizar ratings, badges e fechar sessão
+    // Transaction: badges e fechar sessão
     await prisma.$transaction(async (tx) => {
         const playerIds = Object.keys(playerStats);
 
-        // 1. Atualizar ratings em paralelo (1 busca em lote + updates paralelos)
-        const players = await tx.user.findMany({
-            where: { id: { in: playerIds } }
-        });
-
-        await Promise.all(players.map(async (player) => {
-            const stats = playerStats[player.id];
-            if (!stats) return;
-
-            const newRating = calculateNewRating({
-                currentRating: player.rating,
-                roundResults: stats.roundResults,
-                goalsScored: stats.goals,
-                isMvp: player.id === mvpId
-            });
-
-            await tx.user.update({
-                where: { id: player.id },
-                data: { rating: newRating }
-            });
-        }));
-
-        // 2. Criar badges da sessão
+        // 1. Criar badges da sessão
         const sessionBadges = [];
         if(mvpId) {
             sessionBadges.push(tx.badge.create({
@@ -322,7 +299,7 @@ export const closeSession = async (sessionId: string) => {
         }
         await Promise.all(sessionBadges);
 
-        // 3. Badges de carreira (VETERANO/GOLEADOR) usando consultas otimizadas
+        // 2. Badges de carreira (VETERANO/GOLEADOR) usando consultas otimizadas
         const [existingBadges, sessionCounts, totalGoalsCounts] = await Promise.all([
             tx.badge.findMany({
                 where: {
@@ -435,7 +412,7 @@ export const joinSession = async (sessionId: string, userId: string) => {
                 status
             },
             include: {
-                user: { select: { id: true, name: true, nickname: true, position: true, rating: true, avatarIndex: true } }
+                user: { select: { id: true, name: true, nickname: true, position: true, avatarIndex: true } }
             }
         });
     }, { timeout: 10000 });

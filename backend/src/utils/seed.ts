@@ -57,7 +57,6 @@ async function main() {
     for (const p of players) {
         const normalizedName = p.name.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]/g, '');
         const email = `${normalizedName}@racha.com`;
-        const rating = Math.round(p.grade * 200);
         const position = p.grade >= 4.0 ? "ATACANTE" : p.grade >= 3.0 ? "MEIO" : "ZAGUEIRO";
 
         await prisma.user.create({
@@ -66,7 +65,6 @@ async function main() {
                 password: passwordHash,
                 name: p.name,
                 nickname: p.name,
-                rating,
                 averageGrade: p.grade,
                 position: position as any,
                 isAdmin: Boolean(p.admin),

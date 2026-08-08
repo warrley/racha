@@ -4,7 +4,6 @@ export interface Player {
     nickname: string | null;
     email?: string;
     position: 'ZAGUEIRO' | 'MEIO' | 'ATACANTE';
-    rating: number;
     averageGrade?: number | null;
     avatarIndex: number;
     isAdmin: boolean;

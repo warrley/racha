@@ -43,7 +43,6 @@ erDiagram
     *   `name` (String): Nome completo do jogador.
     *   `nickname` (String?): Apelido.
     *   `position` (Enum: ZAGUEIRO, MEIO, ATACANTE): Posição de preferência.
-    *   `rating` (Int): Pontuação de habilidade (usada no balanceamento por Elo).
     *   `avatarIndex` (Int): Índice do avatar selecionado.
     *   `isAdmin` (Boolean): Flag de administrador do racha.
     *   `createdAt` (DateTime).

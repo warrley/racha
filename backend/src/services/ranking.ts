@@ -11,13 +11,12 @@ export const getRanking = async () => {
             name: true,
             nickname: true,
             position: true,
-            rating: true,
             averageGrade: true,
             avatarIndex: true
         },
         orderBy: [
             { averageGrade: { sort: "desc", nulls: "last" } },
-            { rating: "desc" }
+            { name: "asc" }
         ]
     });
 

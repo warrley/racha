@@ -585,7 +585,7 @@ mainRouter.delete("/sessions/:sessionId/rounds/:roundId", privateRoute, roundCon
  * @openapi
  * /ranking:
  *   get:
- *     summary: Ranking geral por rating
+ *     summary: Ranking geral por nota média
  *     tags: [Ranking]
  *     security:
  *       - bearerAuth: []
